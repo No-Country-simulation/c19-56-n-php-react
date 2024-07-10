@@ -1,57 +1,95 @@
 import { Button } from "@/components/ui/button"
-import { FilePenIcon, TrashIcon } from "../../../icons"
+import { Label } from "@/components/ui/label"
+import { Input } from "@/components/ui/input"
+import { Textarea } from "@/components/ui/textarea"
 
-export default function PetDetail() {
+export default function Component() {
   return (
-    <div className="bg-background text-foreground rounded-lg shadow-md overflow-hidden">
-      <div className="flex flex-col md:flex-row">
-        <div className="md:w-1/3 bg-muted p-6">
-          <img src="/placeholder.svg" alt="Pet Image" width={400} height={400} className="w-full h-auto rounded-lg" />
+    <div className="flex flex-col gap-6 p-6 md:p-8 lg:p-10">
+      <div className="flex items-center justify-between">
+        <h1 className="text-2xl font-bold">Pet Details</h1>
+        <div className="flex items-center gap-4">
+          <Button variant="outline" size="sm">
+            Edit
+          </Button>
+          <Button variant="destructive" size="sm">
+            Delete
+          </Button>
         </div>
-        <div className="md:w-2/3 p-6">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-2xl font-bold">Pet ID: #123456</h2>
-            <div className="flex gap-2">
-              <Button variant="outline" size="sm">
-                <FilePenIcon className="w-4 h-4 mr-2" />
-                Edit
-              </Button>
-              <Button variant="destructive" size="sm">
-                <TrashIcon className="w-4 h-4 mr-2" />
-                Delete
-              </Button>
-            </div>
-          </div>
-          <div className="grid grid-cols-2 gap-4 mb-4">
-            <div>
-              <h3 className="text-lg font-medium mb-1">Name</h3>
-              <p>Buddy</p>
-            </div>
-            <div>
-              <h3 className="text-lg font-medium mb-1">Breed</h3>
-              <p>Golden Retriever</p>
-            </div>
-            <div>
-              <h3 className="text-lg font-medium mb-1">Size</h3>
-              <p>Medium</p>
-            </div>
-            <div>
-              <h3 className="text-lg font-medium mb-1">Weight</h3>
-              <p>35 lbs</p>
-            </div>
-            <div>
-              <h3 className="text-lg font-medium mb-1">Age</h3>
-              <p>3 years</p>
-            </div>
-            <div>
-              <h3 className="text-lg font-medium mb-1">Personality</h3>
-              <p>Friendly, playful</p>
-            </div>
-          </div>
-          <div>
-            <h3 className="text-lg font-medium mb-1">Adoption ID</h3>
-            <p>789012</p>
-          </div>
+      </div>
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-2">
+          <Label htmlFor="name">Name</Label>
+          <Input id="name" defaultValue="Buddy" disabled />
+        </div>
+        <div className="grid gap-2">
+          <Label htmlFor="breed">Breed</Label>
+          <Input id="breed" defaultValue="Golden Retriever" disabled />
+        </div>
+        <div className="grid gap-2">
+          <Label htmlFor="age">Age</Label>
+          <Input id="age" defaultValue="3" disabled />
+        </div>
+        <div className="grid gap-2">
+          <Label htmlFor="gender">Gender</Label>
+          <Input id="gender" defaultValue="Male" disabled />
+        </div>
+        <div className="grid gap-2">
+          <Label htmlFor="size">Size</Label>
+          <Input id="size" defaultValue="Medium" disabled />
+        </div>
+        <div className="grid gap-2">
+          <Label htmlFor="color">Color</Label>
+          <Input id="color" defaultValue="Golden" disabled />
+        </div>
+        <div className="grid gap-2">
+          <Label htmlFor="status">Status</Label>
+          <Input id="status" defaultValue="Available" disabled />
+        </div>
+        <div className="grid gap-2">
+          <Label htmlFor="location">Location</Label>
+          <Input id="location" defaultValue="Shelter A" disabled />
+        </div>
+        <div className="grid gap-2">
+          <Label htmlFor="description">Description</Label>
+          <Textarea
+            id="description"
+            defaultValue="Buddy is a friendly and energetic Golden Retriever who loves to play fetch and go for long walks. He is great with children and other pets, and is looking for a loving forever home."
+            disabled
+          />
+        </div>
+      </div>
+      <div className="grid gap-4">
+        <h2 className="text-xl font-bold">Photos</h2>
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+          <img
+            src="/placeholder.svg"
+            width={300}
+            height={300}
+            alt="Pet Photo"
+            className="aspect-square w-full rounded-md object-cover"
+          />
+          <img
+            src="/placeholder.svg"
+            width={300}
+            height={300}
+            alt="Pet Photo"
+            className="aspect-square w-full rounded-md object-cover"
+          />
+          <img
+            src="/placeholder.svg"
+            width={300}
+            height={300}
+            alt="Pet Photo"
+            className="aspect-square w-full rounded-md object-cover"
+          />
+          <img
+            src="/placeholder.svg"
+            width={300}
+            height={300}
+            alt="Pet Photo"
+            className="aspect-square w-full rounded-md object-cover"
+          />
         </div>
       </div>
     </div>
