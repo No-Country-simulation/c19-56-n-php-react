@@ -7,7 +7,7 @@ interface Props {
 export default function BackOffice({ children }: Props) {
   return (
     <section className="flex h-screen">
-      <nav className="w-64 bg-gray-800 text-white">
+      <nav>
         <SidebarBackOffice />
       </nav>
       <main className="flex-1 overflow-y-auto">
