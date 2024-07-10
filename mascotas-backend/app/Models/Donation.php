@@ -15,4 +15,5 @@ class Donation extends Model
         'status', // Estado de la donación (por ejemplo, pendiente, completada, cancelada).
         'observations' // Observaciones adicionales sobre la donación.
     ];
+    
 }

@@ -17,4 +17,5 @@ class Contact extends Model
         'direccion', // Dirección física proporcionada por la persona que contacta.
         'status' // Estado del contacto (por ejemplo, nuevo, en proceso, resuelto).
     ];
+    
 }

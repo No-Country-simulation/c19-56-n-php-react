@@ -15,4 +15,5 @@ class Race extends Model
     {
         return $this->hasMany(Pet::class);
     }
+    
 }
