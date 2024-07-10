@@ -11,7 +11,7 @@ interface Props {
 const CardBackOffice = ({ image, name, age, description }: Props) => {
   return (
     <Card className="cursor-pointer">
-      <Link href="#">
+      <Link href="/dashboard/pet/1">
         <img
           src={image}
           alt="Mascota 1"
