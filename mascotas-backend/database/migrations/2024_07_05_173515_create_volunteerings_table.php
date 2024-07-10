@@ -13,7 +13,18 @@ return new class extends Migration
     {
         Schema::create('volunteerings', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('user_id');
+            $table->string('name');
+            $table->text('description');
+            $table->string('status');
+            $table->date('date_start');
+            $table->date('date_end')->nullable();
+            $table->text('observations')->nullable();
+            $table->text('locations'); // Considerar cambiar a una estructura más adecuada si se requiere manejar múltiples ubicaciones de forma más compleja
             $table->timestamps();
+            $table->softDeletes();
+
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

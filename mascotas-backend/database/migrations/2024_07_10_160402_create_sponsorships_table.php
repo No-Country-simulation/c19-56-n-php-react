@@ -11,14 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('histories', function (Blueprint $table) {
+        Schema::create('sponsorships', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->text('description');
-            $table->string('url')->nullable();
-            $table->string('status');
             $table->unsignedBigInteger('pet_id');
             $table->unsignedBigInteger('user_id');
+            $table->decimal('amount', 8, 2); // Asumiendo una precisión de hasta 999,999.99
+            $table->text('observations')->nullable();
+            $table->string('status');
+            $table->date('date_start');
+            $table->date('date_end')->nullable();
             $table->timestamps();
             $table->softDeletes();
 
@@ -32,6 +33,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('histories');
+        Schema::dropIfExists('sponsorships');
     }
 };
