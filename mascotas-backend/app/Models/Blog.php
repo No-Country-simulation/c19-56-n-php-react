@@ -9,5 +9,16 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Blog extends Model
 {
     use HasFactory, SoftDeletes;
-    protected $fillable = ['title', 'description', 'image', 'status', 'user_id', 'category_id', 'slug', 'meta_title', 'meta_description', 'meta_keywords'];
+    protected $fillable = [
+        'title', // El título del blog.
+        'description', // Descripción o contenido principal del blog.
+        'image', // Ruta de la imagen destacada del blog.
+        'status', // Estado del blog (por ejemplo, publicado, borrador, archivado).
+        'user_id', // ID del usuario que creó el blog.
+        'category_id', // ID de la categoría a la que pertenece el blog.
+        'slug', // Slug URL del blog, utilizado para crear una URL amigable.
+        'meta_title', // Título meta del blog para SEO.
+        'meta_description', // Descripción meta del blog para SEO.
+        'meta_keywords' // Palabras clave meta para SEO del blog.
+    ];
 }

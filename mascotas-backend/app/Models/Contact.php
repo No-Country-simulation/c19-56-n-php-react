@@ -9,5 +9,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Contact extends Model
 {
     use HasFactory, SoftDeletes;
-    protected $fillable = ['name', 'email', 'phone', 'message', 'direccion', 'status'];
+    protected $fillable = [
+        'name', // Nombre de la persona que contacta.
+        'email', // Dirección de correo electrónico de la persona que contacta.
+        'phone', // Número de teléfono de la persona que contacta.
+        'message', // Mensaje proporcionado por la persona que contacta.
+        'direccion', // Dirección física proporcionada por la persona que contacta.
+        'status' // Estado del contacto (por ejemplo, nuevo, en proceso, resuelto).
+    ];
 }
