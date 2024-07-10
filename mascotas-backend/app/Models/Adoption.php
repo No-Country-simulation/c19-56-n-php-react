@@ -20,4 +20,47 @@ class Adoption extends Model
         'date_received', // Fecha en la que la mascota es recibida de vuelta, si es devuelta.
         'observations' // Observaciones adicionales sobre la adopción.
     ];
+
+    public function pet()
+    {
+        return $this->belongsTo(Pet::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function histories()
+    {
+        return $this->hasMany(History::class);
+    }
+
+    public function sponsorships()
+    {
+        return $this->hasMany(Sponsorship::class);
+    }
+
+    public function donations()
+    {
+        return $this->hasMany(Donation::class);
+    }
+
+
+    public function needPets()
+    {
+        return $this->hasMany(NeedPet::class);
+    }
+
+    public function adoptions()
+    {
+        return $this->hasMany(Adoption::class);
+    }
+
+    public function scopeSearch($query, $search)
+    {
+        if ($search) {
+            return $query->where('status', 'LIKE', "%$search%");
+        }
+    }
 }

@@ -10,4 +10,9 @@ class Race extends Model
 {
     use HasFactory, SoftDeletes;
     protected $fillable = ['name', 'description'];
+
+    public function pets()
+    {
+        return $this->hasMany(Pet::class);
+    }
 }

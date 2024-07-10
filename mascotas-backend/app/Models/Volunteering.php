@@ -19,4 +19,9 @@ class Volunteering extends Model
         'observations', // Observaciones adicionales sobre la actividad de voluntariado.
         'locations' // Ubicaciones asociadas a la actividad de voluntariado.
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

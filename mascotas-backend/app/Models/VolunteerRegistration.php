@@ -18,4 +18,14 @@ class VolunteerRegistration extends Model
         'hours_committed', // Horas a las que el voluntario se compromete.
         'hours_completed' // Horas efectivamente completadas por el voluntario.
     ];
+
+    public function volunteering()
+    {
+        return $this->belongsTo(Volunteering::class);
+    }
+
+    public function volunteer()
+    {
+        return $this->belongsTo(User::class, 'volunteer_user_id');
+    }
 }

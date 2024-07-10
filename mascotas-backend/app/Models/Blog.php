@@ -21,4 +21,9 @@ class Blog extends Model
         'meta_description', // Descripción meta del blog para SEO.
         'meta_keywords' // Palabras clave meta para SEO del blog.
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

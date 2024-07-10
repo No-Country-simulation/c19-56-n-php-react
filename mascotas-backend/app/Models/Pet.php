@@ -20,4 +20,6 @@ class Pet extends Model
         'image', // Ruta de la imagen de la mascota.
         'status' // Estado de la mascota (por ejemplo, disponible para adopción, adoptado).
     ];
+
+    
 }

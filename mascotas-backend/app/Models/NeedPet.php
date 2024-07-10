@@ -16,4 +16,14 @@ class NeedPet extends Model
         'pet_id', // ID de la mascota asociada a la necesidad.
         'user_id' // ID del usuario que reporta o atiende la necesidad.
     ];
+
+    public function pet()
+    {
+        return $this->belongsTo(Pet::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

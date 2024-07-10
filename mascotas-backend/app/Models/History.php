@@ -17,4 +17,14 @@ class History extends Model
         'pet_id', // ID de la mascota asociada al historial o evento.
         'user_id' // ID del usuario relacionado con el historial o evento.
     ];
+
+    public function pet()
+    {
+        return $this->belongsTo(Pet::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

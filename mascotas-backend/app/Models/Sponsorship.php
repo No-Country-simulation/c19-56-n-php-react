@@ -18,4 +18,14 @@ class Sponsorship extends Model
         'date_start', // Fecha de inicio del patrocinio.
         'date_end' // Fecha de finalización del patrocinio.
     ];
+
+    public function pet()
+    {
+        return $this->belongsTo(Pet::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
