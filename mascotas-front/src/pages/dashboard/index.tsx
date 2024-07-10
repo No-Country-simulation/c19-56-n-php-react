@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button"
 import CardBackOffice from "@/components/CardBackOffice"
 import CardsBackOffice from "@/components/CardsBackOffice"
 
-export default function Component() {
+export default function Page() {
   return (
     <div className="flex min-h-screen w-full">
       <aside className="fixed inset-y-0 left-0 z-10 hidden w-14 flex-col border-r bg-background sm:flex">
