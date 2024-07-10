@@ -3,7 +3,7 @@ interface Props {
 }
 
 export default function BackOffice({
-  children, // will be a page or nested layout
+  children, // will be a page or nested layoutt
 }: Props) {
   return (
     <section>
