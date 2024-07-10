@@ -2,6 +2,8 @@ import { Card, CardContent } from "@/components/ui/card"
 import Link from "next/link"
 
 interface Props {
+  id?: number
+  key?: number
   image: string
   name: string
   age: string
