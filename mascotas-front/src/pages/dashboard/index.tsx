@@ -138,7 +138,7 @@ export default function Page() {
             </SheetContent>
           </Sheet>
         </header>
-        <CardsBackOffice />
+        <h1>Home</h1>
       </div>
     </div>
   )
