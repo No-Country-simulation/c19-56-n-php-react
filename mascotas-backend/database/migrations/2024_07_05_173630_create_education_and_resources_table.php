@@ -13,7 +13,12 @@ return new class extends Migration
     {
         Schema::create('education_and_resources', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->text('description');
+            $table->string('url');
+            $table->string('status');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

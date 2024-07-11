@@ -13,7 +13,19 @@ return new class extends Migration
     {
         Schema::create('adoptions', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('pet_id');
+            $table->unsignedBigInteger('user_id');
+            $table->string('status');
+            $table->text('description')->nullable();
+            $table->date('date_adoption')->nullable();
+            $table->date('date_return')->nullable();
+            $table->date('date_delivered')->nullable();
+            $table->date('date_received')->nullable();
+            $table->text('observations')->nullable();
             $table->timestamps();
+            $table->softDeletes();
+            $table->foreign('pet_id')->references('id')->on('pets')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 
