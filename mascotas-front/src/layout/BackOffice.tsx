@@ -1,17 +1,17 @@
+
 interface Props {
-  children: React.ReactNode
+  children: React.ReactNode;
 }
 
-export default function BackOffice({
-  children, // will be a page or nested layout
-}: Props) {
+export default function BackOffice({ children }: Props) {
   return (
-    <section>
-      <nav></nav>
-
-      {children}
-
-      <footer></footer>
+    <section className="flex h-screen">
+      <nav>
+      </nav>
+      <main className="flex-1 overflow-y-auto">
+        {children}
+      </main>
     </section>
-  )
+  );
 }
+
