@@ -60,7 +60,7 @@ class EducationAndResourceController extends Controller
             ], Response::HTTP_CREATED);
         } catch (\Exception $e) {
             return response()->json([
-                'message' => 'Error al crear el recurso',
+                'message' => 'Error interno',
                 'error' => $e->getMessage()
             ], Response::HTTP_BAD_REQUEST);
         }
