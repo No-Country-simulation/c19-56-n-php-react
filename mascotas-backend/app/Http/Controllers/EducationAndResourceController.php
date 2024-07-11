@@ -76,7 +76,7 @@ class EducationAndResourceController extends Controller
             return response()->json($data, Response::HTTP_OK);
         } catch (ModelNotFoundException $e) {
             $modelName = class_basename($e->getModel());
-            return response()->json(['message' => "No query results for model {$modelName} {$data}"], Response::HTTP_NOT_FOUND);
+            return response()->json(['message' => "No query results for id $id of model {$modelName} "], Response::HTTP_NOT_FOUND);
         } catch (\Exception $e) {
             return response()->json(['message' => 'Error interno', 'error' =>  $e->getMessage()], Response::HTTP_BAD_REQUEST);
         }
@@ -105,14 +105,11 @@ class EducationAndResourceController extends Controller
                 return response()->json(['message' => 'Error en privilegio', 'error' => 'No tienes permisos para realizar esta acción'], Response::HTTP_UNAUTHORIZED);
             }
             $data = EducationAndResource::findOrFail($id);
-            $existingFile = str_replace(Storage::disk('s3')->url(''), '', $data->url);
-            Storage::disk('s3')->delete($existingFile);
+
             if ($request->hasFile('url')) {
-                $file = $request->file('url');
-                $path = Storage::disk('s3')->putFile('uploads', $file, 'public');
-                $url = Storage::disk('s3')->url($path);
-                $request->merge(['url' => $url]);
+                $this->updateFileInS3($request, $data);
             }
+
             $validatedData = $request->only(['name', 'description', 'status', 'url']);
             $data->update($validatedData);
             return response()->json($data, Response::HTTP_OK);
@@ -122,6 +119,19 @@ class EducationAndResourceController extends Controller
         } catch (\Exception $e) {
             return response()->json(['message' => 'Error', 'error' =>  $e->getMessage()], Response::HTTP_BAD_REQUEST);
         }
+    }
+    private function updateFileInS3($request, $data)
+    {
+        if ($data->url) {
+            $existingFile = str_replace(Storage::disk('s3')->url(''), '', $data->url);
+            if (!empty($existingFile)) {
+                Storage::disk('s3')->delete($existingFile);
+            }
+        }
+        $file = $request->file('url');
+        $path = Storage::disk('s3')->putFile('uploads', $file, 'public');
+        $url = Storage::disk('s3')->url($path);
+        $request->merge(['url' => $url]);
     }
     /**
      * Remove the specified resource from storage.
