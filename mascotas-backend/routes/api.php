@@ -12,6 +12,7 @@ Route::post('/register', [AuthController::class, 'register'])->name('register');
 // Education and resources
 Route::get('/education-and-resource', [EducationAndResourceController::class, 'index'])->name('education-and-resource.index');
 Route::get('/education-and-resource/{id}', [EducationAndResourceController::class, 'show'])->name('education-and-resource.show');
+// rutas privadas
 Route::middleware('auth:api')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     // Education and resources
