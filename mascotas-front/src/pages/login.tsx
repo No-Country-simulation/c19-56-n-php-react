@@ -81,12 +81,6 @@ export default function Component() {
             }
           }}
           />
-        <CardHeader>
-          <CardTitle className="text-2xl">Iniciar sesión</CardTitle>
-          <CardDescription>
-            Ingresa tu correo electrónico y contraseña para acceder a tu cuenta.
-          </CardDescription>
-        </CardHeader>
         <Formik
           className="space-y-4"
           initialValues={{
