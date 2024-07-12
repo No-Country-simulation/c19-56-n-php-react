@@ -42,13 +42,51 @@ export default function Component() {
   return (
     <div className="flex min-h-screen items-center justify-center bg-background">
       <Card className="w-full max-w-md pb-4">
+
         <CardHeader>
           <CardTitle className="text-2xl">Iniciar sesión</CardTitle>
           <CardDescription>
             Ingresa tu correo electrónico y contraseña para acceder a tu cuenta.
           </CardDescription>
         </CardHeader>
-
+        <Formik
+          className="space-y-4"
+          initialValues={{
+            email: "",
+            password: "",
+          }}
+          validationSchema={Yup.object({
+            email: Yup.string()
+            .required("Obligatorio!")
+              .email("Debe ser un correo válido!"),
+            password: Yup.string().required("Obligatorio!"),
+          })}
+          onSubmit={async (values) => {
+            setLoading(true);
+            try {
+              const response = await login(values.email, values.password);
+              if (response.status === 200) {
+                setUser(response.data.data);
+                setToken(response.data.access_token);
+                toast.success(`¡Bienvenido!`);
+              }
+            } catch (error) {
+              if (error instanceof Error) {
+                toast.error(error.message);
+              } else {
+                toast.error("Ocurrió un error inesperado.");
+              }
+            } finally {
+              setLoading(false);
+            }
+          }}
+          />
+        <CardHeader>
+          <CardTitle className="text-2xl">Iniciar sesión</CardTitle>
+          <CardDescription>
+            Ingresa tu correo electrónico y contraseña para acceder a tu cuenta.
+          </CardDescription>
+        </CardHeader>
         <Formik
           className="space-y-4"
           initialValues={{
@@ -111,7 +149,6 @@ export default function Component() {
             </CardFooter>
           </Form>
         </Formik>
-
         <div className="mt-4 text-center text-sm text-muted-foreground">
           ¿Aún no tienes una cuenta?{" "}
           <Link
