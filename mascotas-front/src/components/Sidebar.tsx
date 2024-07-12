@@ -1,14 +1,11 @@
-import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { JSX, SVGProps, useEffect, useState } from "react"
+import { useState } from "react"
 import NavigationItem from "./NavigationItem"
 import { isCryptoKey } from "util/types"
 import {
   HomeIcon,
   MenuClosedIcon,
-  MenuIcon,
   MenuOpenIcon,
-  Package2Icon,
   PawPrintIcon,
   SettingsIcon,
   UserIcon,
@@ -20,7 +17,7 @@ const classtyles =
   "flex items-left grow rounded-lg px-3 py-2 text-muted-foreground transition-colors ease-out duration-150 hover:bg-[#222] hover:text-primary"
 
 const Sidebar = () => {
-  const [isCollapsed, setIsCollapsed] = useState<boolean>(false)
+  const [isCollapsed, setIsCollapsed] = useState<boolean>(true)
 
   function handleToggle() {
     setIsCollapsed(!isCollapsed)
