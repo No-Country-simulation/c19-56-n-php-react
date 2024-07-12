@@ -13,7 +13,7 @@ export default function PaginationComponent() {
       <div className="flex justify-center mt-8">
         <Pagination>
           <PaginationContent>
-            <PaginationItem>
+            <PaginationItem className="bg-[#efefef]">
               <PaginationPrevious href="#" />
             </PaginationItem>
             <PaginationItem>
@@ -22,12 +22,12 @@ export default function PaginationComponent() {
               </PaginationLink>
             </PaginationItem>
             <PaginationItem>
-              <PaginationLink href="#">2</PaginationLink>
+              <PaginationLink  className="bg-[#000] text-white">2</PaginationLink>
             </PaginationItem>
             <PaginationItem>
               <PaginationLink href="#">3</PaginationLink>
             </PaginationItem>
-            <PaginationItem>
+            <PaginationItem className="bg-[#efefef]">
               <PaginationNext href="#" />
             </PaginationItem>
           </PaginationContent>
