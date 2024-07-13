@@ -5,22 +5,111 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuCheckboxItem,
-  DropdownMenuItem,
 } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar"
-import Link from "next/link"
-import {
-  ChevronRightIcon,
-  EyeIcon,
-  FilterIcon,
-  MoveVerticalIcon,
-  PlusIcon,
-  SearchIcon,
-} from "@/icons"
-import { FilePenIcon, TrashIcon } from "lucide-react"
+import { ChevronRightIcon, FilterIcon, PlusIcon, SearchIcon } from "@/icons"
 import BackOffice from "@/layout/BackOffice"
+import { Th, UserRow } from "@/components/TableUsers"
+
+const users = [
+  {
+    id: 1,
+    name: "John Doe",
+    email: "john@doe.com",
+    rol: "admin",
+  },
+  {
+    id: 2,
+    name: "Olivia Williams",
+    email: "olivia@example.com",
+    rol: "Editor",
+  },
+  {
+    id: 3,
+    name: "John Doe",
+    email: "john@doe.com",
+    rol: "admin",
+  },
+  {
+    id: 4,
+    name: "Olivia Williams",
+    email: "olivia@example.com",
+    rol: "Editor",
+  },
+  {
+    id: 5,
+    name: "John Doe",
+    email: "john@doe.com",
+    rol: "admin",
+  },
+  {
+    id: 6,
+    name: "Olivia Williams",
+    email: "olivia@example.com",
+    rol: "Editor",
+  },
+  {
+    id: 7,
+    name: "John Doe",
+    email: "john@doe.com",
+    rol: "admin",
+  },
+  {
+    id: 8,
+    name: "Olivia Williams",
+    email: "olivia@example.com",
+    rol: "Editor",
+  },
+  {
+    id: 9,
+    name: "John Doe",
+    email: "john@doe.com",
+    rol: "admin",
+  },
+  {
+    id: 10,
+    name: "Olivia Williams",
+    email: "olivia@example.com",
+    rol: "Editor",
+  },
+  {
+    id: 11,
+    name: "Olivia Williams",
+    email: "olivia@example.com",
+    rol: "Editor",
+  },
+  {
+    id: 12,
+    name: "John Doe",
+    email: "john@doe.com",
+    rol: "admin",
+  },
+  {
+    id: 13,
+    name: "Olivia Williams",
+    email: "olivia@example.com",
+    rol: "Editor",
+  },
+  {
+    id: 14,
+    name: "Olivia Williams",
+    email: "olivia@example.com",
+    rol: "Editor",
+  },
+  {
+    id: 15,
+    name: "John Doe",
+    email: "john@doe.com",
+    rol: "admin",
+  },
+  {
+    id: 16,
+    name: "Olivia Williams",
+    email: "olivia@example.com",
+    rol: "Editor",
+  },
+]
 
 export default function Component() {
   return (
@@ -76,195 +165,28 @@ export default function Component() {
           <table className="w-full table-auto">
             <thead className="bg-muted text-muted-foreground">
               <tr>
-                <th className="px-4 py-3 text-left font-medium text-sm">
-                  Username
-                </th>
-                <th className="px-4 py-3 text-left font-medium text-sm">
-                  Email
-                </th>
-                <th className="px-4 py-3 text-left font-medium text-sm">
-                  Role
-                </th>
-                <th className="px-4 py-3 text-right font-medium text-sm">
-                  Actions
-                </th>
+                <Th>Username</Th>
+                <Th>Email</Th>
+                <Th>Role</Th>
+                <Th>Actions</Th>
               </tr>
             </thead>
             <tbody>
-              <tr className="border-b border-muted/20 hover:bg-muted/10">
-                <td className="px-4 py-3 text-base font-medium">
-                  <div className="flex items-center gap-2">
-                    <Avatar className="h-8 w-8">
-                      <AvatarImage src="/placeholder-user.jpg" />
-                      <AvatarFallback>JD</AvatarFallback>
-                    </Avatar>
-                    <span>John Doe</span>
-                  </div>
-                </td>
-                <td className="px-4 py-3 text-base">john@example.com</td>
-                <td className="px-4 py-3 text-base">Admin</td>
-                <td className="px-4 py-3 text-right">
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        className="rounded-full"
-                      >
-                        <MoveVerticalIcon className="h-5 w-5" />
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                      <DropdownMenuItem>
-                        <Link
-                          href="#"
-                          className="flex items-center gap-2"
-                          prefetch={false}
-                        >
-                          <FilePenIcon className="h-4 w-4" />
-                          <span>Edit</span>
-                        </Link>
-                      </DropdownMenuItem>
-                      <DropdownMenuItem>
-                        <Link
-                          href="#"
-                          className="flex items-center gap-2"
-                          prefetch={false}
-                        >
-                          <EyeIcon className="h-4 w-4" />
-                          <span>View</span>
-                        </Link>
-                      </DropdownMenuItem>
-                      <DropdownMenuItem>
-                        <Link
-                          href="#"
-                          className="flex items-center gap-2"
-                          prefetch={false}
-                        >
-                          <TrashIcon className="h-4 w-4" />
-                          <span>Delete</span>
-                        </Link>
-                      </DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                </td>
-              </tr>
-              <tr className="border-b border-muted/20 hover:bg-muted/10">
-                <td className="px-4 py-3 text-base font-medium">
-                  <div className="flex items-center gap-2">
-                    <Avatar className="h-8 w-8">
-                      <AvatarImage src="/placeholder-user.jpg" />
-                      <AvatarFallback>OW</AvatarFallback>
-                    </Avatar>
-                    <span>Olivia Williams</span>
-                  </div>
-                </td>
-                <td className="px-4 py-3 text-base">olivia@example.com</td>
-                <td className="px-4 py-3 text-base">Editor</td>
-                <td className="px-4 py-3 text-right">
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        className="rounded-full"
-                      >
-                        <MoveVerticalIcon className="h-5 w-5" />
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                      <DropdownMenuItem>
-                        <Link
-                          href="#"
-                          className="flex items-center gap-2"
-                          prefetch={false}
-                        >
-                          <FilePenIcon className="h-4 w-4" />
-                          <span>Edit</span>
-                        </Link>
-                      </DropdownMenuItem>
-                      <DropdownMenuItem>
-                        <Link
-                          href="#"
-                          className="flex items-center gap-2"
-                          prefetch={false}
-                        >
-                          <EyeIcon className="h-4 w-4" />
-                          <span>View</span>
-                        </Link>
-                      </DropdownMenuItem>
-                      <DropdownMenuItem>
-                        <Link
-                          href="#"
-                          className="flex items-center gap-2"
-                          prefetch={false}
-                        >
-                          <TrashIcon className="h-4 w-4" />
-                          <span>Delete</span>
-                        </Link>
-                      </DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                </td>
-              </tr>
-              <tr className="border-b border-muted/20 hover:bg-muted/10">
-                <td className="px-4 py-3 text-base font-medium">
-                  <div className="flex items-center gap-2">
-                    <Avatar className="h-8 w-8">
-                      <AvatarImage src="/placeholder-user.jpg" />
-                      <AvatarFallback>NW</AvatarFallback>
-                    </Avatar>
-                    <span>Noah Williams</span>
-                  </div>
-                </td>
-                <td className="px-4 py-3 text-base">noah@example.com</td>
-                <td className="px-4 py-3 text-base">User</td>
-                <td className="px-4 py-3 text-right">
-                  <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        className="rounded-full"
-                      >
-                        <MoveVerticalIcon className="h-5 w-5" />
-                      </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                      <DropdownMenuItem>
-                        <Link
-                          href="#"
-                          className="flex items-center gap-2"
-                          prefetch={false}
-                        >
-                          <FilePenIcon className="h-4 w-4" />
-                          <span>Edit</span>
-                        </Link>
-                      </DropdownMenuItem>
-                      <DropdownMenuItem>
-                        <Link
-                          href="#"
-                          className="flex items-center gap-2"
-                          prefetch={false}
-                        >
-                          <EyeIcon className="h-4 w-4" />
-                          <span>View</span>
-                        </Link>
-                      </DropdownMenuItem>
-                      <DropdownMenuItem>
-                        <Link
-                          href="#"
-                          className="flex items-center gap-2"
-                          prefetch={false}
-                        >
-                          <TrashIcon className="h-4 w-4" />
-                          <span>Delete</span>
-                        </Link>
-                      </DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
-                </td>
-              </tr>
+              {users.map(u => (
+
+                <UserRow
+                  key={u.id}
+                  id={u.id}
+                  name={u.name}
+                  email={u.email}
+                  rol={u.rol}
+                  deleteUser={(id: number) =>
+                    alert(`Todo: funcion de borrar usuario! id: ${id}`)
+                  }
+                />
+
+              ))}
+
             </tbody>
           </table>
         </div>
