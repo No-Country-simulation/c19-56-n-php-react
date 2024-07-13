@@ -14,7 +14,7 @@ class ContactController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index($id)
     {
         try {
             // Verifica si el usuario tiene el rol adecuado
@@ -33,12 +33,6 @@ class ContactController extends Controller
                 'data' => $data->items()
             ];
             return response()->json($response, Response::HTTP_OK);
-        } catch (ModelNotFoundException $e) {
-            // Manejo de error si no se encuentra el modelo
-            $modelName = class_basename($e->getModel());
-            return response()->json([
-                'message' => "No hay resultados de consulta por el id $id del modelo {$modelName} "
-            ], Response::HTTP_NOT_FOUND);
         }catch (\Exception $e) {
             return response()->json([
                 'message' => "Error",
