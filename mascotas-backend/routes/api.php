@@ -26,3 +26,8 @@ Route::middleware('auth:api')->group(function () {
     Route::put('/races/{id}', [RaceController::class, 'update'])->name('races.update');
     Route::delete('/races/{id}', [RaceController::class, 'destroy'])->name('races.destroy');
 });
+
+
+// race routes
+Route::get('/races', [RaceController::class, 'index'])->name('races.index');
+Route::get('/races/{id}', [RaceController::class, 'show'])->name('races.show');

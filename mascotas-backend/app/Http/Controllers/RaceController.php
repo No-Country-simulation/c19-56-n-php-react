@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\RaceResource;
 use App\Models\Race;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Gate;
@@ -13,9 +15,16 @@ class RaceController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $data = Race::paginate(10);
+        $response = [
+            'lastPage' => $data->lastPage(),
+            'currentPage' => $data->currentPage(),
+            'total' => $data->total(),
+            'data' => $data->items()
+        ];
+        return response()->json($response, Response::HTTP_OK);
     }
 
     /**
@@ -54,9 +63,17 @@ class RaceController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Race $race)
+    public function show($id)
     {
-        //
+        try {
+            $data = Race::findOrFail($id);
+            return response()->json($data, Response::HTTP_OK);
+        } catch (ModelNotFoundException $e) {
+            $modelName = class_basename($e->getModel());
+            return response()->json(['message' => "No query results for id $id of model {$modelName} "], Response::HTTP_NOT_FOUND);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Error interno', 'error' =>  $e->getMessage()], Response::HTTP_BAD_REQUEST);
+        }
     }
 
     /**
