@@ -194,3 +194,10 @@ export default function Component() {
     </BackOffice>
   )
 }
+
+//p * x = ganancia   40
+//p1 * x = ganancia  15
+//p2 * x = ganancia  60
+//p3 * x = ganancia  85
+
+// inv // dueñ // adm  // empl  // ven  // rev // 0 // -0.ved
