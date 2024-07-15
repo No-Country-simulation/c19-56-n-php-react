@@ -131,7 +131,7 @@ class EducationAndResourceController extends Controller
         $file = $request->file('url');
         $path = Storage::disk('s3')->putFile('uploads', $file, 'public');
         $url = Storage::disk('s3')->url($path);
-        $request->merge(['url' => $url]);
+        $data->url = $url; 
     }
     /**
      * Remove the specified resource from storage.
@@ -144,7 +144,7 @@ class EducationAndResourceController extends Controller
             }
             $data = EducationAndResource::findOrFail($id);
             $data->delete();
-            return response()->json(["message" => "Alergia eliminada de forma exitosa"], Response::HTTP_OK);
+            return response()->json(["message" => "Recurso eliminada de forma exitosa"], Response::HTTP_OK);
         } catch (\Exception $e) {
             return response()->json(['message' => "Error", 'error' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
         }
