@@ -1,3 +1,4 @@
+import HeaderBackOffice from "@/components/HeaderBackOffice"
 import Sidebar from "@/components/Sidebar"
 
 interface Props {
@@ -11,6 +12,7 @@ export default function BackOffice({ children }: Props) {
         <Sidebar />
       </nav>
       <main className="flex-1 overflow-y-auto">
+        <HeaderBackOffice />
         {children}
       </main>
     </section>
