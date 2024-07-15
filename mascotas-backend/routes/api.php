@@ -30,12 +30,10 @@ Route::middleware('auth:api')->group(function () {
     Route::post('/races', [RaceController::class, 'store'])->name('races.store');
     Route::put('/races/{id}', [RaceController::class, 'update'])->name('races.update');
     Route::delete('/races/{id}', [RaceController::class, 'destroy'])->name('races.destroy');
-
     // Pets
     Route::post('/pets', [PetController::class, 'store'])->name('pets.store');
     Route::post('/pets/{id}', [PetController::class, 'update'])->name('pets.update');
     Route::delete('/pets/{id}', [PetController::class, 'destroy'])->name('pets.destroy');
-
     // Necesidades de mascotas
     Route::post('/pets/{id}/needs', [PetController::class, 'store'])->name('pets.needs.store');
     Route::put('/pets-neet/{id}', [PetController::class, 'update'])->name('pets-neet.update');
