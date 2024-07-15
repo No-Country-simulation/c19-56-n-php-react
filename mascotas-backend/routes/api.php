@@ -33,7 +33,7 @@ Route::middleware('auth:api')->group(function () {
 
     // Pets
     Route::post('/pets', [PetController::class, 'store'])->name('pets.store');
-    Route::put('/pets/{id}', [PetController::class, 'update'])->name('pets.update');
+    Route::post('/pets/{id}', [PetController::class, 'update'])->name('pets.update');
     Route::delete('/pets/{id}', [PetController::class, 'destroy'])->name('pets.destroy');
 });
 // pets routes
