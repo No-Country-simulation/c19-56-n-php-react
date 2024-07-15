@@ -20,7 +20,7 @@ class PetController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        
     }
 
     /**

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EducationAndResourceController;
+use App\Http\Controllers\RaceController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -19,4 +20,9 @@ Route::middleware('auth:api')->group(function () {
     Route::post('/education-and-resource', [EducationAndResourceController::class, 'store'])->name('education-and-resource.store');
     Route::put('/education-and-resource/{id}', [EducationAndResourceController::class, 'update'])->name('education-and-resource.update');
     Route::delete('/education-and-resource/{id}', [EducationAndResourceController::class, 'destroy'])->name('education-and-resource.destroy');
+
+    //races
+    Route::post('/races', [RaceController::class, 'store'])->name('races.store');
+    Route::put('/races/{id}', [RaceController::class, 'update'])->name('races.update');
+    Route::delete('/races/{id}', [RaceController::class, 'destroy'])->name('races.destroy');
 });
