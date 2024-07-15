@@ -153,8 +153,17 @@ class PetController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Pet $pet)
+    public function destroy($id)
     {
-        //
+        try {
+            if (!Gate::allows('validate-role', auth()->user())) {
+                return response()->json(['message' => 'Error en privilegio', 'error' => 'No tienes permisos para realizar esta acción'], Response::HTTP_UNAUTHORIZED);
+            }
+            $data = Pet::findOrFail($id);
+            $data->delete();
+            return response()->json(["message" => "Mascota eliminada de forma exitosa"], Response::HTTP_OK);
+        } catch (\Exception $e) {
+            return response()->json(['message' => "Error", 'error' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
+        }
     }
 }

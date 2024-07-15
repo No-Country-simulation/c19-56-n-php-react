@@ -144,7 +144,7 @@ class EducationAndResourceController extends Controller
             }
             $data = EducationAndResource::findOrFail($id);
             $data->delete();
-            return response()->json(["message" => "Alergia eliminada de forma exitosa"], Response::HTTP_OK);
+            return response()->json(["message" => "Recurso eliminada de forma exitosa"], Response::HTTP_OK);
         } catch (\Exception $e) {
             return response()->json(['message' => "Error", 'error' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
         }
