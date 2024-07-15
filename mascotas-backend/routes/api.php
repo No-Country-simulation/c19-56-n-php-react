@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EducationAndResourceController;
+use App\Http\Controllers\PetController;
 use App\Http\Controllers\RaceController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -25,9 +26,15 @@ Route::middleware('auth:api')->group(function () {
     Route::post('/races', [RaceController::class, 'store'])->name('races.store');
     Route::put('/races/{id}', [RaceController::class, 'update'])->name('races.update');
     Route::delete('/races/{id}', [RaceController::class, 'destroy'])->name('races.destroy');
+
+    // Pets
+    Route::post('/pets', [PetController::class, 'store'])->name('pets.store');
+    Route::put('/pets/{id}', [PetController::class, 'update'])->name('pets.update');
+    Route::delete('/pets/{id}', [PetController::class, 'destroy'])->name('pets.destroy');
 });
-
-
+// pets routes
+Route::get('/pets', [PetController::class, 'index'])->name('pets.index');
+Route::get('/pets/{id}', [PetController::class, 'show'])->name('pets.show');
 // race routes
 Route::get('/races', [RaceController::class, 'index'])->name('races.index');
 Route::get('/races/{id}', [RaceController::class, 'show'])->name('races.show');

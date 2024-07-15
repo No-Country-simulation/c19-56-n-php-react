@@ -131,7 +131,7 @@ class EducationAndResourceController extends Controller
         $file = $request->file('url');
         $path = Storage::disk('s3')->putFile('uploads', $file, 'public');
         $url = Storage::disk('s3')->url($path);
-        $request->merge(['url' => $url]);
+        $data->url = $url; 
     }
     /**
      * Remove the specified resource from storage.
