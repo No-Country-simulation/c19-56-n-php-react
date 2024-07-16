@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\EducationAndResourceController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\RaceController;
@@ -29,6 +30,10 @@ Route::middleware('auth:api')->group(function () {
     Route::post('/races', [RaceController::class, 'store'])->name('races.store');
     Route::put('/races/{id}', [RaceController::class, 'update'])->name('races.update');
     Route::delete('/races/{id}', [RaceController::class, 'destroy'])->name('races.destroy');
+    //races
+    Route::post('/category', [CategoryController::class, 'store'])->name('category.store');
+    Route::put('/category/{id}', [CategoryController::class, 'update'])->name('category.update');
+    Route::delete('/category/{id}', [CategoryController::class, 'destroy'])->name('category.destroy');
 });
 
 //Contact
@@ -36,3 +41,6 @@ Route::post('/contact', [ContactController::class, 'store'])->name('contact.stor
 // race routes
 Route::get('/races', [RaceController::class, 'index'])->name('races.index');
 Route::get('/races/{id}', [RaceController::class, 'show'])->name('races.show');
+// category routes
+Route::get('/category', [CategoryController::class, 'index'])->name('category.index');
+Route::get('/category/{id}', [CategoryController::class, 'show'])->name('category.show');
