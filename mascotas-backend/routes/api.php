@@ -51,3 +51,4 @@ Route::post('/contact', [ContactController::class, 'store'])->name('contact.stor
 // race routes
 Route::get('/races', [RaceController::class, 'index'])->name('races.index');
 Route::get('/races/{id}', [RaceController::class, 'show'])->name('races.show');
+
