@@ -14,7 +14,9 @@ export default function BackOffice({ children }: Props) {
       </nav>
       <main className="flex-1 overflow-y-auto">
         <HeaderBackOffice />
-        {children}
+        <div className="min-h-screen">
+          {children}
+        </div>
         <FooterBackOffice />
       </main>
     </section>
