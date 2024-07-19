@@ -22,6 +22,7 @@ export const FormInput = ({ id, label, disabled, value, onChange, onBlur, error 
       value={value}
       onChange={onChange}
       onBlur={onBlur}
+      className={`text-xl font-bold ${!disabled ? '' : 'border-none outline-none focus:ring-0'}`}
     />
     {error && <div className="text-red-500">{error}</div>}
   </div>
