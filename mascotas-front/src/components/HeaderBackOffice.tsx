@@ -27,7 +27,7 @@ export default function HeaderBackOffice() {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end">
-          <div className="flex items-center gap-2 p-2">
+          <Link href='/dashboard/profile' className="flex items-center gap-2 p-2">
             <Avatar className="h-8 w-8">
               <AvatarImage src="/placeholder-user.jpg" />
               <AvatarFallback>JD</AvatarFallback>
@@ -38,7 +38,7 @@ export default function HeaderBackOffice() {
                 john@example.com
               </div>
             </div>
-          </div>
+          </Link>
           <DropdownMenuSeparator />
           <DropdownMenuItem>
             <Link href="#" className="flex items-center gap-2" prefetch={false}>

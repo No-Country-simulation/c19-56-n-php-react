@@ -29,7 +29,11 @@ const Sidebar = () => {
         isCollapsed ? "w-20" : "w-52"
       }`}
     >
-      <aside className="flex flex-col justify-between h-full p-0 border-r border-gray-700 transition-all duration-300">
+      <aside className="flex flex-col justify-between h-screen p-0 border-r border-gray-700 transition-all duration-300">
+
+        <nav
+          className={`px-2 flex flex-col flex-wrap w-full items-start justify-between gap-5 overflow-x-hidden text-white text-xl`}
+        >
         <Button
           variant="ghost"
           size="icon"
@@ -44,10 +48,6 @@ const Sidebar = () => {
             <MenuClosedIcon className="h-5 w-5" />
           )}
         </Button>
-
-        <nav
-          className={`px-2 flex flex-col flex-wrap w-full items-start justify-between gap-5 overflow-x-hidden text-white text-xl`}
-        >
           <NavigationItem
             href="/dashboard"
             title="Home"
@@ -72,14 +72,16 @@ const Sidebar = () => {
           >
             <UsersIcon className="h-5 w-5" />
           </NavigationItem>
-          <NavigationItem
+          {/* <NavigationItem
             href="/dashboard/profile"
             title="Profile"
             isCollapsed={isCollapsed}
             classtyles={classtyles}
           >
             <UserIcon className="h-5 w-5" />
-          </NavigationItem>
+          </NavigationItem> */}
+        </nav>
+        <div className={`px-2 flex flex-col flex-wrap w-full items-start justify-between gap-5 overflow-x-hidden text-white text-xl`}>
           <NavigationItem
             href="/dashboard/settings"
             title="Settings"
@@ -88,7 +90,8 @@ const Sidebar = () => {
           >
             <SettingsIcon className="h-5 w-5" />
           </NavigationItem>
-        </nav>
+          <br />
+        </div>
       </aside>
     </div>
   )
