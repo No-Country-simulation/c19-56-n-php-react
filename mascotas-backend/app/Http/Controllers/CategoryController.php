@@ -3,7 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Http\Response;
 
 class CategoryController extends Controller
 {
@@ -12,7 +16,14 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        //
+        $data = Category::paginate(10);
+        $response = [
+            'lastPage' => $data->lastPage(),
+            'currentPage' => $data->currentPage(),
+            'total' => $data->total(),
+            'data' => $data->items()
+        ];
+        return response()->json($response, Response::HTTP_OK);
     }
 
     /**
@@ -20,30 +31,117 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        try {
+            $rules = [
+                'name' => 'required|string|unique:categories,name',
+                'description' => 'required|string'
+            ];
+            $validator = Validator::make($request->all(), $rules);
+            if ($validator->fails()) {
+                return response()->json([
+                    'message' => 'Validación fallida',
+                    'errors' => $validator->errors()
+                ], Response::HTTP_BAD_REQUEST);
+            }
+            if (!Gate::allows('validate-role', auth()->user())) {
+                return response()->json([
+                    'message' => 'Error en privilegio',
+                    'error' => 'No tienes permisos para realizar esta acción'
+                ], Response::HTTP_UNAUTHORIZED);
+            }
+            $race = Category::create($request->all());
+            return response()->json([
+                'message' => 'Category creada exitosamente',
+                'data' => $race
+            ], Response::HTTP_CREATED);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Error',
+                'error' => $e->getMessage()
+            ], 400);
+        }
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Category $category)
+    public function show($id)
     {
-        //
+        try {
+            $data = Category::findOrFail($id);
+            return response()->json($data, Response::HTTP_OK);
+        } catch (ModelNotFoundException $e) {
+            $modelName = class_basename($e->getModel());
+            return response()->json([
+                'message' => "No query results for id $id of model {$modelName} "
+            ], Response::HTTP_NOT_FOUND);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Error interno',
+                'error' =>  $e->getMessage()
+            ], Response::HTTP_BAD_REQUEST);
+        }
     }
 
-    /**
+    /** 
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Category $category)
+    public function update(Request $request, $id)
     {
-        //
+        try {
+            $rules = [
+                'name' => 'sometimes|required|string|unique:categories,name,' . $id,
+                'description' => 'sometimes|required|string',
+            ];
+            $validator = Validator::make($request->all(), $rules);
+            if ($validator->fails()) {
+                return response()->json([
+                    'message' => 'Validación fallida',
+                    'errors' => $validator->errors()
+                ], Response::HTTP_BAD_REQUEST);
+            }
+            if (!Gate::allows('validate-role', auth()->user())) {
+                return response()->json([
+                    'message' => 'Error en privilegio',
+                    'error' => 'No tienes permisos para realizar esta acción'
+                ], Response::HTTP_UNAUTHORIZED);
+            }
+            $data = Category::findOrFail($id);
+            $data->update($request->all());
+            return response()->json([
+                'message' => 'Raza actualizada exitosamente',
+                'data' => $data
+            ], Response::HTTP_OK);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Error interno',
+                'error' => $e->getMessage()
+            ], Response::HTTP_BAD_REQUEST);
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Category $category)
+    public function destroy($id)
     {
-        //
+        try {
+            if (!Gate::allows('validate-role', auth()->user())) {
+                return response()->json([
+                    'message' => 'Error en privilegio',
+                    'error' => 'No tienes permisos para realizar esta acción'
+                ], Response::HTTP_UNAUTHORIZED);
+            }
+            $data = Category::findOrFail($id);
+            $data->delete();
+            return response()->json([
+                "message" => "Categoria eliminada de forma exitosa"
+            ], Response::HTTP_OK);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => "Error",
+                'error' => $e->getMessage()
+            ], Response::HTTP_BAD_REQUEST);
+        }
     }
 }

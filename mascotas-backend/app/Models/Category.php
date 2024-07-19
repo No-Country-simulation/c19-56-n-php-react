@@ -10,4 +10,9 @@ class Category extends Model
 {
     use HasFactory, SoftDeletes;
     protected $fillable = ['name', 'description'];
+
+    public function blogs()
+    {
+        return $this->hasMany(Blog::class);
+    }
 }
