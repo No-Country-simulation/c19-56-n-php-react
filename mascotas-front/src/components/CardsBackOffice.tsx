@@ -7,6 +7,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuCheckboxItem,
 } from "@/components/ui/dropdown-menu"
+import { AiOutlinePlus } from "react-icons/ai"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { ChevronRightIcon, FilterIcon, PlusIcon, SearchIcon } from "@/icons"
@@ -82,6 +83,15 @@ const CardsBackOffice = () => {
             description={pet.descripcion}
           />
         ))}
+        <label className="flex items-center justify-center border-2 border-dashed rounded-md h-32 cursor-pointer">
+          <AiOutlinePlus size={24} />
+          <input
+            type="file"
+            accept="image/*"
+            className="hidden"
+            // onChange={handleAddImage}
+          />
+        </label>
       </div>
       <Pagination />
     </main>
