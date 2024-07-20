@@ -1,11 +1,12 @@
-import FooteClient from "@/components/FooterClient"
-import HeaderClient from "@/components/HeaderClient"
+import ImageHeader from "@/components/ImageHeader"
 import ClientLayout from "@/layout/ClientLayout"
 
 export default function Home() {
   return (
     <ClientLayout>
-      <h1>hola</h1>
+      <ImageHeader
+        image={"/adopta.jpeg"}
+      />
     </ClientLayout>
   );
 }
