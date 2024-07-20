@@ -12,7 +12,7 @@ export default function ClientLayout({ children }: Props) {
         <HeaderClient />
       </header>
       <main className="flex-grow">
-        <div className="container mx-auto px-4 py-8">
+        <div className="mx-auto px-0 py-0">
           {children}
         </div>
       </main>
