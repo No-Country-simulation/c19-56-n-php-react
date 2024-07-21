@@ -6,6 +6,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\EducationAndResourceController;
 use App\Http\Controllers\PetController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\NeedPetController;
 use App\Http\Controllers\RaceController;
 use Illuminate\Http\Request;
@@ -51,6 +52,11 @@ Route::middleware('auth:api')->group(function () {
     Route::post('/blogs', [BlogController::class, 'store'])->name('blogs.store');
     Route::put('/blogs/{id}', [BlogController::class, 'update'])->name('blogs.update');
     Route::delete('/blogs/{id}', [BlogController::class, 'destroy'])->name('blogs.destroy');
+
+    // hostories
+    Route::post('/pets/{id}/histories', [HistoryController::class, 'store'])->name('histories.store');
+    Route::post('/pets-histories/{id}', [HistoryController::class, 'update'])->name('histories.update');
+    Route::delete('/pets-histories/{id}', [HistoryController::class, 'destroy'])->name('histories.destroy');
 });
 // pets routes
 Route::get('/pets', [PetController::class, 'index'])->name('pets.index');
@@ -70,3 +76,7 @@ Route::get('/races/{id}', [RaceController::class, 'show'])->name('races.show');
 // category
 Route::get('/category', [CategoryController::class, 'index'])->name('category.index');
 Route::get('/category/{id}', [CategoryController::class, 'show'])->name('category.show');
+
+// Histories
+Route::get('/pets/{id}/histories', [HistoryController::class, 'index'])->name('pets.histories.index');
+Route::get('/pets-histories/{id}', [HistoryController::class, 'show'])->name('histories.show');
