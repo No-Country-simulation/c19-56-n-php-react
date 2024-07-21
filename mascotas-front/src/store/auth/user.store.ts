@@ -27,7 +27,7 @@ const authUser: StateCreator<IAppState, [["zustand/devtools", never]]> = (
 export const useAuthStore = create<IAppState>()(
   devtools(
     persist(authUser, {
-      name: "auth",
+      name: "auth-mascotas",
     })
   )
 );
