@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BlogController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\EducationAndResourceController;
 use App\Http\Controllers\PetController;
@@ -9,6 +10,8 @@ use App\Http\Controllers\NeedPetController;
 use App\Http\Controllers\RaceController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+
+
 
 Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/register', [AuthController::class, 'register'])->name('register');
@@ -30,7 +33,8 @@ Route::middleware('auth:api')->group(function () {
     Route::post('/races', [RaceController::class, 'store'])->name('races.store');
     Route::put('/races/{id}', [RaceController::class, 'update'])->name('races.update');
     Route::delete('/races/{id}', [RaceController::class, 'destroy'])->name('races.destroy');
-    //races
+
+    //category
     Route::post('/category', [CategoryController::class, 'store'])->name('category.store');
     Route::put('/category/{id}', [CategoryController::class, 'update'])->name('category.update');
     Route::delete('/category/{id}', [CategoryController::class, 'destroy'])->name('category.destroy');
@@ -43,6 +47,10 @@ Route::middleware('auth:api')->group(function () {
     Route::post('/pets/{id}/needs', [NeedPetController::class, 'store'])->name('pets.needs.store');
     Route::put('/pets-need/{id}', [NeedPetController::class, 'update'])->name('pets-neet.update');
     Route::delete('/pets-need/{id}', [NeedPetController::class, 'destroy'])->name('pets-neet.destroy');
+    // Blogs
+    Route::post('/blogs', [BlogController::class, 'store'])->name('blogs.store');
+    Route::put('/blogs/{id}', [BlogController::class, 'update'])->name('blogs.update');
+    Route::delete('/blogs/{id}', [BlogController::class, 'destroy'])->name('blogs.destroy');
 });
 // pets routes
 Route::get('/pets', [PetController::class, 'index'])->name('pets.index');
@@ -51,14 +59,14 @@ Route::get('/pets/{id}', [PetController::class, 'show'])->name('pets.show');
 Route::get('/pets/{id}/needs', [NeedPetController::class, 'index'])->name('pets.needs.index');
 Route::get('/pets-need/{id}', [NeedPetController::class, 'show'])->name('pets-needs.show');
 
+// blogs
+Route::get('/blogs', [BlogController::class, 'index'])->name('blogs.index');
+Route::get('/blogs/{id}', [BlogController::class, 'show'])->name('blogs.show');
 //Contact
 Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
 // race routes
 Route::get('/races', [RaceController::class, 'index'])->name('races.index');
 Route::get('/races/{id}', [RaceController::class, 'show'])->name('races.show');
-
-// category routes
+// category
 Route::get('/category', [CategoryController::class, 'index'])->name('category.index');
 Route::get('/category/{id}', [CategoryController::class, 'show'])->name('category.show');
-
-// test route
