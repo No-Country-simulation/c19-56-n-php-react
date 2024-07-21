@@ -1,11 +1,11 @@
-import { Card, CardContent } from "@/components/ui/card"
-import Link from "next/link"
+import { Card, CardContent } from "@/components/ui/card";
+import Link from "next/link";
 
 interface Props {
-  image: string
-  name: string
-  age: string
-  description: string
+  image: string;
+  name: string;
+  age: number;
+  description?: string;
 }
 
 const CardBackOffice = ({ image, name, age, description }: Props) => {
@@ -26,7 +26,7 @@ const CardBackOffice = ({ image, name, age, description }: Props) => {
         </CardContent>
       </Link>
     </Card>
-  )
-}
+  );
+};
 
-export default CardBackOffice
+export default CardBackOffice;

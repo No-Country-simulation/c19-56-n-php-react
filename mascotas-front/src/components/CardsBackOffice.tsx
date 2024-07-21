@@ -14,25 +14,39 @@ import { Input } from "@/components/ui/input";
 import { ChevronRightIcon, FilterIcon, PlusIcon, SearchIcon } from "@/icons";
 import CardBackOffice from "./CardBackOffice";
 import axios from "axios";
-import { Pet } from "@/Types";
+// import { Pet } from "@/Types";
 import Pagination from "./PaginationComponent";
-import { useAuthStore } from "@/store";
+import { useAuthStore, usePetsPaginateStore } from "@/store";
+import { Pet, Pets } from "@/interfaces";
 
 const CardsBackOffice = () => {
-  const [pets, setPets] = useState<Pet[]>([]);
-  const user = useAuthStore((state) => state.user);
   const token = useAuthStore((state) => state.token);
-  // console.log(user, token);
+  const page = usePetsPaginateStore((state) => state.pageState);
+  const setPageState = usePetsPaginateStore((state) => state.setPageState);
+  // const currentPage = usePetsPaginateStore(state => state.currentPageState)
+  const setCurrentPageState = usePetsPaginateStore(
+    (state) => state.setCurrentPageState
+  );
+  const setTotalPageState = usePetsPaginateStore(
+    (state) => state.setTotalPageState
+  );
+  const setLastPageState = usePetsPaginateStore(
+    (state) => state.setLastPageState
+  );
 
+  const { data, isLoading } = useFetch(`/api/pets?page=${page}`, {}, token);
+  // console.log(data, isLoading, "data");
+
+  const { total, currentPage, lastPage, data: listPets } = data || {};
+  // console.log(listPets, total, currentPage, lastPage, "list");
   useEffect(() => {
-    axios
-      .get("http://localhost:3000/api/hello")
-      .then(({ data }) => setPets(data.pets));
-  }, []);
-
-  const {data, isLoading} = useFetch("/api/pets", {}, token);
-  console.log(data, 'data');
-
+    if (total !== undefined && currentPage !== undefined) {
+      setTotalPageState(total);
+      setCurrentPageState(currentPage);
+      setLastPageState(lastPage);
+    }
+  }, [total, currentPage, lastPage]);
+  // console.log(listPets, 'listPets')
   return (
     <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
       <header className="bg-background px-6 py-4 flex items-center justify-between">
@@ -82,15 +96,19 @@ const CardsBackOffice = () => {
         </Button>
       </header>
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-        {pets.map((pet) => (
-          <CardBackOffice
-            key={pet.id}
-            image={pet.imagen[0]}
-            name={pet.nombre}
-            age={pet.edad}
-            description={pet.descripcion}
-          />
-        ))}
+        {listPets?.map((pet: Pet) => {
+          console.log(pet);
+          // TODO: Agregar Descripcion desde el backend para pets
+          return (
+            <CardBackOffice
+              key={pet.id}
+              image={pet.image}
+              name={pet.name}
+              age={pet.age}
+              // description={pet.descripcion}
+            />
+          );
+        })}
         <label className="flex items-center justify-center border-2 border-dashed rounded-md h-32 cursor-pointer">
           <AiOutlinePlus size={24} />
           <input
