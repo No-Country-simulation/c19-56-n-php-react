@@ -21,5 +21,10 @@ class Pet extends Model
         'status' // Estado de la mascota (por ejemplo, disponible para adopción, adoptado).
     ];
 
+
+    public function  histories()
+    {
+        return $this->hasMany(History::class);
+    }
     
 }
