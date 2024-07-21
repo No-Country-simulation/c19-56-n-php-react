@@ -19,7 +19,6 @@ class NeedPetController extends Controller
 
         try {
             $pet = Pet::findOrFail($id);
-            $data = NeedPet::paginate(10);
             $data = NeedPet::where('pet_id', $pet->id)->paginate(10);
             $response = [
                 'lastPage' => $data->lastPage(),
