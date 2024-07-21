@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { use, useEffect, useState } from "react";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -6,24 +6,32 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuCheckboxItem,
-} from "@/components/ui/dropdown-menu"
-import { AiOutlinePlus } from "react-icons/ai"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { ChevronRightIcon, FilterIcon, PlusIcon, SearchIcon } from "@/icons"
-import CardBackOffice from "./CardBackOffice"
-import axios from "axios"
-import { Pet } from "@/Types"
-import Pagination from "./PaginationComponent"
+} from "@/components/ui/dropdown-menu";
+import { useFetch } from "@/hooks";
+import { AiOutlinePlus } from "react-icons/ai";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { ChevronRightIcon, FilterIcon, PlusIcon, SearchIcon } from "@/icons";
+import CardBackOffice from "./CardBackOffice";
+import axios from "axios";
+import { Pet } from "@/Types";
+import Pagination from "./PaginationComponent";
+import { useAuthStore } from "@/store";
 
 const CardsBackOffice = () => {
-  const [pets, setPets] = useState<Pet[]>([])
+  const [pets, setPets] = useState<Pet[]>([]);
+  const user = useAuthStore((state) => state.user);
+  const token = useAuthStore((state) => state.token);
+  // console.log(user, token);
 
   useEffect(() => {
     axios
       .get("http://localhost:3000/api/hello")
-      .then(({ data }) => setPets(data.pets))
-  }, [])
+      .then(({ data }) => setPets(data.pets));
+  }, []);
+
+  const {data, isLoading} = useFetch("/api/pets", {}, token);
+  console.log(data, 'data');
 
   return (
     <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
@@ -95,7 +103,7 @@ const CardsBackOffice = () => {
       </div>
       <Pagination />
     </main>
-  )
-}
+  );
+};
 
-export default CardsBackOffice
+export default CardsBackOffice;
