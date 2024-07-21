@@ -9,6 +9,7 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\NeedPetController;
 use App\Http\Controllers\RaceController;
+use App\Http\Controllers\SponsorshipController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -57,6 +58,14 @@ Route::middleware('auth:api')->group(function () {
     Route::post('/pets/{id}/histories', [HistoryController::class, 'store'])->name('histories.store');
     Route::post('/pets-histories/{id}', [HistoryController::class, 'update'])->name('histories.update');
     Route::delete('/pets-histories/{id}', [HistoryController::class, 'destroy'])->name('histories.destroy');
+
+    // sponsorships
+    Route::post('/pets/{id}/sponsorships', [SponsorshipController::class, 'store'])->name('sponsorships.store');
+    Route::put('/pets-sponsorships/{id}', [SponsorshipController::class, 'update'])->name('sponsorships.update');
+    Route::delete('/pets-sponsorships/{id}', [SponsorshipController::class, 'destroy'])->name('sponsorships.destroy');
+    Route::get('/my-sponsorships', [SponsorshipController::class, 'MySponsorships'])->name('sponsorships.mysponsorships');
+    Route::get('/pets/{id}/sponsorships', [SponsorshipController::class, 'index'])->name('pets.sponsorships.index');
+    Route::get('/pets-sponsorships/{id}', [SponsorshipController::class, 'show'])->name('sponsorships.show');
 });
 // pets routes
 Route::get('/pets', [PetController::class, 'index'])->name('pets.index');
