@@ -16,9 +16,17 @@ class HistoryController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index($id)
     {
-        //
+        $pet = Pet::findOrFail($id);
+        $data = $pet->histories()->paginate(10);
+        $response = [
+            'lastPage' => $data->lastPage(),
+            'currentPage' => $data->currentPage(),
+            'total' => $data->total(),
+            'data' => $data->items()
+        ];
+        return response()->json($response, Response::HTTP_OK);
     }
 
     /**
@@ -62,9 +70,20 @@ class HistoryController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(History $history)
+    public function show($id)
     {
-        //
+        try {
+            $data = History::findOrFail($id);
+            return response()->json([
+                'message' => 'Recurso obtenido exitosamente',
+                'data' => $data
+            ], Response::HTTP_OK);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Error interno',
+                'error' => $e->getMessage()
+            ], Response::HTTP_BAD_REQUEST);
+        }
     }
 
     /**
@@ -127,7 +146,7 @@ class HistoryController extends Controller
      */
     public function destroy($id)
     {
-        
+
         try {
             if (!Gate::allows('validate-role', auth()->user())) {
                 return response()->json(['message' => 'Error en privilegio', 'error' => 'No tienes permisos para realizar esta acción'], Response::HTTP_UNAUTHORIZED);
