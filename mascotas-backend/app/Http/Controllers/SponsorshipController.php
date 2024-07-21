@@ -6,6 +6,7 @@ use App\Models\Pet;
 use App\Models\Sponsorship;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Validator;
 
 class SponsorshipController extends Controller
@@ -15,7 +16,44 @@ class SponsorshipController extends Controller
      */
     public function index()
     {
-        //
+        try {
+            if (!Gate::allows('validate-role', auth()->user())) {
+                return response()->json(['message' => 'Error en privilegio', 'error' => 'No tienes permisos para realizar esta acción'], Response::HTTP_UNAUTHORIZED);
+            }
+            $data = Sponsorship::paginate(10);
+            $response = [
+                'lastPage' => $data->lastPage(),
+                'currentPage' => $data->currentPage(),
+                'total' => $data->total(),
+                'data' => $data->items()
+            ];
+            return response()->json($response, Response::HTTP_OK);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Error interno',
+                'error' => $e->getMessage()
+            ], Response::HTTP_BAD_REQUEST);
+        }
+    }
+
+    public function MySponsorships()
+    {
+        try {
+            $authUser = auth()->user();
+            $data = Sponsorship::where('user_id', $authUser->id)->paginate(10);
+            $response = [
+                'lastPage' => $data->lastPage(),
+                'currentPage' => $data->currentPage(),
+                'total' => $data->total(),
+                'data' => $data->items()
+            ];
+            return response()->json($response, Response::HTTP_OK);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Error interno',
+                'error' => $e->getMessage()
+            ], Response::HTTP_BAD_REQUEST);
+        }
     }
 
     /**
@@ -70,9 +108,24 @@ class SponsorshipController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Sponsorship $sponsorship)
+    public function show($id)
     {
-        //
+        try {
+            $data = Sponsorship::findOrFail($id);
+            $authUser = auth()->user();
+            if ($authUser->id != $data->user_id && !Gate::allows('validate-role', $authUser)) {
+                return response()->json([
+                    'message' => 'Autorizacion fallida',
+                    'error' => 'No tiene permiso para realizar esta accion'
+                ]);
+            }
+            return response()->json($data, Response::HTTP_OK);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Error interno',
+                'error' => $e->getMessage()
+            ], Response::HTTP_BAD_REQUEST);
+        }
     }
 
     /**
@@ -121,8 +174,18 @@ class SponsorshipController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Sponsorship $sponsorship)
+    public function destroy($id)
     {
-        //
+        try {
+            $data = Sponsorship::findOrFail($id);
+            $authUser = auth()->user();
+            if ($authUser->id !== $data->user_id) {
+                return response()->json(['message' => 'No tienes permisos para realizar esta acción'], Response::HTTP_FORBIDDEN);
+            }
+            $data->delete();
+            return response()->json(["message" => "El patrocinio de la mascota eliminada de forma exitosa"], Response::HTTP_OK);
+        } catch (\Exception $e) {
+            return response()->json(['message' => "Error", 'error' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
+        }
     }
 }

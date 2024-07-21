@@ -64,7 +64,8 @@ Route::middleware('auth:api')->group(function () {
     Route::put('/pets-sponsorships/{id}', [SponsorshipController::class, 'update'])->name('sponsorships.update');
     Route::delete('/pets-sponsorships/{id}', [SponsorshipController::class, 'destroy'])->name('sponsorships.destroy');
     Route::get('/my-sponsorships', [SponsorshipController::class, 'MySponsorships'])->name('sponsorships.mysponsorships');
-    Route::get('/pets/{id}/sponsorships', [SponsorshipController::class, 'index'])->name('pets.sponsorships.index');
+    Route::get('/pets-sponsorships', [SponsorshipController::class, 'index'])->name('pets.sponsorships.index');
+    // Route::get('/pets/{id}/sponsorships', [SponsorshipController::class, 'index'])->name('pets.sponsorships.index');
     Route::get('/pets-sponsorships/{id}', [SponsorshipController::class, 'show'])->name('sponsorships.show');
 });
 // pets routes
