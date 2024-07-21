@@ -5,6 +5,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\EducationAndResourceController;
 use App\Http\Controllers\PetController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\NeedPetController;
 use App\Http\Controllers\RaceController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -39,16 +40,16 @@ Route::middleware('auth:api')->group(function () {
     Route::post('/pets/{id}', [PetController::class, 'update'])->name('pets.update');
     Route::delete('/pets/{id}', [PetController::class, 'destroy'])->name('pets.destroy');
     // Necesidades de mascotas
-    Route::post('/pets/{id}/needs', [PetController::class, 'store'])->name('pets.needs.store');
-    Route::put('/pets-neet/{id}', [PetController::class, 'update'])->name('pets-neet.update');
-    Route::delete('/pets-neet/{id}', [PetController::class, 'destroy'])->name('pets-neet.destroy');
+    Route::post('/pets/{id}/needs', [NeedPetController::class, 'store'])->name('pets.needs.store');
+    Route::put('/pets-need/{id}', [NeedPetController::class, 'update'])->name('pets-neet.update');
+    Route::delete('/pets-need/{id}', [NeedPetController::class, 'destroy'])->name('pets-neet.destroy');
 });
 // pets routes
 Route::get('/pets', [PetController::class, 'index'])->name('pets.index');
 Route::get('/pets/{id}', [PetController::class, 'show'])->name('pets.show');
 // Needs of pets
-Route::get('/pets/{id}/needs', [PetController::class, 'index'])->name('pets.needs.index');
-Route::get('/pets-neet/{id}', [PetController::class, 'show'])->name('pets-needs.show');
+Route::get('/pets/{id}/needs', [NeedPetController::class, 'index'])->name('pets.needs.index');
+Route::get('/pets-need/{id}', [NeedPetController::class, 'show'])->name('pets-needs.show');
 
 //Contact
 Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
