@@ -87,7 +87,7 @@ const RegisterForm = () => {
               className="text-red-500"
             />
           </div>
-          <Button type="submit" className="w-full bg-[#1f9063]" disabled={isSubmitting}>
+          <Button type="submit" className="w-full bg-[#1f9063] hover:bg-[#156947] text-white font-bold text-base py-6" disabled={isSubmitting}>
             Registrarse
           </Button>
         </Form>
