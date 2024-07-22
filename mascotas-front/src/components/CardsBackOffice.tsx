@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { use, useEffect, useState } from "react";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -6,25 +6,25 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuCheckboxItem,
-} from "@/components/ui/dropdown-menu"
-import { AiOutlinePlus } from "react-icons/ai"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { ChevronRightIcon, FilterIcon, PlusIcon, SearchIcon } from "@/icons"
-import CardBackOffice from "./CardBackOffice"
-import axios from "axios"
-import { Pet } from "@/Types"
-import Pagination from "./PaginationComponent"
+} from "@/components/ui/dropdown-menu";
+import { AiOutlinePlus } from "react-icons/ai";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { ChevronRightIcon, FilterIcon, PlusIcon, SearchIcon } from "@/icons";
+import CardBackOffice from "./CardBackOffice";
+import Pagination from "./PaginationComponent";
+import { Pet, Pets } from "@/interfaces";
+import { usePetsData } from "@/hooks";
 
 const CardsBackOffice = () => {
-  const [pets, setPets] = useState<Pet[]>([])
-
-  useEffect(() => {
-    axios
-      .get("http://localhost:3000/api/hello")
-      .then(({ data }) => setPets(data.pets))
-  }, [])
-
+  const {
+    listPets,
+    isLoading,
+    currentPageState,
+    totalPageState,
+    lastPageState,
+  } = usePetsData();
+  console.log(currentPageState, totalPageState, lastPageState)
   return (
     <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
       <header className="bg-background px-6 py-4 flex items-center justify-between">
@@ -70,19 +70,22 @@ const CardsBackOffice = () => {
         </div>
         <Button>
           <PlusIcon className="h-4 w-4 mr-2" />
-          <span>Add User</span>
+          <span>Add New Pets</span>
         </Button>
       </header>
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-        {pets.map((pet) => (
-          <CardBackOffice
-            key={pet.id}
-            image={pet.imagen[0]}
-            name={pet.nombre}
-            age={pet.edad}
-            description={pet.descripcion}
-          />
-        ))}
+        {listPets?.map((pet: Pet) => {
+          // TODO: Agregar Descripcion desde el backend para pets
+          return (
+            <CardBackOffice
+              key={pet.id}
+              image={pet.image}
+              name={pet.name}
+              age={pet.age}
+              // description={pet.descripcion}
+            />
+          );
+        })}
         <label className="flex items-center justify-center border-2 border-dashed rounded-md h-32 cursor-pointer">
           <AiOutlinePlus size={24} />
           <input
@@ -95,7 +98,7 @@ const CardsBackOffice = () => {
       </div>
       <Pagination />
     </main>
-  )
-}
+  );
+};
 
-export default CardsBackOffice
+export default CardsBackOffice;
