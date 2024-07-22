@@ -1,4 +1,10 @@
 @tailwind base;
-  @tailwind components;
-  @tailwind utilities;
+@tailwind components;
+@tailwind utilities;
 
+@layer components {
+  .text-shadow {
+    @apply text-center text-4xl font-bold tracking-tight text-[#1f9063];
+    text-shadow: 3px 3px 10px rgba(0, 0, 0, 0.5);
+  }
+}

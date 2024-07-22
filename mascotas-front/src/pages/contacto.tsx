@@ -9,7 +9,7 @@ export default function ContactPage() {
       <div className="flex min-h-screen">
         <div className="flex-1">
           <div className="flex flex-col justify-center h-40 gap-8">
-            <h2 className="mt-6 text-center text-4xl font-bold tracking-tight text-primary text-[#1f9063]">Siguenos en</h2>
+            <h2 className="mt-6 text-center text-4xl font-bold tracking-tight text-primary text-[#1f9063] text-shadow">Siguenos en</h2>
 
             <div className="mx-auto flex justify-center md:justify-start space-x-4 mb-5">
               <Link
