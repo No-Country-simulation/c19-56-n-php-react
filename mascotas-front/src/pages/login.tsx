@@ -9,7 +9,7 @@ export default function page() {
         <div className="flex-1">
           <img
             className="w-full h-screen object-cover"
-            src="/image-register.jpeg"
+            src="/image-login.jpeg"
             alt="registrarse"
           />
         </div>

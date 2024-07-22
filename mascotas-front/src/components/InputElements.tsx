@@ -31,6 +31,19 @@ export const TextInput = ({ id, label, disabled, type, name, placeholder, error 
   </div>
 )
 
+export const TextAreaInput = ({ id, label, name, placeholder }: Props) => (
+  <div className="grid gap-2">
+    <Label className="text-gray-950 text-sm font-bold" htmlFor={id}>{label}</Label>
+    <Field
+      id={id}
+      as="textarea"
+      name={name}
+      placeholder={placeholder}
+      className='bg-[#eee] py-3 px-8 border-solid border-[#bbb] border-[3px] rounded-lg outline-none h-32'
+    />
+  </div>
+)
+
 export const FormInput = ({ id, label, disabled, value, onChange, onBlur, error }: Props) => (
   <div className="grid gap-2">
     <Label className="text-gray-950 text-lg" htmlFor={id}>{label}</Label>
