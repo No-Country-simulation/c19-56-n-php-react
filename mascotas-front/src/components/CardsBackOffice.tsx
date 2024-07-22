@@ -7,46 +7,24 @@ import {
   DropdownMenuSeparator,
   DropdownMenuCheckboxItem,
 } from "@/components/ui/dropdown-menu";
-import { useFetch } from "@/hooks";
 import { AiOutlinePlus } from "react-icons/ai";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ChevronRightIcon, FilterIcon, PlusIcon, SearchIcon } from "@/icons";
 import CardBackOffice from "./CardBackOffice";
-import axios from "axios";
-// import { Pet } from "@/Types";
 import Pagination from "./PaginationComponent";
-import { useAuthStore, usePetsPaginateStore } from "@/store";
 import { Pet, Pets } from "@/interfaces";
+import { usePetsData } from "@/hooks";
 
 const CardsBackOffice = () => {
-  const token = useAuthStore((state) => state.token);
-  const page = usePetsPaginateStore((state) => state.pageState);
-  const setPageState = usePetsPaginateStore((state) => state.setPageState);
-  // const currentPage = usePetsPaginateStore(state => state.currentPageState)
-  const setCurrentPageState = usePetsPaginateStore(
-    (state) => state.setCurrentPageState
-  );
-  const setTotalPageState = usePetsPaginateStore(
-    (state) => state.setTotalPageState
-  );
-  const setLastPageState = usePetsPaginateStore(
-    (state) => state.setLastPageState
-  );
-
-  const { data, isLoading } = useFetch(`/api/pets?page=${page}`, {}, token);
-  // console.log(data, isLoading, "data");
-
-  const { total, currentPage, lastPage, data: listPets } = data || {};
-  // console.log(listPets, total, currentPage, lastPage, "list");
-  useEffect(() => {
-    if (total !== undefined && currentPage !== undefined) {
-      setTotalPageState(total);
-      setCurrentPageState(currentPage);
-      setLastPageState(lastPage);
-    }
-  }, [total, currentPage, lastPage]);
-  // console.log(listPets, 'listPets')
+  const {
+    listPets,
+    isLoading,
+    currentPageState,
+    totalPageState,
+    lastPageState,
+  } = usePetsData();
+  console.log(currentPageState, totalPageState, lastPageState)
   return (
     <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
       <header className="bg-background px-6 py-4 flex items-center justify-between">
@@ -92,12 +70,11 @@ const CardsBackOffice = () => {
         </div>
         <Button>
           <PlusIcon className="h-4 w-4 mr-2" />
-          <span>Add User</span>
+          <span>Add New Pets</span>
         </Button>
       </header>
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         {listPets?.map((pet: Pet) => {
-          console.log(pet);
           // TODO: Agregar Descripcion desde el backend para pets
           return (
             <CardBackOffice

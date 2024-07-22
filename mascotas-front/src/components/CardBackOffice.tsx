@@ -1,4 +1,5 @@
 import { Card, CardContent } from "@/components/ui/card";
+import Image from "next/image";
 import Link from "next/link";
 
 interface Props {
@@ -12,7 +13,7 @@ const CardBackOffice = ({ image, name, age, description }: Props) => {
   return (
     <Card className="cursor-pointer">
       <Link href="/dashboard/pet/1">
-        <img
+        <Image
           src={image}
           alt="Mascota 1"
           width={400}
