@@ -18,7 +18,8 @@ class Pet extends Model
         'age', // Edad de la mascota.
         'personality', // Descripción de la personalidad de la mascota.
         'image', // Ruta de la imagen de la mascota.
-        'status' // Estado de la mascota (por ejemplo, disponible para adopción, adoptado).
+        'status', // Estado de la mascota (por ejemplo, disponible para adopción, adoptado).
+        'description' // Descripción de la mascota.
     ];
 
 
