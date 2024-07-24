@@ -16,3 +16,15 @@ export interface Pet {
 export interface Pets {
   Pets: Pet[];
 }
+
+export interface PetCreate {
+  name: string;
+  race: string;
+  size: 'pequeño' | 'mediano' | 'grande';
+  weight: number ;
+  age: number ;
+  personality: string;
+  description: string;
+  image: File | null;
+  status: 'disponible' | 'adoptado';
+}

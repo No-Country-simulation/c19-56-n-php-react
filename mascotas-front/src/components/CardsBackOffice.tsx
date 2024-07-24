@@ -17,6 +17,7 @@ import { Pet, Pets } from "@/interfaces";
 import { usePetsData } from "@/hooks";
 import { usePetsPaginateStore } from "@/store";
 import { usePagination } from "@/hooks/usePagination";
+import { CreateNewPet } from "./CreatePet";
 
 const CardsBackOffice = () => {
   const totalPageState = usePetsPaginateStore((state) => state.totalPageState);
@@ -26,13 +27,6 @@ const CardsBackOffice = () => {
   );
   const lastPageState = usePetsPaginateStore((state) => state.lastPageState);
   const { listPets, isLoading } = usePetsData();
-  // console.log(currentPageState, totalPageState, lastPageState)
-  // console.log(
-  //   totalPageState,
-  //   currentPageState,
-  //   lastPageState,
-  //   "totalPageState"
-  // );
   const { pageNumbers, nextPage, prevPage } = usePagination(
     totalPageState,
     currentPageState,
@@ -84,10 +78,8 @@ const CardsBackOffice = () => {
             <SearchIcon className="absolute left-2 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           </div>
         </div>
-        <Button>
-          <PlusIcon className="h-4 w-4 mr-2" />
-          <span>Add New Pets</span>
-        </Button>
+       
+        <CreateNewPet />
       </header>
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         {listPets?.map((pet: Pet) => {

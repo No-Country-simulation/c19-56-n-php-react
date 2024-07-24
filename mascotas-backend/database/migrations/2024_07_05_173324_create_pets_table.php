@@ -19,11 +19,11 @@ return new class extends Migration
             $table->decimal('weight', 5, 2); // Asumiendo un peso máximo de 999.99
             $table->integer('age');
             $table->text('personality')->nullable();
+            $table->text('description')->nullable();
             $table->string('image')->nullable();
             $table->string('status');
             $table->timestamps();
             $table->softDeletes();
-
             $table->foreign('race_id')->references('id')->on('races')->onDelete('cascade');
         });
     }

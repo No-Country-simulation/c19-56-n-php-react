@@ -1,4 +1,6 @@
+import { PetCreate } from "@/interfaces";
 import { urlBase } from "./";
+import { toast } from "sonner";
 
 export const login = async (email: string, password: string) => {
   try {
@@ -8,16 +10,13 @@ export const login = async (email: string, password: string) => {
       {
         headers: {
           "Content-Type": "application/json",
-          "Access-Control-Allow-Origin": "*",
-          'Access-Control-Allow-Headers': '*',
-          'Access-Control-Allow-Methods': '*',
         },
       }
     );
     return response;
   } catch (error: any) {
     if (error.response && error.response.data && error.response.data.error) {
-      console.error("Error del backend:", error.response.data.error);
+      // console.error("Error del backend:", error.response.data.error);
       throw new Error(error.response.data.error);
     } else {
       console.error("Error de red o desconocido", error);
@@ -28,25 +27,30 @@ export const login = async (email: string, password: string) => {
   }
 };
 
-// export const login = async (email: string, password: string) => {
-//   try {
-//     const response = await fetch(`${process.env.NEXT_PUBLIC_URL_BASE}/api/login`, {
-//       method: 'POST',
-//       headers: { 'Content-Type': 'application/json' },
-//       body: JSON.stringify({ email, password }),
-//     });
-
-//     if (!response.ok) {
-//       const errorData = await response.json();
-//       console.error("Error del backend:", errorData.error);
-//       throw new Error(errorData.error);
-//     }
-
-//     return await response.json();
-//   } catch (error) {
-//     console.error("Error de red o desconocido", error);
-//     throw new Error(
-//       "Ocurrió un error al intentar realizar la operación. Por favor, inténtalo de nuevo."
-//     );
-//   }
-// };
+export const createPets = async (pet: FormData, token: string) => {
+  try {
+    const response = await urlBase.post(`/api/pets`, pet, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response;
+  } catch (error: any) {
+    let errorMessage =
+      "Ocurrió un error al intentar realizar la operación. Por favor, inténtalo de nuevo.";
+    if (error.response && error.response.data) {
+      if (error.response.data.error) {
+        errorMessage = error.response.data.error;
+      } else if (error.response.data.errors) {
+        const errors = error.response.data.errors;
+        const errorMessages = Object.keys(errors).map(key => `${key}: ${errors[key].join(', ')}`).join('\n');
+        errorMessage = `${error.response.data.message}\n${errorMessages}`;
+      }
+    } else {
+      console.error("Error de red o desconocido", error);
+    }
+    // toast.error(errorMessage);
+    throw new Error(errorMessage);
+  }
+};
