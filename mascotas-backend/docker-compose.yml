@@ -1,0 +1,44 @@
+version: '3.8'
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: mascota_app
+    container_name: mascota_app
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "8000:80"
+    environment:
+      APP_NAME: Laravel
+      APP_ENV: local
+      APP_KEY: base64:LmvzS88CJZNzuz1y0cKriaHCYLfTQRaazPSbhHI+vHs=
+      APP_DEBUG: true
+      APP_URL: http://localhost
+      LOG_CHANNEL: stack
+      DB_CONNECTION: pgsql
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_DATABASE: mascotas
+      DB_USERNAME: laravel
+      DB_PASSWORD: secret
+    volumes:
+      - ./:/var/www/html
+    depends_on:
+      - db
+  db:
+    image: postgres:13
+    container_name: laravel_pgsql
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: mascotas
+      POSTGRES_USER: laravel
+      POSTGRES_PASSWORD: secret
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+volumes:
+  pgdata:
