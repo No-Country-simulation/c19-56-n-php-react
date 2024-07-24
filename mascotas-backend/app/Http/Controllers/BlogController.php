@@ -93,7 +93,7 @@ class BlogController extends Controller
     public function show($id)
     {
         try {
-            $data = Blog::findOrFail($id);
+            $data = Blog::findOrFail($id); 
             return response()->json(
                 ['message' => 'Recurso obtenido exitosamente',
                 'data' => $data

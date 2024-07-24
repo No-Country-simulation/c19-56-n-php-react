@@ -33,7 +33,7 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/contact/{id}', [ContactController::class, 'show'])->name('contact.show');
     //races
     Route::post('/races', [RaceController::class, 'store'])->name('races.store');
-    Route::put('/races/{id}', [RaceController::class, 'update'])->name('races.update');
+    Route::put('/races/{id}', [RaceController::class, 'update'])->name('races.update'); 
     Route::delete('/races/{id}', [RaceController::class, 'destroy'])->name('races.destroy');
 
     //category
