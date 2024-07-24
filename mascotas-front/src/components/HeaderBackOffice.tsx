@@ -13,7 +13,7 @@ export default function HeaderBackOffice() {
   return (
     <header className="flex h-16 w-full shrink-0 items-center justify-between px-4 md:px-6 border-b-2 mb-8">
       <Link href="#" className="flex items-center gap-2" prefetch={false}>
-        <h1>Logo aqui</h1>
+        <img width="50" height="50" src="/logo.png" alt="logo" />
         <span className="sr-only">Acme Inc</span>
       </Link>
       <DropdownMenu>
