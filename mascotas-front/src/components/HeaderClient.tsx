@@ -34,11 +34,11 @@ export default function HeaderClient() {
             Participa
           </Link>
           <Link
-            href="/historias-y-consejos"
+            href="/educacion-y-recursos"
             className="text-xl font-medium text-white hover:underline"
             prefetch={false}
           >
-            Historias y Consejos
+            Educación y recursos
           </Link>
           <Link
             href="/contacto"

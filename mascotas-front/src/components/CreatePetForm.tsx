@@ -71,7 +71,6 @@ const AddPetForm = () => {
   return (
     <div className="flex justify-center items-center min-h-scree bg-none">
       <div className="p-8 w-full max-w-lg">
-        <h2 className="text-2xl font-bold mb-6 text-center">Agregar Nueva Mascota</h2>
         <Formik
           initialValues={initialValues}
           validationSchema={validationSchema}

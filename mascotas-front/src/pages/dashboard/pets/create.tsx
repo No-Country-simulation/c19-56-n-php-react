@@ -11,7 +11,7 @@ const create = () => {
       >
         <div className="bg-white bg-opacity-30 p-8 rounded-lg shadow-lg max-w-lg w-full">
           <h2 className="mt-6 text-center text-3xl font-bold tracking-tight text-[#1f9063]">
-            Formulario de Adopción
+            Agregar nueva mascota
           </h2>
           <CreatePetForm />
         </div>
