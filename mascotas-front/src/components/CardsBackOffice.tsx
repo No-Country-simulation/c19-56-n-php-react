@@ -15,16 +15,32 @@ import CardBackOffice from "./CardBackOffice";
 import Pagination from "./PaginationComponent";
 import { Pet, Pets } from "@/interfaces";
 import { usePetsData } from "@/hooks";
+import { usePetsPaginateStore } from "@/store";
+import { usePagination } from "@/hooks/usePagination";
 
 const CardsBackOffice = () => {
-  const {
-    listPets,
-    isLoading,
-    currentPageState,
-    totalPageState,
-    lastPageState,
-  } = usePetsData();
+  const totalPageState = usePetsPaginateStore((state) => state.totalPageState);
+  const setPage = usePetsPaginateStore((state) => state.setPageState);
+  const currentPageState = usePetsPaginateStore(
+    (state) => state.currentPageState
+  );
+  const lastPageState = usePetsPaginateStore((state) => state.lastPageState);
+  const { listPets, isLoading } = usePetsData();
   // console.log(currentPageState, totalPageState, lastPageState)
+  // console.log(
+  //   totalPageState,
+  //   currentPageState,
+  //   lastPageState,
+  //   "totalPageState"
+  // );
+  const { pageNumbers, nextPage, prevPage } = usePagination(
+    totalPageState,
+    currentPageState,
+    setPage
+  );
+  const totalPages = Math.ceil(totalPageState / 10);
+  const startPage = Math.max(1, currentPageState - 10);
+  const endPage = Math.min(totalPages, currentPageState + 10);
   return (
     <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
       <header className="bg-background px-6 py-4 flex items-center justify-between">
@@ -96,7 +112,18 @@ const CardsBackOffice = () => {
           />
         </label>
       </div>
-      {/* <Pagination /> */}
+      <Pagination
+        prevPage={prevPage}
+        nextPage={nextPage}
+        setPage={setPage}
+        currentPageState={currentPageState}
+        lastPageState={lastPageState}
+        totalPageState={totalPageState}
+        startPage={startPage}
+        endPage={endPage}
+        totalPages={totalPages}
+        pageNumbers={pageNumbers}
+      />
     </main>
   );
 };

@@ -8,8 +8,8 @@ import {
 } from "@/components/ui/pagination";
 
 type PaginationComponentProps = {
-  prevPage: string | null;
-  nextPage: string | null;
+  prevPage: (page: number) => void | null;
+  nextPage: (page: number) => void | null;
   setPage: (page: number) => void;
   currentPageState: number;
   lastPageState: number;

@@ -19,11 +19,8 @@ export const usePetsData = () => {
   const setLastPageState = usePetsPaginateStore(
     (state) => state.setLastPageState
   );
-
   const { data, isLoading } = useFetch(`/api/pets?page=${page}`, {}, token);
-
   const { total, currentPage, lastPage, data: listPets } = data || {};
-
   useEffect(() => {
     if (total !== undefined && currentPage !== undefined) {
       setTotalPageState(total);
@@ -31,12 +28,8 @@ export const usePetsData = () => {
       setLastPageState(lastPage);
     }
   }, [total, currentPage, lastPage]);
-
   return {
     listPets,
     isLoading,
-    currentPageState,
-    totalPageState,
-    lastPageState,
   };
 };
