@@ -2,6 +2,9 @@ import { Button } from "@/components/ui/button"
 import { Formik, Form, ErrorMessage } from "formik"
 import * as Yup from "yup"
 import { TextInput } from "./InputElements"
+import { useState } from "react"
+import { toast } from "sonner"
+import { register } from "@/backend"
 
 const validationSchema = Yup.object({
   name: Yup.string().required("Name is required"),
@@ -15,6 +18,30 @@ const validationSchema = Yup.object({
 })
 
 const RegisterForm = () => {
+  const [loading, setLoading] = useState<boolean>(false)
+
+  const handleSubmit = async (values: any) => {
+    setLoading(true)
+    try {
+      const response = await register(
+        values.name,
+        values.email,
+        values.password,
+        values.role,
+        values.password_confirmation
+      )
+      if (response.status === 200) {
+        toast.success("¡Bienvenido!")
+      }
+    } catch (error) {
+      toast.error(
+        error instanceof Error ? error.message : "Ocurrió un error inesperado."
+      )
+    } finally {
+      setLoading(false)
+    }
+  }
+
   return (
     <Formik
       initialValues={{
@@ -25,7 +52,7 @@ const RegisterForm = () => {
         role: "user",
       }}
       validationSchema={validationSchema}
-      onSubmit={(values) => console.log(values)}
+      onSubmit={handleSubmit}
     >
       {({ isSubmitting }) => (
         <Form className="space-y-6">
@@ -76,7 +103,7 @@ const RegisterForm = () => {
               id="password_confirmation"
               name="password_confirmation"
               type="password"
-              label='Confirmar contraseña'
+              label="Confirmar contraseña"
               placeholder="Confirma tu contraseña"
             />
             <ErrorMessage
@@ -85,7 +112,11 @@ const RegisterForm = () => {
               className="text-red-500"
             />
           </div>
-          <Button type="submit" className="w-full bg-[#1f9063] hover:bg-[#156947] text-white font-bold text-base py-6" disabled={isSubmitting}>
+          <Button
+            type="submit"
+            className="w-full bg-[#1f9063] hover:bg-[#156947] text-white font-bold text-base py-6"
+            disabled={isSubmitting}
+          >
             Registrarse
           </Button>
         </Form>

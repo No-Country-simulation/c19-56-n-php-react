@@ -1,4 +1,4 @@
-import React, { use, useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react"
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -92,17 +92,8 @@ const CardsBackOffice = () => {
               age={pet.age}
               // description={pet.descripcion}
             />
-          );
+          )
         })}
-        <label className="flex items-center justify-center border-2 border-dashed rounded-md h-32 cursor-pointer">
-          <AiOutlinePlus size={24} />
-          <input
-            type="file"
-            accept="image/*"
-            className="hidden"
-            // onChange={handleAddImage}
-          />
-        </label>
       </div>
       <Pagination
         prevPage={prevPage}
@@ -117,7 +108,7 @@ const CardsBackOffice = () => {
         pageNumbers={pageNumbers}
       />
     </main>
-  );
-};
+  )
+}
 
-export default CardsBackOffice;
+export default CardsBackOffice
