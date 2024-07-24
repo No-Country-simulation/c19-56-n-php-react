@@ -50,9 +50,9 @@ Route::middleware('auth:api')->group(function () {
     Route::put('/pets-need/{id}', [NeedPetController::class, 'update'])->name('pets-neet.update');
     Route::delete('/pets-need/{id}', [NeedPetController::class, 'destroy'])->name('pets-neet.destroy');
     // Blogs
-    Route::post('/blogs', [BlogController::class, 'store'])->name('blogs.store');
-    Route::put('/blogs/{id}', [BlogController::class, 'update'])->name('blogs.update');
-    Route::delete('/blogs/{id}', [BlogController::class, 'destroy'])->name('blogs.destroy');
+    Route::post('/category/{id}/blogs', [BlogController::class, 'store'])->name('blogs.store');
+    Route::put('/category-blogs/{id}', [BlogController::class, 'update'])->name('blogs.update');
+    Route::delete('/category-blogs/{id}', [BlogController::class, 'destroy'])->name('blogs.destroy');
 
     // hostories
     Route::post('/pets/{id}/histories', [HistoryController::class, 'store'])->name('histories.store');
@@ -76,7 +76,7 @@ Route::get('/pets/{id}/needs', [NeedPetController::class, 'index'])->name('pets.
 Route::get('/pets-need/{id}', [NeedPetController::class, 'show'])->name('pets-needs.show');
 
 // blogs
-Route::get('/blogs', [BlogController::class, 'index'])->name('blogs.index');
+Route::get('/category/{id}/blogs', [BlogController::class, 'index'])->name('blogs.index');
 Route::get('/blogs/{id}', [BlogController::class, 'show'])->name('blogs.show');
 //Contact
 Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
