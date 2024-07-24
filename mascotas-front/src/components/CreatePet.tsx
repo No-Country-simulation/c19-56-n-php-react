@@ -22,15 +22,15 @@ import { Textarea } from "@/components/ui/textarea";
 import { PlusIcon } from "@/icons";
 import { PetCreate } from "@/interfaces";
 import { useState } from "react";
-import { useAuthStore } from "@/store";
+import { useAuthStore, usePetsPaginateStore } from "@/store";
 import { createPets } from "@/backend";
 import { toast } from "sonner";
 import { mutate } from "swr";
-
+// TODO : Falta agregar un spiner en el proyecto
 export const CreateNewPet = () => {
   const [loading, setLoanding] = useState(false);
   const token = useAuthStore((state) => state.token);
-  const [errorBackned, setErrorBackned] = useState<string | null>(null);
+  const page = usePetsPaginateStore((state) => state.pageState);
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const onFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files ? event.target.files[0] : null;
@@ -90,9 +90,16 @@ export const CreateNewPet = () => {
       const response = await createPets(formData, token);
       if (response.status === 201) {
         const data = response.data;
+        console.log(data);
         setLoanding(false);
         setSelectedImage(null);
-        mutate("/api/pets");
+        setSelectedImage(null);
+        reset();
+        mutate(
+          process.env.NEXT_PUBLIC_URL_BASE + `/api/pets?page=${page}`,
+          token
+        );
+        toast.success(data.message);
         reset();
       }
     } catch (error) {
@@ -130,7 +137,7 @@ export const CreateNewPet = () => {
                 <img
                   src={URL.createObjectURL(selectedImage)}
                   alt="Selected"
-                  className="max-w-xs max-h-xs w-auto h-auto" 
+                  className="max-w-xs max-h-xs w-auto h-auto"
                 />
               </div>
             )}
