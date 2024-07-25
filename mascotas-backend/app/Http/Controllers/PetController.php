@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Pet;
+use App\Models\Race;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -34,13 +35,15 @@ class PetController extends Controller
     public function store(Request $request)
     {
         try {
+            $request->merge(['race' => strtolower($request->race)]);
             $rules = [
                 'name' => 'required|string|max:255',
-                'race_id' => 'required|integer|exists:races,id',
+                'race' => 'required|string',
                 'size' => 'required|string|in:pequeño,mediano,grande',
                 'weight' => 'required|numeric|min:0',
                 'age' => 'required|integer|min:0',
                 'personality' => 'required|string|max:255',
+                'description' => 'required|string|max:255',
                 'image' => 'required|image|max:5048',
                 'status' => 'required|string|in:disponible,adoptado',
             ];
@@ -54,11 +57,14 @@ class PetController extends Controller
             if (!Gate::allows('validate-role', auth()->user())) {
                 return response()->json(['message' => 'Error en privilegio', 'error' => 'No tienes permisos para realizar esta acción'], Response::HTTP_UNAUTHORIZED);
             }
+            $race = Race::firstOrCreate(['name' => $request->race]);
             $file = $request->file('image');
             $path = Storage::disk('s3')->putFile('uploads', $file, 'public');
             $url = Storage::disk('s3')->url($path);
-            $dataToCreate = $request->only(['name', 'race_id', 'size', 'weight', 'age', 'personality', 'status']);
+            $dataToCreate = $request->only(['name', 'size', 'weight', 'age', 'personality', 'status']);
             $dataToCreate['image'] = $url;
+            $dataToCreate['race_id'] = $race->id;
+
             $data = Pet::create($dataToCreate);
             return response()->json([
                 'message' => 'Recurso creado exitosamente',

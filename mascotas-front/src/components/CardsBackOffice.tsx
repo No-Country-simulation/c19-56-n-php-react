@@ -1,4 +1,4 @@
-import React, { use, useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react"
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -15,16 +15,26 @@ import CardBackOffice from "./CardBackOffice";
 import Pagination from "./PaginationComponent";
 import { Pet, Pets } from "@/interfaces";
 import { usePetsData } from "@/hooks";
+import { usePetsPaginateStore } from "@/store";
+import { usePagination } from "@/hooks/usePagination";
+import { CreateNewPet } from "./CreatePet";
 
 const CardsBackOffice = () => {
-  const {
-    listPets,
-    isLoading,
-    currentPageState,
+  const totalPageState = usePetsPaginateStore((state) => state.totalPageState);
+  const setPage = usePetsPaginateStore((state) => state.setPageState);
+  const currentPageState = usePetsPaginateStore(
+    (state) => state.currentPageState
+  );
+  const lastPageState = usePetsPaginateStore((state) => state.lastPageState);
+  const { listPets, isLoading } = usePetsData();
+  const { pageNumbers, nextPage, prevPage } = usePagination(
     totalPageState,
-    lastPageState,
-  } = usePetsData();
-  console.log(currentPageState, totalPageState, lastPageState)
+    currentPageState,
+    setPage
+  );
+  const totalPages = Math.ceil(totalPageState / 10);
+  const startPage = Math.max(1, currentPageState - 10);
+  const endPage = Math.min(totalPages, currentPageState + 10);
   return (
     <main className="grid flex-1 items-start gap-4 p-4 sm:px-6 sm:py-0 md:gap-8">
       <header className="bg-background px-6 py-4 flex items-center justify-between">
@@ -68,10 +78,8 @@ const CardsBackOffice = () => {
             <SearchIcon className="absolute left-2 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
           </div>
         </div>
-        <Button>
-          <PlusIcon className="h-4 w-4 mr-2" />
-          <span>Add New Pets</span>
-        </Button>
+
+        <CreateNewPet />
       </header>
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         {listPets?.map((pet: Pet) => {
@@ -84,21 +92,23 @@ const CardsBackOffice = () => {
               age={pet.age}
               // description={pet.descripcion}
             />
-          );
+          )
         })}
-        <label className="flex items-center justify-center border-2 border-dashed rounded-md h-32 cursor-pointer">
-          <AiOutlinePlus size={24} />
-          <input
-            type="file"
-            accept="image/*"
-            className="hidden"
-            // onChange={handleAddImage}
-          />
-        </label>
       </div>
-      <Pagination />
+      <Pagination
+        prevPage={prevPage}
+        nextPage={nextPage}
+        setPage={setPage}
+        currentPageState={currentPageState}
+        lastPageState={lastPageState}
+        totalPageState={totalPageState}
+        startPage={startPage}
+        endPage={endPage}
+        totalPages={totalPages}
+        pageNumbers={pageNumbers}
+      />
     </main>
-  );
-};
+  )
+}
 
-export default CardsBackOffice;
+export default CardsBackOffice
