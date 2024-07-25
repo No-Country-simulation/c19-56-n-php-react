@@ -82,3 +82,37 @@ export const register = async (
     }
   }
 };
+
+export const getPetOne = async (id: number) => {
+  try {
+    const response = await urlBase.get(`/api/pets/${id}`);
+    return response.data;
+  } catch (error: any) {
+    if (error.response && error.response.data && error.response.data.error) {
+      console.error("Error del backend:", error.response.data.error);
+      throw new Error(error.response.data.error);
+    } else {
+      console.error("Error de red o desconocido", error);
+      throw new Error(
+        "Ocurrió un error al intentar realizar la operación. Por favor, inténtalo de nuevo."
+      );
+    }
+  }
+};
+
+export const getPets = async () => {
+  try {
+    const response = await urlBase.get(`/api/pets`);
+    return response.data.data;
+  } catch (error: any) {
+    if (error.response && error.response.data && error.response.data.error) {
+      console.error("Error del backend:", error.response.data.error);
+      throw new Error(error.response.data.error);
+    } else {
+      console.error("Error de red o desconocido", error);
+      throw new Error(
+        "Ocurrió un error al intentar realizar la operación. Por favor, inténtalo de nuevo."
+      );
+    }
+  }
+};

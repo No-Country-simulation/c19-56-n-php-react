@@ -1,11 +1,61 @@
-import React from "react"
-import { useFormik } from "formik"
-import * as Yup from "yup"
-import { Button } from "@/components/ui/button"
-import BackOffice from "@/layout/BackOffice"
-import { AiOutlinePlus, AiOutlineDelete } from "react-icons/ai"
-import { FormInput, FormTextarea } from "@/components/InputElements"
-import { MenuOpenIcon } from "@/icons"
+import React from "react";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import { Button } from "@/components/ui/button";
+import BackOffice from "@/layout/BackOffice";
+import { AiOutlinePlus, AiOutlineDelete } from "react-icons/ai";
+import { FormInput, FormTextarea } from "@/components/InputElements";
+import { MenuOpenIcon } from "@/icons";
+import { GetStaticPaths, GetStaticProps, NextPage } from "next";
+import { getPetOne, getPets } from "@/backend";
+import { Pet } from "@/interfaces";
+import { ParsedUrlQuery } from "querystring";
+
+
+const validationSchema = Yup.object({
+  nombre: Yup.string().required("Nombre es requerido"),
+  raza: Yup.string().required("Raza es requerida"),
+  edad: Yup.number().required("Edad es requerida").positive().integer(),
+  genero: Yup.string().required("Género es requerido"),
+  tamaño: Yup.string().required("Tamaño es requerido"),
+  color: Yup.string().required("Color es requerido"),
+  estado: Yup.string().required("Estado es requerido"),
+  ubicación: Yup.string().required("Ubicación es requerida"),
+  descripcion: Yup.string().required("Descripción es requerida"),
+  images: Yup.array()
+    .of(Yup.string().required("Imagen es requerida"))
+    .max(4, "Máximo 4 imágenes"),
+});
+
+interface PetsProps {
+  pet: Pet;
+}
+
+interface Params extends ParsedUrlQuery {
+  id: string;
+}
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  const pets = await getPets();
+  const paths = pets.map((pet: Pet) => ({
+    params: { id: pet.id.toString() },
+  }));
+
+  return {
+    paths,
+    fallback: false,
+  };
+};
+export const getStaticProps: GetStaticProps<PetsProps> = async (context) => {
+  const { id } = context.params as Params;
+  // console.log(context.params);
+  const pet = await getPetOne(Number(id));
+  return {
+    props: {
+      pet,
+    },
+  };
+};
 
 const pet = {
   id: 1,
@@ -25,80 +75,71 @@ const pet = {
   raza: "Labrador Retriever",
   descripcion: "Un perro muy activo y cariñoso.",
   categoria: "Canes",
-}
+};
 
-const validationSchema = Yup.object({
-  nombre: Yup.string().required("Nombre es requerido"),
-  raza: Yup.string().required("Raza es requerida"),
-  edad: Yup.number().required("Edad es requerida").positive().integer(),
-  genero: Yup.string().required("Género es requerido"),
-  tamaño: Yup.string().required("Tamaño es requerido"),
-  color: Yup.string().required("Color es requerido"),
-  estado: Yup.string().required("Estado es requerido"),
-  ubicación: Yup.string().required("Ubicación es requerida"),
-  descripcion: Yup.string().required("Descripción es requerida"),
-  images: Yup.array()
-    .of(Yup.string().required("Imagen es requerida"))
-    .max(4, "Máximo 4 imágenes"),
-})
+const PetForm: NextPage<PetsProps> = ({ pet }) => {
+  const [isEditing, setIsEditing] = React.useState<boolean>(true);
 
-const PetForm = () => {
-  const [isEditing, setIsEditing] = React.useState<boolean>(true)
-
-  const formik = useFormik({
-    initialValues: {
-      nombre: pet.nombre,
-      raza: pet.raza,
-      edad: pet.edad,
-      genero: "",
-      tamaño: pet.tamaño,
-      color: "",
-      estado: "",
-      ubicación: "",
-      descripcion: pet.descripcion,
-      images: pet.images,
-    },
-    validationSchema: validationSchema,
-    onSubmit: (values) => {
-      console.log(values)
-    },
-  })
+  // const formik = useFormik({
+  //   initialValues: {
+  //     nombre: pet.nombre,
+  //     raza: pet.raza,
+  //     edad: pet.edad,
+  //     genero: "",
+  //     tamaño: pet.tamaño,
+  //     color: "",
+  //     estado: "",
+  //     ubicación: "",
+  //     descripcion: pet.descripcion,
+  //     images: pet.images,
+  //   },
+  //   validationSchema: validationSchema,
+  //   onSubmit: (values) => {
+  //     console.log(values);
+  //   },
+  // });
 
   function handleClick() {
-    setIsEditing(!isEditing)
+    setIsEditing(!isEditing);
   }
 
-  function handleAddImage(event: any) {
-    const file = event.target.files[0]
-    if (file) {
-      const reader = new FileReader()
-      reader.onloadend = () => {
-        formik.setFieldValue("images", [...formik.values.images, reader.result])
-      }
-      reader.readAsDataURL(file)
-    }
-  }
+  // function handleAddImage(event: any) {
+  //   const file = event.target.files[0];
+  //   if (file) {
+  //     const reader = new FileReader();
+  //     reader.onloadend = () => {
+  //       formik.setFieldValue("images", [
+  //         ...formik.values.images,
+  //         reader.result,
+  //       ]);
+  //     };
+  //     reader.readAsDataURL(file);
+  //   }
+  // }
 
-  function handleRemoveImage(index: number) {
-    const newImages = formik.values.images.filter((_, i) => i !== index)
-    formik.setFieldValue("images", newImages)
-  }
+  // function handleRemoveImage(index: number) {
+  //   const newImages = formik.values.images.filter((_, i) => i !== index);
+  //   formik.setFieldValue("images", newImages);
+  // }
 
-  function handleDrop(event: any) {
-    event.preventDefault()
-    const file = event.dataTransfer.files[0]
-    if (file) {
-      const reader = new FileReader()
-      reader.onloadend = () => {
-        formik.setFieldValue("images", [...formik.values.images, reader.result])
-      }
-      reader.readAsDataURL(file)
-    }
-  }
+  // function handleDrop(event: any) {
+  //   event.preventDefault();
+  //   const file = event.dataTransfer.files[0];
+  //   if (file) {
+  //     const reader = new FileReader();
+  //     reader.onloadend = () => {
+  //       formik.setFieldValue("images", [
+  //         ...formik.values.images,
+  //         reader.result,
+  //       ]);
+  //     };
+  //     reader.readAsDataURL(file);
+  //   }
+  // }
 
-  function handleDragOver(event: any) {
-    event.preventDefault()
-  }
+  // function handleDragOver(event: any) {
+  //   event.preventDefault();
+  // }
 
   return (
     <BackOffice>
@@ -286,7 +327,7 @@ const PetForm = () => {
         </div>
       </div>
     </BackOffice>
-  )
-}
+  );
+};
 
-export default PetForm
+export default PetForm;
