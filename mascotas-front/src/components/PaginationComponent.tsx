@@ -5,20 +5,20 @@ import {
   PaginationPrevious,
   PaginationLink,
   PaginationNext,
-} from "@/components/ui/pagination";
+} from "@/components/ui/pagination"
 
 type PaginationComponentProps = {
-  prevPage: (page: number) => void | null;
-  nextPage: (page: number) => void | null;
-  setPage: (page: number) => void;
-  currentPageState: number;
-  lastPageState: number;
-  totalPageState: number;
-  startPage: number;
-  endPage: number;
-  totalPages: number;
-  pageNumbers: number[];
-};
+  prevPage: (page: number) => void | null
+  nextPage: (page: number) => void | null
+  setPage: (page: number) => void
+  currentPageState: number
+  lastPageState: number
+  totalPageState: number
+  startPage: number
+  endPage: number
+  totalPages: number
+  pageNumbers: number[]
+}
 
 const PaginationComponent: React.FC<PaginationComponentProps> = ({
   prevPage,
@@ -47,7 +47,7 @@ const PaginationComponent: React.FC<PaginationComponentProps> = ({
           )}
 
           {startPage > 1 && <div>...</div>}
-          {pageNumbers.map((number) => (
+          {pageNumbers?.map((number) => (
             <button
               key={number}
               onClick={() => setPage(number)}
@@ -81,7 +81,7 @@ const PaginationComponent: React.FC<PaginationComponentProps> = ({
         </p>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default PaginationComponent;
+export default PaginationComponent
