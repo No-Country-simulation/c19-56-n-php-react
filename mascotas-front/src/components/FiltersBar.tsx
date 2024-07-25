@@ -6,12 +6,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
-import {
-  ChevronDownIcon,
-  DogIcon,
-  PawPrintIcon,
-  SmileIcon,
-} from "@/icons"
+import { ChevronDownIcon, DogIcon, PawPrintIcon, SmileIcon } from "@/icons"
 import { Slider } from "@/components/ui/slider"
 import { useState } from "react"
 
@@ -24,11 +19,11 @@ export default function FiltersBar() {
   return (
     <div className="w-full">
       <div className="container px-4 md:px-6 py-6 md:py-10">
-        <div className="flex flex-wrap items-start gap-4 md:gap-8">
+        <div className="flex flex-wrap md:flex-row md:justify-center md:items-start gap-4 md:gap-8">
           {["Especies", "Razas", "Temperamento"].map((category, idx) => (
             <DropdownMenu key={idx}>
               <DropdownMenuTrigger asChild>
-                <Button variant="outline" className="flex items-center gap-2">
+                <Button variant="ghost" className="outliner-none flex items-center gap-2 text-gray-800 font-bold text-xl opacity-80">
                   {category === "Especies" ? (
                     <PawPrintIcon className="w-5 h-5" />
                   ) : category === "Razas" ? (
@@ -37,12 +32,13 @@ export default function FiltersBar() {
                     <SmileIcon className="w-5 h-5" />
                   )}
                   {category}
+                  <ChevronDownIcon className="w-4 h-4 ml-2" />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="start" className="w-56">
                 {species.map((specie) => (
                   <DropdownMenuCheckboxItem key={specie}>
-                    <div className="flex items-center justify-between">
+                    <div className="flex items-center justify-between  text-gray-800 font-bold text-xl opacity-80">
                       <span>{specie}</span>
                     </div>
                   </DropdownMenuCheckboxItem>
@@ -53,8 +49,8 @@ export default function FiltersBar() {
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button
-                variant="outline"
-                className="flex items-center w-full md:w-auto"
+                variant="ghost"
+                className="flex items-center w-full md:w-auto text-gray-800 font-bold text-xl opacity-80"
               >
                 Rangos
                 <ChevronDownIcon className="w-4 h-4 ml-2" />
