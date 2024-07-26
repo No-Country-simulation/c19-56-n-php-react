@@ -18,6 +18,8 @@ return new class extends Migration
             $table->unsignedBigInteger('specie_id');
             $table->timestamps();
             $table->softDeletes();
+            $table->foreign('specie_id')->references('id')->on('species')->onDelete('cascade');
+
          });
     }
 

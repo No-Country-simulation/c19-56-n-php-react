@@ -26,6 +26,7 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
             $table->foreign('race_id')->references('id')->on('races')->onDelete('cascade');
+            $table->foreign('specie_id')->references('id')->on('species')->onDelete('cascade');
             });
     }
 

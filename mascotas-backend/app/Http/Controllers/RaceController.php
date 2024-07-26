@@ -33,12 +33,12 @@ class RaceController extends Controller
     public function store(Request $request)
     {
         try {
-            $request->merge(['specie' => strtolower($request->specie)]);
             $rules = [
                 'name' => 'required|string|unique:races,name',
                 'description' => 'required|string',
+                'specie_id' => 'required|integer|exists:species,id',
             ];
-            $specie = Specie::firstOrCreate(['name' => $request->specie]);
+
             $validator = Validator::make($request->all(), $rules);
             if ($validator->fails()) {
                 return response()->json([
@@ -46,9 +46,21 @@ class RaceController extends Controller
                     'errors' => $validator->errors()
                 ], Response::HTTP_BAD_REQUEST);
             }
+            if (!Gate::allows('validate-role', auth()->user())) {
+                return response()->json([
+                    'message' => 'Error en privilegio',
+                    'error' => 'No tienes permisos para realizar esta acción'
+                ], Response::HTTP_UNAUTHORIZED);
+            }
 
-            $dataToCreate = $request->only(['name', 'description']);
-            $dataToCreate['specie_id'] = $specie->id;
+            $specieExists = Specie::where('id', $request->input('specie_id'))->exists();
+            if (!$specieExists) {
+                return response()->json([
+                    'message' => 'El ID de especie proporcionado no existe.',
+                ], Response::HTTP_NOT_FOUND);
+            }
+            $dataToCreate = $request->only(['name', 'description', 'specie_id']);
+
             $race = Race::create($dataToCreate);
             return response()->json([
                 'message' => 'Raza creada exitosamente',
@@ -72,9 +84,14 @@ class RaceController extends Controller
             return response()->json($data, Response::HTTP_OK);
         } catch (ModelNotFoundException $e) {
             $modelName = class_basename($e->getModel());
-            return response()->json(['message' => "No query results for id $id of model {$modelName} "], Response::HTTP_NOT_FOUND);
+            return response()->json([
+                'message' => "No query results for id $id of model {$modelName} "
+            ], Response::HTTP_NOT_FOUND);
         } catch (\Exception $e) {
-            return response()->json(['message' => 'Error interno', 'error' =>  $e->getMessage()], Response::HTTP_BAD_REQUEST);
+            return response()->json([
+                'message' => 'Error interno',
+                'error' =>  $e->getMessage()
+            ], Response::HTTP_BAD_REQUEST);
         }
     }
 
@@ -103,7 +120,16 @@ class RaceController extends Controller
                 ], Response::HTTP_UNAUTHORIZED);
             }
             $data = Race::findOrFail($id);
-            $data->update($request->all());
+            $specieExists = Specie::where('id', $request->input('specie_id'))->exists();
+            if (!$specieExists) {
+                return response()->json([
+                    'message' => 'El ID de especie proporcionado no existe.',
+                ], Response::HTTP_NOT_FOUND);
+            }
+
+            $dataToUpdate = $request->only(['name', 'description', 'specie_id']);
+            $data->update($dataToUpdate);
+
             return response()->json([
                 'message' => 'Raza actualizada exitosamente',
                 'data' => $data

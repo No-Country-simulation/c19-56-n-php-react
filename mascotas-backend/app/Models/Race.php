@@ -15,8 +15,4 @@ class Race extends Model
         'specie_id'
         ];
 
-    public function specie()
-    {
-        return $this->belongsTo(Specie::class);
-    }
 }

@@ -6,7 +6,7 @@ use App\Models\Contact;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 
-class ContactNotification extends Notification
+class ContactCreated extends Notification
 {
     use Queueable;
     protected $contact;

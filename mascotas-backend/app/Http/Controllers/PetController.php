@@ -39,7 +39,7 @@ class PetController extends Controller
             $request->merge(['race' => strtolower($request->race)]);
             $rules = [
                 'name' => 'required|string|max:255',
-                'race' => 'required|string',
+                'race_id' => 'required|string',
                 'size' => 'required|string|in:pequeño,mediano,grande',
                 'weight' => 'required|numeric|min:0',
                 'age' => 'required|integer|min:0',
@@ -47,7 +47,7 @@ class PetController extends Controller
                 'description' => 'required|string|max:255',
                 'image' => 'required|image|max:5048',
                 'status' => 'required|string|in:disponible,adoptado',
-                'specie_id' => 'sometimes|integer|exists:species,id',
+                'specie_id' => 'required|integer|exists:species,id',
             ];
             $validator = Validator::make($request->all(), $rules);
             if ($validator->fails()) {
@@ -63,16 +63,24 @@ class PetController extends Controller
                 ], Response::HTTP_UNAUTHORIZED);
             }
             $race = Race::firstOrCreate(['name' => $request->race]);
-            $specie = Specie::firstOrCreate(['name' => $request->specie]);
+
             $file = $request->file('image');
             $path = Storage::disk('s3')->putFile('uploads', $file, 'public');
             $url = Storage::disk('s3')->url($path);
-            $dataToCreate = $request->only(['name', 'size', 'weight', 'age', 'personality', 'status']);
+
+            $specieExists = Specie::where('id', $request->input('specie_id'))->exists();
+            if (!$specieExists) {
+                return response()->json([
+                    'message' => 'El ID de especie proporcionado no existe.',
+                ], Response::HTTP_NOT_FOUND);
+            }
+
+            $dataToCreate = $request->only(['name', 'size', 'weight', 'age', 'personality', 'status', 'specie_id']);
             $dataToCreate['image'] = $url;
             $dataToCreate['race_id'] = $race->id;
-            $dataToCreate['specie_id'] = $specie->id;
 
             $data = Pet::create($dataToCreate);
+            
             return response()->json([
                 'message' => 'Recurso creado exitosamente',
                 'data' => $data
@@ -138,8 +146,15 @@ class PetController extends Controller
             } else {
                 Log::info('No se ha enviado ningún archivo de imagen.');
             }
+            $specieExists = Specie::where('id', $request->input('specie_id'))->exists();
+            if (!$specieExists) {
+                return response()->json([
+                    'message' => 'El ID de especie proporcionado no existe.',
+                ], Response::HTTP_NOT_FOUND);
+            }
             $validatedData = $request->only(['name', 'race_id', 'size', 'weight', 'age', 'personality', 'status', 'specie_id']);
             $data->update($validatedData);
+
             return response()->json([
                 'message' => 'Mascota actualizada exitosamente',
                 'data' => $data
