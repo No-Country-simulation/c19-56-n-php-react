@@ -144,11 +144,9 @@ const PetForm: NextPage<PetsProps> = ({ pet }) => {
   return (
     <BackOffice>
       <div className="w-full max-w-4xl mx-auto py-8 px-4 md:px-6">
-        <div className="grid  gap-6 items-start">
+        <div className="grid gap-6 items-start">
           <div className="grid gap-4">
-            <h1 className="text-3xl font-bold">
-              {pet.name}
-            </h1>
+            <h1 className="text-3xl font-bold">{pet.name}</h1>
             <Image
               src={pet.image}
               alt="Buddy the Golden Retriever"
@@ -191,9 +189,22 @@ const PetForm: NextPage<PetsProps> = ({ pet }) => {
             </div>
             <div className="grid gap-2">
               <h2 className="text-xl font-semibold">Sobre mi</h2>
-              <p className="text-muted-foreground">
-                {pet.description}
-              </p>
+              <p className="text-muted-foreground">{pet.description}</p>
+            </div>
+          </div>
+          <div className="grid gap-4">
+            <h2 className="text-xl font-semibold">Más Imágenes</h2>
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+              {pet?.images?.map((image, index) => (
+                <Image
+                  key={index}
+                  src={image}
+                  alt={`Imagen ${index + 1} de ${pet.name}`}
+                  width={300}
+                  height={200}
+                  className="rounded-lg object-cover"
+                />
+              ))}
             </div>
           </div>
         </div>

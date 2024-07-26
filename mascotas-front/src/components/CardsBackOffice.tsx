@@ -1,4 +1,4 @@
-import React, { use, useEffect, useState } from "react"
+import React, { use, useEffect, useState } from "react";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -18,6 +18,7 @@ import { usePetsData } from "@/hooks";
 import { usePetsPaginateStore } from "@/store";
 import { usePagination } from "@/hooks/usePagination";
 import { CreateNewPet } from "./CreatePet";
+import Link from "next/link";
 
 const CardsBackOffice = () => {
   const totalPageState = usePetsPaginateStore((state) => state.totalPageState);
@@ -85,15 +86,18 @@ const CardsBackOffice = () => {
         {listPets?.map((pet: Pet) => {
           // TODO: Agregar Descripcion desde el backend para pets
           return (
-            <CardBackOffice
-              key={pet.id}
-              image={pet.image}
-              name={pet.name}
-              age={pet.age}
-              // description={pet.descripcion}
-            />
-          )
+            <Link href={`/dashboard/pet/${pet.id}`} key={pet.id}>
+              <CardBackOffice
+                key={pet.id}
+                image={pet.image}
+                name={pet.name}
+                age={pet.age}
+                // description={pet.descripcion}
+              />
+            </Link>
+          );
         })}
+        
       </div>
       <Pagination
         prevPage={prevPage}
@@ -108,7 +112,7 @@ const CardsBackOffice = () => {
         pageNumbers={pageNumbers}
       />
     </main>
-  )
-}
+  );
+};
 
-export default CardsBackOffice
+export default CardsBackOffice;
