@@ -5,6 +5,7 @@ import {
   ActivityIcon,
   ContactIcon,
   DicesIcon,
+  HomeIcon,
   MenuClosedIcon,
   MountainIcon,
   TagsIcon,
@@ -12,13 +13,20 @@ import {
 
 export default function HeaderClient() {
   return (
-    <header className="w-full bg-[#6cc4a1] px-6 py-0 sm:px-6 md:py-0">
+    <header className="w-full bg-[#6cc4a1] px-6 py-0 sm:px-6 md:py-0 fixed top-0 shadow-md z-[99999999]">
       <div className="w-full m-0 py-0 flex items-center justify-center md:justify-between">
         <Link href="/" className="flex items-center" prefetch={false}>
           <img src="/logo.png" alt="logo" className="w-auto h-24" />
           <span className="sr-only">Acme Inc</span>
         </Link>
         <div className="hidden items-center gap-8 md:flex">
+          <Link
+            href="/"
+            className="text-xl font-medium text-white hover:underline"
+            prefetch={false}
+          >
+            Inicio
+          </Link>
           <Link
             href="/adopta"
             className="text-xl font-medium text-white hover:underline"
@@ -39,6 +47,13 @@ export default function HeaderClient() {
             prefetch={false}
           >
             Educación y recursos
+          </Link>
+          <Link
+            href="/blog"
+            className="text-xl font-medium text-white hover:underline"
+            prefetch={false}
+          >
+            Blog
           </Link>
           <Link
             href="/contacto"
