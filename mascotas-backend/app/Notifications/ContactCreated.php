@@ -4,11 +4,7 @@ namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
 use App\Models\Contact;
-use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Notifications\Messages\MailMessage;
-use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Notifications\Notification;
-use Nette\Utils\Arrays;
 
 class ContactCreated extends Notification
 {
@@ -33,7 +29,7 @@ class ContactCreated extends Notification
         return ['database'];
     }
 
-    
+
 
     public function toArray($notifiable)
     {
