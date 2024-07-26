@@ -5,6 +5,7 @@ import {
   ActivityIcon,
   ContactIcon,
   DicesIcon,
+  HomeIcon,
   MenuClosedIcon,
   MountainIcon,
   TagsIcon,
@@ -19,6 +20,13 @@ export default function HeaderClient() {
           <span className="sr-only">Acme Inc</span>
         </Link>
         <div className="hidden items-center gap-8 md:flex">
+          <Link
+            href="/"
+            className="text-xl font-medium text-white hover:underline"
+            prefetch={false}
+          >
+            Inicio
+          </Link>
           <Link
             href="/adopta"
             className="text-xl font-medium text-white hover:underline"
