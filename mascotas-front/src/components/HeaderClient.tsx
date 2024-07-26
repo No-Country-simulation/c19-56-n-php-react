@@ -12,7 +12,7 @@ import {
 
 export default function HeaderClient() {
   return (
-    <header className="w-full bg-[#6cc4a1] px-6 py-0 sm:px-6 md:py-0">
+    <header className="w-full bg-[#6cc4a1] px-6 py-0 sm:px-6 md:py-0 fixed top-0 z-50 shadow-md">
       <div className="w-full m-0 py-0 flex items-center justify-center md:justify-between">
         <Link href="/" className="flex items-center" prefetch={false}>
           <img src="/logo.png" alt="logo" className="w-auto h-24" />

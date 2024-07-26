@@ -11,7 +11,7 @@ export default function ClientLayout({ children }: Props) {
       <header className="bg-[#6cc4a1]">
         <HeaderClient />
       </header>
-      <main className="flex-grow">
+      <main className="flex-grow mt-[95px]">
         <div className="mx-auto px-0 py-0">
           {children}
         </div>
