@@ -27,5 +27,8 @@ class Pet extends Model
     {
         return $this->hasMany(History::class);
     }
-    
+    public function race()
+    {
+        return $this->belongsTo(Race::class);
+    }
 }

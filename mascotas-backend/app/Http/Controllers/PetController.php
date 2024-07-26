@@ -85,7 +85,7 @@ class PetController extends Controller
     public function show($id)
     {
         try {
-            $data = Pet::findOrFail($id);
+            $data = Pet::with('race')->findOrFail($id);
             return response()->json($data, Response::HTTP_OK);
         } catch (ModelNotFoundException $e) {
             $modelName = class_basename($e->getModel());
