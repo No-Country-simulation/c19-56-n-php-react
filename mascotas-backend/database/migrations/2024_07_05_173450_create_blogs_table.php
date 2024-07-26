@@ -25,7 +25,6 @@ return new class extends Migration
             $table->text('meta_keywords')->nullable();
             $table->timestamps();
             $table->softDeletes();
-
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
         });

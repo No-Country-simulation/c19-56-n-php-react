@@ -19,7 +19,8 @@ class Pet extends Model
         'personality', // Descripción de la personalidad de la mascota.
         'image', // Ruta de la imagen de la mascota.
         'status', // Estado de la mascota (por ejemplo, disponible para adopción, adoptado).
-        'description' // Descripción de la mascota.
+        'description', // Descripción de la mascota.
+        'specie_id' // ID de la especie de la mascota.
     ];
 
 
@@ -27,5 +28,6 @@ class Pet extends Model
     {
         return $this->hasMany(History::class);
     }
-    
+
+
 }
