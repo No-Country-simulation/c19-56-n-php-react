@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->unsignedBigInteger('race_id');
+            $table->unsignedBigInteger('specie_id');
             $table->string('size');
             $table->decimal('weight', 5, 2); // Asumiendo un peso máximo de 999.99
             $table->integer('age');
@@ -25,7 +26,7 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
             $table->foreign('race_id')->references('id')->on('races')->onDelete('cascade');
-        });
+            });
     }
 
     /**

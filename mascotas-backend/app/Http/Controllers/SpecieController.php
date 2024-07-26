@@ -2,22 +2,26 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Race;
+
 use App\Models\Specie;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 
-class RaceController extends Controller
+
+class SpecieController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index()
     {
-        $data = Race::paginate(10);
+        $data = Specie::paginate(10);
         $response = [
             'lastPage' => $data->lastPage(),
             'currentPage' => $data->currentPage(),
@@ -33,61 +37,8 @@ class RaceController extends Controller
     public function store(Request $request)
     {
         try {
-            $request->merge(['specie' => strtolower($request->specie)]);
             $rules = [
-                'name' => 'required|string|unique:races,name',
-                'description' => 'required|string',
-            ];
-            $specie = Specie::firstOrCreate(['name' => $request->specie]);
-            $validator = Validator::make($request->all(), $rules);
-            if ($validator->fails()) {
-                return response()->json([
-                    'message' => 'Validación fallida',
-                    'errors' => $validator->errors()
-                ], Response::HTTP_BAD_REQUEST);
-            }
-
-            $dataToCreate = $request->only(['name', 'description']);
-            $dataToCreate['specie_id'] = $specie->id;
-            $race = Race::create($dataToCreate);
-            return response()->json([
-                'message' => 'Raza creada exitosamente',
-                'data' => $race
-            ], Response::HTTP_CREATED);
-        } catch (\Exception $e) {
-            return response()->json([
-                'message' => 'Error',
-                'error' => $e->getMessage()
-            ], 400);
-        }
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show($id)
-    {
-        try {
-            $data = Race::findOrFail($id);
-            return response()->json($data, Response::HTTP_OK);
-        } catch (ModelNotFoundException $e) {
-            $modelName = class_basename($e->getModel());
-            return response()->json(['message' => "No query results for id $id of model {$modelName} "], Response::HTTP_NOT_FOUND);
-        } catch (\Exception $e) {
-            return response()->json(['message' => 'Error interno', 'error' =>  $e->getMessage()], Response::HTTP_BAD_REQUEST);
-        }
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, $id)
-    {
-        try {
-            $rules = [
-                'name' => 'sometimes|required|string|unique:races,name,' . $id,
-                'description' => 'sometimes|required|string',
-                'specie_id' => 'sometimes|integer|exists:species,id',
+                'name' => 'required|string|max:255',
             ];
             $validator = Validator::make($request->all(), $rules);
             if ($validator->fails()) {
@@ -102,16 +53,78 @@ class RaceController extends Controller
                     'error' => 'No tienes permisos para realizar esta acción'
                 ], Response::HTTP_UNAUTHORIZED);
             }
-            $data = Race::findOrFail($id);
-            $data->update($request->all());
+
+            $data = Specie::create($request->all());
             return response()->json([
-                'message' => 'Raza actualizada exitosamente',
+                'message' => 'Especie creada exitosamente',
                 'data' => $data
-            ], Response::HTTP_OK);
+            ], Response::HTTP_CREATED);
         } catch (\Exception $e) {
             return response()->json([
                 'message' => 'Error interno',
                 'error' => $e->getMessage()
+            ], Response::HTTP_BAD_REQUEST);
+        }
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show($id)
+    {
+        try {
+            $data = Specie::findOrFail($id);
+            return response()->json($data, Response::HTTP_OK);
+        } catch (ModelNotFoundException $e) {
+            $modelName = class_basename($e->getModel());
+            return response()->json([
+                'message' => "No query results for id $id of model {$modelName} "
+            ], Response::HTTP_NOT_FOUND);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Error interno',
+                'error' =>  $e->getMessage()
+            ], Response::HTTP_BAD_REQUEST);
+        }
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, $id)
+    {
+        try {
+            $rules = [
+                'name' => 'sometimes|string|max:255',
+            ];
+            $validator = Validator::make($request->all(), $rules);
+            if ($validator->fails()) {
+                return response()->json([
+                    'message' => 'Validación fallida',
+                    'errors' => $validator->errors()
+                ], Response::HTTP_BAD_REQUEST);
+            }
+            if (!Gate::allows('validate-role', auth()->user())) {
+                return response()->json([
+                    'message' => 'Error en privilegio',
+                    'error' => 'No tienes permisos para realizar esta acción'
+                ], Response::HTTP_UNAUTHORIZED);
+            }
+            $data = Specie::findOrFail($id);
+            $data->update($request->all());
+            return response()->json([
+                'message' => 'Especie actualizada exitosamente',
+                'data' => $data
+            ], Response::HTTP_OK);
+        } catch (ModelNotFoundException $e) {
+            $modelName = class_basename($e->getModel());
+            return response()->json([
+                'message' => "No query results for model {$modelName} {$id}"
+            ], Response::HTTP_NOT_FOUND);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Error',
+                'error' =>  $e->getMessage()
             ], Response::HTTP_BAD_REQUEST);
         }
     }
@@ -123,13 +136,21 @@ class RaceController extends Controller
     {
         try {
             if (!Gate::allows('validate-role', auth()->user())) {
-                return response()->json(['message' => 'Error en privilegio', 'error' => 'No tienes permisos para realizar esta acción'], Response::HTTP_UNAUTHORIZED);
+                return response()->json([
+                    'message' => 'Error en privilegio',
+                'error' => 'No tienes permisos para realizar esta acción'
+            ], Response::HTTP_UNAUTHORIZED);
             }
-            $data = Race::findOrFail($id);
+            $data = Specie::findOrFail($id);
             $data->delete();
-            return response()->json(["message" => "Raza eliminada de forma exitosa"], Response::HTTP_OK);
+            return response()->json([
+                "message" => "Mascota eliminada de forma exitosa"
+            ], Response::HTTP_OK);
         } catch (\Exception $e) {
-            return response()->json(['message' => "Error", 'error' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
+            return response()->json([
+                'message' => "Error",
+                'error' => $e->getMessage()
+        ], Response::HTTP_BAD_REQUEST);
         }
     }
 }

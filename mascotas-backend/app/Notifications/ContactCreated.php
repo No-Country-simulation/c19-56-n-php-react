@@ -2,15 +2,14 @@
 
 namespace App\Notifications;
 
-use Illuminate\Bus\Queueable;
 use App\Models\Contact;
+use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 
-class ContactCreated extends Notification
+class ContactNotification extends Notification
 {
     use Queueable;
     protected $contact;
-
     /**
      * Create a new notification instance.
      */
@@ -24,18 +23,23 @@ class ContactCreated extends Notification
      *
      * @return array<int, string>
      */
-    public function via($notifiable): array
+    public function via(object $notifiable): array
     {
         return ['database'];
     }
 
 
-
-    public function toArray($notifiable)
+    /**
+     * Get the array representation of the notification.
+     *
+     * @return array<string, mixed>
+     */
+    public function toArray(object $notifiable): array
     {
         return [
-            'message' => 'A new contact has been created.',
+            'message' => "Se ha creado un nuevo contacto: " . $this->contact->name,
+            'contact_email' => $this->contact->email,
+            'contact_phone' => $this->contact->phone,
         ];
     }
-
 }

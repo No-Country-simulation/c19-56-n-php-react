@@ -9,6 +9,7 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\NeedPetController;
 use App\Http\Controllers\RaceController;
+use App\Http\Controllers\SpecieController;
 use App\Http\Controllers\SponsorshipController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -33,7 +34,7 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/contact/{id}', [ContactController::class, 'show'])->name('contact.show');
     //races
     Route::post('/races', [RaceController::class, 'store'])->name('races.store');
-    Route::put('/races/{id}', [RaceController::class, 'update'])->name('races.update'); 
+    Route::put('/races/{id}', [RaceController::class, 'update'])->name('races.update');
     Route::delete('/races/{id}', [RaceController::class, 'destroy'])->name('races.destroy');
 
     //category
@@ -53,6 +54,11 @@ Route::middleware('auth:api')->group(function () {
     Route::post('/category/{id}/blogs', [BlogController::class, 'store'])->name('blogs.store');
     Route::put('/category-blogs/{id}', [BlogController::class, 'update'])->name('blogs.update');
     Route::delete('/category-blogs/{id}', [BlogController::class, 'destroy'])->name('blogs.destroy');
+
+    //Specie
+    Route::post('/specie', [SpecieController::class, 'store'])->name('specie.store');
+    Route::put('/specie/{id}', [SpecieController::class, 'update'])->name('specie.update');
+    Route::delete('/specie/{id}', [SpecieController::class, 'destroy'])->name('specie.destroy');
 
     // hostories
     Route::post('/pets/{id}/histories', [HistoryController::class, 'store'])->name('histories.store');
@@ -78,6 +84,11 @@ Route::get('/pets-need/{id}', [NeedPetController::class, 'show'])->name('pets-ne
 // blogs
 Route::get('/category/{id}/blogs', [BlogController::class, 'index'])->name('blogs.index');
 Route::get('/blogs/{id}', [BlogController::class, 'show'])->name('blogs.show');
+
+// specie
+Route::get('/specie', [SpecieController::class, 'index'])->name('specie.index');
+Route::get('/specie/{id}', [SpecieController::class, 'show'])->name('specie.show');
+
 //Contact
 Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
 // race routes
