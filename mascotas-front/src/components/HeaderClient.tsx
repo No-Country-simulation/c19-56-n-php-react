@@ -41,6 +41,13 @@ export default function HeaderClient() {
             Educación y recursos
           </Link>
           <Link
+            href="/blog"
+            className="text-xl font-medium text-white hover:underline"
+            prefetch={false}
+          >
+            Blog
+          </Link>
+          <Link
             href="/contacto"
             className="text-xl font-medium text-white hover:underline"
             prefetch={false}
