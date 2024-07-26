@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Contact;
 use App\Models\User;
 use Illuminate\Support\Facades\Notification;
-use App\Notifications\ContactNotification;
 use App\Notifications\ContactCreated;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Validator;
@@ -69,11 +68,6 @@ class ContactController extends Controller
             }
             // Crear un nuevo contacto en la base de datos con los datos recibidos
             $data = Contact::create($request->all());
-
-
-            $admin = User::where('role', 'admin')->get();
-            Notification::send($admin, new ContactNotification($data));
-
 
             $admin = User::where('role', 'admin')->get();
             //$admin->notify(new ContactCreated($data));
