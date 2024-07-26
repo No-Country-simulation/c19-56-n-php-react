@@ -2,16 +2,17 @@
 
 namespace App\Notifications;
 
-use App\Models\Contact;
 use Illuminate\Bus\Queueable;
+use App\Models\Contact;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Notifications\Notification;
+use Nette\Utils\Arrays;
 
 class ContactCreated extends Notification
 {
     use Queueable;
-
     protected $contact;
 
     /**
@@ -27,23 +28,18 @@ class ContactCreated extends Notification
      *
      * @return array<int, string>
      */
-    public function via($notifiable)
+    public function via($notifiable): array
     {
         return ['database'];
     }
 
-    /**
-     * Get the array representation of the notification.
-     *
-     * @return array<string, mixed>
-     */
-    public function toDatabase($notifiable): array
+    
+
+    public function toArray($notifiable)
     {
         return [
-            //'contact_id' => $this->contact->id,
-            //'contact_name' => $this->contact->name,
-            //'contact_email' => $this->contact->email,
-            'message' => 'Se ha creado una nuevo contacto.'
+            'message' => 'A new contact has been created.',
         ];
     }
+
 }

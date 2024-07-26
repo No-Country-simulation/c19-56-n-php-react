@@ -70,6 +70,7 @@ class ContactController extends Controller
             $data = Contact::create($request->all());
 
             $admin = User::where('role', 'admin')->get();
+            //$admin->notify(new ContactCreated($data));
             Notification::send($admin, new ContactCreated($data));
             return response()->json([
                 'message' => 'Contacto creado exitosamente',
