@@ -2,22 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Race;
+
 use App\Models\Specie;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Validator;
 
-class RaceController extends Controller
+
+class SpecieController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index()
     {
-        $data = Race::paginate(10);
+        $data = Specie::paginate(10);
         $response = [
             'lastPage' => $data->lastPage(),
             'currentPage' => $data->currentPage(),
@@ -34,11 +36,8 @@ class RaceController extends Controller
     {
         try {
             $rules = [
-                'name' => 'required|string|unique:races,name',
-                'description' => 'required|string',
-                'specie_id' => 'required|integer|exists:species,id',
+                'name' => 'required|string|max:255',
             ];
-
             $validator = Validator::make($request->all(), $rules);
             if ($validator->fails()) {
                 return response()->json([
@@ -53,24 +52,16 @@ class RaceController extends Controller
                 ], Response::HTTP_UNAUTHORIZED);
             }
 
-            $specieExists = Specie::where('id', $request->input('specie_id'))->exists();
-            if (!$specieExists) {
-                return response()->json([
-                    'message' => 'El ID de especie proporcionado no existe.',
-                ], Response::HTTP_NOT_FOUND);
-            }
-            $dataToCreate = $request->only(['name', 'description', 'specie_id']);
-
-            $race = Race::create($dataToCreate);
+            $data = Specie::create($request->all());
             return response()->json([
-                'message' => 'Raza creada exitosamente',
-                'data' => $race
+                'message' => 'Especie creada exitosamente',
+                'data' => $data
             ], Response::HTTP_CREATED);
         } catch (\Exception $e) {
             return response()->json([
-                'message' => 'Error',
+                'message' => 'Error interno',
                 'error' => $e->getMessage()
-            ], 400);
+            ], Response::HTTP_BAD_REQUEST);
         }
     }
 
@@ -80,7 +71,7 @@ class RaceController extends Controller
     public function show($id)
     {
         try {
-            $data = Race::findOrFail($id);
+            $data = Specie::findOrFail($id);
             return response()->json($data, Response::HTTP_OK);
         } catch (ModelNotFoundException $e) {
             $modelName = class_basename($e->getModel());
@@ -102,9 +93,7 @@ class RaceController extends Controller
     {
         try {
             $rules = [
-                'name' => 'sometimes|required|string|unique:races,name,' . $id,
-                'description' => 'sometimes|required|string',
-                'specie_id' => 'sometimes|integer|exists:species,id',
+                'name' => 'sometimes|string|max:255',
             ];
             $validator = Validator::make($request->all(), $rules);
             if ($validator->fails()) {
@@ -119,25 +108,21 @@ class RaceController extends Controller
                     'error' => 'No tienes permisos para realizar esta acción'
                 ], Response::HTTP_UNAUTHORIZED);
             }
-            $data = Race::findOrFail($id);
-            $specieExists = Specie::where('id', $request->input('specie_id'))->exists();
-            if (!$specieExists) {
-                return response()->json([
-                    'message' => 'El ID de especie proporcionado no existe.',
-                ], Response::HTTP_NOT_FOUND);
-            }
-
-            $dataToUpdate = $request->only(['name', 'description', 'specie_id']);
-            $data->update($dataToUpdate);
-
+            $data = Specie::findOrFail($id);
+            $data->update($request->all());
             return response()->json([
-                'message' => 'Raza actualizada exitosamente',
+                'message' => 'Especie actualizada exitosamente',
                 'data' => $data
             ], Response::HTTP_OK);
+        } catch (ModelNotFoundException $e) {
+            $modelName = class_basename($e->getModel());
+            return response()->json([
+                'message' => "No query results for model {$modelName} {$id}"
+            ], Response::HTTP_NOT_FOUND);
         } catch (\Exception $e) {
             return response()->json([
-                'message' => 'Error interno',
-                'error' => $e->getMessage()
+                'message' => 'Error',
+                'error' =>  $e->getMessage()
             ], Response::HTTP_BAD_REQUEST);
         }
     }
@@ -149,13 +134,21 @@ class RaceController extends Controller
     {
         try {
             if (!Gate::allows('validate-role', auth()->user())) {
-                return response()->json(['message' => 'Error en privilegio', 'error' => 'No tienes permisos para realizar esta acción'], Response::HTTP_UNAUTHORIZED);
+                return response()->json([
+                    'message' => 'Error en privilegio',
+                'error' => 'No tienes permisos para realizar esta acción'
+            ], Response::HTTP_UNAUTHORIZED);
             }
-            $data = Race::findOrFail($id);
+            $data = Specie::findOrFail($id);
             $data->delete();
-            return response()->json(["message" => "Raza eliminada de forma exitosa"], Response::HTTP_OK);
+            return response()->json([
+                "message" => "Mascota eliminada de forma exitosa"
+            ], Response::HTTP_OK);
         } catch (\Exception $e) {
-            return response()->json(['message' => "Error", 'error' => $e->getMessage()], Response::HTTP_BAD_REQUEST);
+            return response()->json([
+                'message' => "Error",
+                'error' => $e->getMessage()
+        ], Response::HTTP_BAD_REQUEST);
         }
     }
 }
