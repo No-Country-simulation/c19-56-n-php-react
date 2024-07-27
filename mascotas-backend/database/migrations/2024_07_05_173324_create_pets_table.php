@@ -17,7 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('race_id');
             $table->unsignedBigInteger('specie_id');
             $table->string('size');
-            $table->decimal('weight', 5, 2); // Asumiendo un peso máximo de 999.99
+            $table->decimal('weight', 5, 2);
             $table->integer('age');
             $table->text('personality')->nullable();
             $table->text('description')->nullable();

@@ -71,6 +71,7 @@ class ContactController extends Controller
 
             $admin = User::where('role', 'admin')->get();
             //$admin->notify(new ContactCreated($data));
+            // TODO: por revision
             Notification::send($admin, new ContactCreated($data));
 
             return response()->json([
