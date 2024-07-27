@@ -32,4 +32,8 @@ class Pet extends Model
     {
         return $this->belongsTo(Race::class);
     }
+    public function specie()
+    {
+        return $this->belongsTo(Specie::class);
+    }
 }
