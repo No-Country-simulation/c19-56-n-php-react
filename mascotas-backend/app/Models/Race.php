@@ -9,11 +9,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Race extends Model
 {
     use HasFactory, SoftDeletes;
-    protected $fillable = ['name', 'description'];
+    protected $fillable = [
+        'name',
+        'description',
+        'specie_id'
+        ];
 
-    public function pets()
-    {
-        return $this->hasMany(Pet::class);
-    }
-    
 }
