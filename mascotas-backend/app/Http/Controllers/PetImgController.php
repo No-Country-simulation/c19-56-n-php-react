@@ -33,25 +33,21 @@ class PetImgController extends Controller
                 'image' => 'required|image|max:5048',
             ];
             $validator = Validator::make($request->all(), $rules);
-
             if ($validator->fails()) {
                 return response()->json([
                     'message' => 'Validación fallida',
                     'errors' => $validator->errors()
                 ], 400);
             }
-
             if (!Gate::allows('validate-role', auth()->user())) {
                 return response()->json(['message' => 'Error en privilegio', 'error' => 'No tienes permisos para realizar esta acción'], Response::HTTP_UNAUTHORIZED);
             }
-
             $file = $request->file('image');
             $path = Storage::disk('s3')->putFile('uploads', $file, 'public');
             $url = Storage::disk('s3')->url($path);
             $dataToCreate = $request->only(['pet_id']);
             $dataToCreate['image'] = $url;
             $data = PetImg::create($dataToCreate);
-
             return response()->json([
                 'message' => 'Recurso creado exitosamente',
                 'data' => $data

@@ -21,6 +21,7 @@ export interface Pets {
 export interface PetCreate {
   name: string;
   race: string;
+  specie : string,
   size: "pequeño" | "mediano" | "grande";
   weight: number;
   age: number;

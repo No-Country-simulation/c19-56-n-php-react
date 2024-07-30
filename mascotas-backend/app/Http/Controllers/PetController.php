@@ -69,15 +69,11 @@ class PetController extends Controller
             $file = $request->file('image');
             $path = Storage::disk('s3')->putFile('uploads', $file, 'public');
             $url = Storage::disk('s3')->url($path);
-
-
             $dataToCreate = $request->only(['name', 'size', 'weight', 'age', 'personality', 'status', 'description']);
             $dataToCreate['image'] = $url;
             $dataToCreate['race_id'] = $race->id;
             $dataToCreate['specie_id'] = $specie->id;
-
             $data = Pet::create($dataToCreate);
-
             return response()->json([
                 'message' => 'Recurso creado exitosamente',
                 'data' => $data

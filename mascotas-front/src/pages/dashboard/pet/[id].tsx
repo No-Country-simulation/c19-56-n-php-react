@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { Button } from "@/components/ui/button";
@@ -11,6 +11,7 @@ import { getPetOne, getPets } from "@/backend";
 import { Pet } from "@/interfaces";
 import { ParsedUrlQuery } from "querystring";
 import Image from "next/image";
+import { UploadImgPets } from "@/components/UploadImgPets";
 
 const validationSchema = Yup.object({
   nombre: Yup.string().required("Nombre es requerido"),
@@ -79,70 +80,58 @@ const pet = {
 
 const PetForm: NextPage<PetsProps> = ({ pet }) => {
   const [isEditing, setIsEditing] = React.useState<boolean>(true);
-  console.log(pet, "pets");
-  // const formik = useFormik({
-  //   initialValues: {
-  //     nombre: pet.nombre,
-  //     raza: pet.raza,
-  //     edad: pet.edad,
-  //     genero: "",
-  //     tamaño: pet.tamaño,
-  //     color: "",
-  //     estado: "",
-  //     ubicación: "",
-  //     descripcion: pet.descripcion,
-  //     images: pet.images,
-  //   },
-  //   validationSchema: validationSchema,
-  //   onSubmit: (values) => {
-  //     console.log(values);
-  //   },
-  // });
+  const [file, setFile] = useState<File | null>(null);
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files) {
+      setFile(event.target.files[0]);
+    }
+  };
 
-  function handleClick() {
-    setIsEditing(!isEditing);
-  }
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (!file) return;
 
-  // function handleAddImage(event: any) {
-  //   const file = event.target.files[0];
-  //   if (file) {
-  //     const reader = new FileReader();
-  //     reader.onloadend = () => {
-  //       formik.setFieldValue("images", [
-  //         ...formik.values.images,
-  //         reader.result,
-  //       ]);
-  //     };
-  //     reader.readAsDataURL(file);
-  //   }
-  // }
+    const formData = new FormData();
+    formData.append("file", file);
 
-  // function handleRemoveImage(index: number) {
-  //   const newImages = formik.values.images.filter((_, i) => i !== index);
-  //   formik.setFieldValue("images", newImages);
-  // }
+    try {
+      const response = await fetch("/upload", {
+        method: "POST",
+        body: formData,
+      });
 
-  // function handleDrop(event: any) {
-  //   event.preventDefault();
-  //   const file = event.dataTransfer.files[0];
-  //   if (file) {
-  //     const reader = new FileReader();
-  //     reader.onloadend = () => {
-  //       formik.setFieldValue("images", [
-  //         ...formik.values.images,
-  //         reader.result,
-  //       ]);
-  //     };
-  //     reader.readAsDataURL(file);
-  //   }
-  // }
-
-  // function handleDragOver(event: any) {
-  //   event.preventDefault();
-  // }
+      if (response.ok) {
+        console.log("File uploaded successfully");
+      } else {
+        console.error("File upload failed");
+      }
+    } catch (error) {
+      console.error("Error uploading file:", error);
+    }
+  };
 
   return (
     <BackOffice>
+      <UploadImgPets>
+        <form onSubmit={handleSubmit}>
+          <div className="flex items-center justify-center border-2 border-dashed border-muted rounded-md p-8 cursor-pointer group hover:border-primary">
+            <div className="text-center space-y-2">
+              <UploadIcon className="mx-auto h-12 w-12 text-muted-foreground group-hover:text-primary" />
+              <div className="font-medium text-muted-foreground group-hover:text-primary">
+                Arrastra y suelta la imagen o
+                <span className="underline">
+                  {" "}
+                  selecciona desde el explorador
+                </span>
+              </div>
+              <p className="text-sm text-muted-foreground">
+                PNG, JPG hasta 10MB
+              </p>
+            </div>
+            <input type="file" className="sr-only" />
+          </div>
+        </form>
+      </UploadImgPets>
       <div className="w-full max-w-4xl mx-auto py-8 px-4 md:px-6">
         <div className="grid gap-6 items-start">
           <div className="grid gap-4">
@@ -214,3 +203,44 @@ const PetForm: NextPage<PetsProps> = ({ pet }) => {
 };
 
 export default PetForm;
+
+function UploadIcon(props: any) {
+  return (
+    <svg
+      {...props}
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+      <polyline points="17 8 12 3 7 8" />
+      <line x1="12" x2="12" y1="3" y2="15" />
+    </svg>
+  );
+}
+
+function XIcon(props: any) {
+  return (
+    <svg
+      {...props}
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M18 6 6 18" />
+      <path d="m6 6 12 12" />
+    </svg>
+  );
+}
