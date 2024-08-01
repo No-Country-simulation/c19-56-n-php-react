@@ -85,15 +85,16 @@ const CardsBackOffice = () => {
         {listPets?.map((pet: Pet) => {
           // TODO: Agregar Descripcion desde el backend para pets
           return (
-            <Link href={`/dashboard/pet/${pet.id}`} key={pet.id}>
+            
               <CardBackOffice
+                id={pet.id}
                 key={pet.id}
                 image={pet.image}
                 name={pet.name}
                 age={pet.age}
                 // description={pet.descripcion}
               />
-            </Link>
+          
           );
         })}
         
