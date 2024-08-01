@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Pet;
 use App\Models\PetImg;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -18,9 +19,10 @@ class PetImgController extends Controller
     public function index(Request $request)
     {
         $pet_id = $request->query('pet_id');
-        $data = PetImg::where('pet_id', $pet_id)->all();
+        $data = PetImg::withTrashed()->where('pet_id', $pet_id)->get();
         return response()->json($data, Response::HTTP_OK);
     }
+
 
     /**
      * Store a newly created resource in storage.
@@ -58,6 +60,14 @@ class PetImgController extends Controller
                 'error' => $e->getMessage()
             ], Response::HTTP_BAD_REQUEST);
         }
+    }
+
+    public function show($id){
+        $data = Pet::findOrFail($id);
+
+        $imagenes = $data->imagenes;
+
+        return response()->json($data, Response::HTTP_OK);
     }
 
     /**

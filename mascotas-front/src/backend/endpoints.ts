@@ -82,6 +82,35 @@ export const register = async (
     }
   }
 };
+export const createImgPets = async (pet: any, token: string) => {
+  try {
+    const response = await urlBase.post(`/api/pets-images`, pet, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response;
+  } catch (error: any) {
+    let errorMessage =
+      "Ocurrió un error al intentar realizar la operación. Por favor, inténtalo de nuevo.";
+    if (error.response && error.response.data) {
+      if (error.response.data.error) {
+        errorMessage = error.response.data.error;
+      } else if (error.response.data.errors) {
+        const errors = error.response.data.errors;
+        const errorMessages = Object.keys(errors)
+          .map((key) => `${key}: ${errors[key].join(", ")}`)
+          .join("\n");
+        errorMessage = `${error.response.data.message}\n${errorMessages}`;
+      }
+    } else {
+      console.error("Error de red o desconocido", error);
+    }
+    // toast.error(errorMessage);
+    throw new Error(errorMessage);
+  }
+}
 
 export const getPetOne = async (id: number) => {
   try {

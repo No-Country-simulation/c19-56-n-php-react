@@ -7,11 +7,19 @@ import { AiOutlinePlus, AiOutlineDelete } from "react-icons/ai";
 import { FormInput, FormTextarea } from "@/components/InputElements";
 import { MenuOpenIcon } from "@/icons";
 import { GetStaticPaths, GetStaticProps, NextPage } from "next";
-import { getPetOne, getPets } from "@/backend";
+import { createImgPets, getPetOne, getPets, urlBase } from "@/backend";
 import { Pet } from "@/interfaces";
 import { ParsedUrlQuery } from "querystring";
 import Image from "next/image";
 import { UploadImgPets } from "@/components/UploadImgPets";
+import { useRouter } from "next/router";
+import { useAuthStore } from "@/store";
+import { toast } from "sonner";
+import { mutate } from "swr";
+import { useFetch } from "@/hooks";
+import { useFetchWithOutPaginate } from "@/hooks/useFetchWithOutPaginate";
+import { Input } from "@/components/ui/input";
+import { DialogFooter } from "@/components/ui/dialog";
 
 const validationSchema = Yup.object({
   nombre: Yup.string().required("Nombre es requerido"),
@@ -80,33 +88,61 @@ const pet = {
 
 const PetForm: NextPage<PetsProps> = ({ pet }) => {
   const [isEditing, setIsEditing] = React.useState<boolean>(true);
+  const query = useRouter();
+  const id = query.query.id;
+  const token = useAuthStore((state) => state.token);
+  const [loaging, setLoanding] = useState(false);
   const [file, setFile] = useState<File | null>(null);
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.files) {
-      setFile(event.target.files[0]);
+  const data = useFetchWithOutPaginate(`/api/pets-images?pet_id=${id}`);
+  const onFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files ? event.target.files[0] : null;
+    if (
+      file &&
+      !file.type.includes("image/jpeg") &&
+      !file.type.includes("image/png") &&
+      !file.type.includes("image/jpg")
+    ) {
+      toast.error("El archivo debe ser una imagen JPEG o PNG");
+      event.target.value = "";
+      return;
     }
+    setFile(file);
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    console.log("file call");
     if (!file) return;
-
     const formData = new FormData();
-    formData.append("file", file);
+    formData.append("image", file);
+    formData.append("pet_id", id as string);
 
     try {
-      const response = await fetch("/upload", {
-        method: "POST",
-        body: formData,
-      });
-
-      if (response.ok) {
-        console.log("File uploaded successfully");
-      } else {
-        console.error("File upload failed");
+      const response = await createImgPets(formData, token);
+      if (response.status === 201) {
+        const data = response.data;
+        setLoanding(false);
+        setFile(null);
+        mutate(
+          process.env.NEXT_PUBLIC_URL_BASE + `/api/pets-images?pet_id=${id}`,
+          token
+        );
+        toast.success(data.message);
       }
     } catch (error) {
-      console.error("Error uploading file:", error);
+      let errorMessage = "Ocurrió un error. Por favor, inténtalo de nuevo.";
+      if (error instanceof Error) {
+        errorMessage = error.message;
+        const additionalMessages = Object.entries(error)
+          .filter(([key, _]) => key !== "message")
+          .map(([key, value]) => `${key}: ${value}`)
+          .join("\n");
+        if (additionalMessages) {
+          errorMessage += `\n${additionalMessages}`;
+        }
+      }
+      toast.error(errorMessage);
+      setLoanding(false);
     }
   };
 
@@ -114,21 +150,23 @@ const PetForm: NextPage<PetsProps> = ({ pet }) => {
     <BackOffice>
       <UploadImgPets>
         <form onSubmit={handleSubmit}>
-          <div className="flex items-center justify-center border-2 border-dashed border-muted rounded-md p-8 cursor-pointer group hover:border-primary">
-            <div className="text-center space-y-2">
-              <UploadIcon className="mx-auto h-12 w-12 text-muted-foreground group-hover:text-primary" />
-              <div className="font-medium text-muted-foreground group-hover:text-primary">
-                Arrastra y suelta la imagen o
-                <span className="underline">
-                  {" "}
-                  selecciona desde el explorador
-                </span>
+          <div className="flex flex-col items-center justify-center border-2 border-dashed border-muted rounded-md p-8 cursor-pointer group hover:border-primary">
+            {file && (
+              <div className="flex justify-center">
+                <img
+                  src={URL.createObjectURL(file)}
+                  alt="Selected"
+                  className="max-w-xs max-h-xs w-auto h-auto"
+                />
               </div>
-              <p className="text-sm text-muted-foreground">
-                PNG, JPG hasta 10MB
-              </p>
-            </div>
-            <input type="file" className="sr-only" />
+            )}
+            <Input id="image" type="file" onChange={onFileChange} />
+            <DialogFooter>
+              <Button type="submit">Cargar imagen</Button>
+              <div>
+                <Button variant="outline">Cancelar</Button>
+              </div>
+            </DialogFooter>
           </div>
         </form>
       </UploadImgPets>
@@ -184,16 +222,18 @@ const PetForm: NextPage<PetsProps> = ({ pet }) => {
           <div className="grid gap-4">
             <h2 className="text-xl font-semibold">Más Imágenes</h2>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-              {pet?.images?.map((image, index) => (
-                <Image
-                  key={index}
-                  src={image}
-                  alt={`Imagen ${index + 1} de ${pet.name}`}
-                  width={300}
-                  height={200}
-                  className="rounded-lg object-cover"
-                />
-              ))}
+              {data &&
+                Array.isArray(data.data) &&
+                data.data.map((image: any) => (
+                  <Image
+                    key={image.id}
+                    src={image?.image}
+                    alt={`Imagen ${image.id + 1}`}
+                    width={300}
+                    height={200}
+                    className="rounded-lg object-cover"
+                  />
+                ))}
             </div>
           </div>
         </div>

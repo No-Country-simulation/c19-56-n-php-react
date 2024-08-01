@@ -8,6 +8,7 @@ use App\Http\Controllers\PetController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\HistoryController;
 use App\Http\Controllers\NeedPetController;
+use App\Http\Controllers\PetImgController;
 use App\Http\Controllers\RaceController;
 use App\Http\Controllers\SpecieController;
 use App\Http\Controllers\SponsorshipController;
@@ -73,7 +74,11 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/pets-sponsorships', [SponsorshipController::class, 'index'])->name('pets.sponsorships.index');
     // Route::get('/pets/{id}/sponsorships', [SponsorshipController::class, 'index'])->name('pets.sponsorships.index');
     Route::get('/pets-sponsorships/{id}', [SponsorshipController::class, 'show'])->name('sponsorships.show');
+    // PET IMG
+    Route::post('/pets-images', [PetImgController::class, 'store'])->name('pets.images.store');
+   
 });
+Route::get('/pets-images', [PetImgController::class, 'index'])->name('pets.images.index');
 // pets routes
 Route::get('/pets', [PetController::class, 'index'])->name('pets.index');
 Route::get('/pets/{id}', [PetController::class, 'show'])->name('pets.show');

@@ -36,4 +36,7 @@ class Pet extends Model
     {
         return $this->belongsTo(Specie::class);
     }
+    public function imgenes(){
+        return $this->hasMany(PetImg::class);
+    }
 }

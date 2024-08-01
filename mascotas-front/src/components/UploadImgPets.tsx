@@ -24,12 +24,6 @@ export const UploadImgPets: React.FC<UploadImegenProps> = ({ children }) => {
           <DialogTitle>Cargar nueva imagen</DialogTitle>
         </DialogHeader>
         <div className="grid gap-4 py-4">{children}</div>
-        <DialogFooter>
-          <Button type="submit">Cargar imagen</Button>
-          <div>
-            <Button variant="outline">Cancelar</Button>
-          </div>
-        </DialogFooter>
       </DialogContent>
     </Dialog>
   );
