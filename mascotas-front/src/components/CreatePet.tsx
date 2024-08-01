@@ -59,6 +59,7 @@ export const CreateNewPet = () => {
     defaultValues: {
       name: "",
       race: "",
+      specie: "",
       size: "pequeño",
       weight: 0,
       age: 0,
@@ -78,6 +79,7 @@ export const CreateNewPet = () => {
     try {
       const formData = new FormData();
       formData.append("name", value.name);
+      formData.append("specie", value.specie);
       formData.append("race", value.race);
       formData.append("size", value.size);
       formData.append("weight", value.weight.toString());
@@ -159,6 +161,19 @@ export const CreateNewPet = () => {
               />
             </div>
             <div className="space-y-2">
+              <Label htmlFor="race">Especie</Label>
+              <Input
+                id="specie"
+                placeholder="Especie de la mascota"
+                {...register("specie", {
+                  required: {
+                    value: true,
+                    message: "El campo Especie es requerido",
+                  },
+                })}
+              />
+            </div>
+            <div className="space-y-2">
               <Label htmlFor="race">Raza</Label>
               <Input
                 id="race"
@@ -166,7 +181,7 @@ export const CreateNewPet = () => {
                 {...register("race", {
                   required: {
                     value: true,
-                    message: "El campo Celular es requerido",
+                    message: "El campo Raza es requerido",
                   },
                 })}
               />

@@ -28,6 +28,15 @@ class Pet extends Model
     {
         return $this->hasMany(History::class);
     }
-
-
+    public function race()
+    {
+        return $this->belongsTo(Race::class);
+    }
+    public function specie()
+    {
+        return $this->belongsTo(Specie::class);
+    }
+    public function imgenes(){
+        return $this->hasMany(PetImg::class);
+    }
 }

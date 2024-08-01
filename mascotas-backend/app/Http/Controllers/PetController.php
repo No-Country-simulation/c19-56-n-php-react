@@ -29,6 +29,11 @@ class PetController extends Controller
         ];
         return response()->json($response, Response::HTTP_OK);
     }
+    public function indexAll()
+    {
+        $data = Pet::all();
+        return response()->json($data, Response::HTTP_OK);
+    }
 
     /**
      * Store a newly created resource in storage.
@@ -37,9 +42,11 @@ class PetController extends Controller
     {
         try {
             $request->merge(['race' => strtolower($request->race)]);
+            $request->merge(['specie' => strtolower($request->specie)]);
             $rules = [
                 'name' => 'required|string|max:255',
-                'race_id' => 'required|string',
+                'race' => 'required|string',
+                'specie' => 'required|string',
                 'size' => 'required|string|in:pequeño,mediano,grande',
                 'weight' => 'required|numeric|min:0',
                 'age' => 'required|integer|min:0',
@@ -47,7 +54,7 @@ class PetController extends Controller
                 'description' => 'required|string|max:255',
                 'image' => 'required|image|max:5048',
                 'status' => 'required|string|in:disponible,adoptado',
-                'specie_id' => 'required|integer|exists:species,id',
+                'specie' => 'required|string',
             ];
             $validator = Validator::make($request->all(), $rules);
             if ($validator->fails()) {
@@ -62,25 +69,16 @@ class PetController extends Controller
                     'error' => 'No tienes permisos para realizar esta acción'
                 ], Response::HTTP_UNAUTHORIZED);
             }
-            $race = Race::firstOrCreate(['name' => $request->race]);
-
+            $specie = Specie::firstOrCreate(['name' => $request->specie]);
+            $race = Race::firstOrCreate(['name' => $request->race, 'specie_id' => $specie->id]);
             $file = $request->file('image');
             $path = Storage::disk('s3')->putFile('uploads', $file, 'public');
             $url = Storage::disk('s3')->url($path);
-
-            $specieExists = Specie::where('id', $request->input('specie_id'))->exists();
-            if (!$specieExists) {
-                return response()->json([
-                    'message' => 'El ID de especie proporcionado no existe.',
-                ], Response::HTTP_NOT_FOUND);
-            }
-
-            $dataToCreate = $request->only(['name', 'size', 'weight', 'age', 'personality', 'status', 'specie_id']);
+            $dataToCreate = $request->only(['name', 'size', 'weight', 'age', 'personality', 'status', 'description']);
             $dataToCreate['image'] = $url;
             $dataToCreate['race_id'] = $race->id;
-
+            $dataToCreate['specie_id'] = $specie->id;
             $data = Pet::create($dataToCreate);
-            
             return response()->json([
                 'message' => 'Recurso creado exitosamente',
                 'data' => $data
@@ -100,7 +98,7 @@ class PetController extends Controller
     public function show($id)
     {
         try {
-            $data = Pet::findOrFail($id);
+            $data = Pet::with('race')->findOrFail($id);
             return response()->json($data, Response::HTTP_OK);
         } catch (ModelNotFoundException $e) {
             $modelName = class_basename($e->getModel());
