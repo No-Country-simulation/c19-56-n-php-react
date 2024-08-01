@@ -29,6 +29,11 @@ class PetController extends Controller
         ];
         return response()->json($response, Response::HTTP_OK);
     }
+    public function indexAll()
+    {
+        $data = Pet::all();
+        return response()->json($data, Response::HTTP_OK);
+    }
 
     /**
      * Store a newly created resource in storage.

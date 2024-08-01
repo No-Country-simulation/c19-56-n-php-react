@@ -1,12 +1,12 @@
-import { Button } from "@/components/ui/button"
-import Link from "next/link"
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 interface Props {
-  id: number | string
-  image: string
-  name: string
-  age: number
-  description: string
+  id: number | string;
+  image: string;
+  name: string;
+  age: number;
+  description: string;
 }
 
 const Card = ({ id, image, name, age, description }: Props) => (
@@ -24,7 +24,7 @@ const Card = ({ id, image, name, age, description }: Props) => (
         </div>
         <div className="mt-4 space-y-2">
           <h3 className="text-lg font-semibold">{name}</h3>
-          <div className="flex items-center space-x-2">
+          <div className="flex flex-col space-y-2">
             <span className="text-sm text-muted-foreground">Edad: {age}</span>
             <span className="text-sm text-muted-foreground">{description}</span>
           </div>
@@ -37,6 +37,6 @@ const Card = ({ id, image, name, age, description }: Props) => (
       </div>
     </div>
   </Link>
-)
+);
 
-export default Card
+export default Card;

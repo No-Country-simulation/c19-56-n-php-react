@@ -152,8 +152,8 @@ export const getPetOne = async (id: number) => {
 
 export const getPets = async () => {
   try {
-    const response = await urlBase.get(`/api/pets`);
-    return response.data.data;
+    const response = await urlBase.get(`/api/pets-all`);
+    return response.data;
   } catch (error: any) {
     if (error.response && error.response.data && error.response.data.error) {
       console.error("Error del backend:", error.response.data.error);

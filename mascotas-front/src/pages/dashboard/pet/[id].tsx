@@ -72,25 +72,7 @@ export const getStaticProps: GetStaticProps<PetsProps> = async (context) => {
   };
 };
 
-const pet = {
-  id: 1,
-  images: [
-    "https://example.com/image1.jpg",
-    "https://example.com/image2.jpg",
-    "https://example.com/image3.jpg",
-    "https://example.com/image4.jpg",
-  ],
-  nombre: "Max",
-  razaID: 101,
-  tamaño: "Grande",
-  peso: "30kg",
-  edad: "5 años",
-  personalidad: "Amigable",
-  adopcionID: 201,
-  raza: "Labrador Retriever",
-  descripcion: "Un perro muy activo y cariñoso.",
-  categoria: "Canes",
-};
+
 
 const PetForm: NextPage<PetsProps> = ({ pet }) => {
   const [isEditing, setIsEditing] = React.useState<boolean>(true);
