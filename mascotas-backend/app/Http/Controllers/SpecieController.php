@@ -18,16 +18,11 @@ class SpecieController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-    {
-        $data = Specie::paginate(10);
-        $response = [
-            'lastPage' => $data->lastPage(),
-            'currentPage' => $data->currentPage(),
-            'total' => $data->total(),
-            'data' => $data->items()
-        ];
-        return response()->json($response, Response::HTTP_OK);
-    }
+{
+    $data = Specie::all();
+    
+    return response()->json($data, Response::HTTP_OK);
+}
 
     /**
      * Store a newly created resource in storage.

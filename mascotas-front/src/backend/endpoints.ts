@@ -153,6 +153,7 @@ export const getPetOne = async (id: number) => {
 export const getPets = async () => {
   try {
     const response = await urlBase.get(`/api/pets-all`);
+    console.log(response.data);
     return response.data;
   } catch (error: any) {
     if (error.response && error.response.data && error.response.data.error) {

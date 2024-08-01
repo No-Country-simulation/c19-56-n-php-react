@@ -1,10 +1,10 @@
-import { getPetOne, getPets } from '@/backend';
-import PetDetail from '@/components/PetDetail'
-import { Pet } from '@/interfaces';
-import ClientLayout from '@/layout/ClientLayout'
-import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
-import { ParsedUrlQuery } from 'querystring';
-import React from 'react'
+import { getPetOne, getPets } from "@/backend";
+import PetDetail from "@/components/PetDetail";
+import { Pet } from "@/interfaces";
+import ClientLayout from "@/layout/ClientLayout";
+import { GetStaticPaths, GetStaticProps, NextPage } from "next";
+import { ParsedUrlQuery } from "querystring";
+import React from "react";
 interface PetsProps {
   pet: Pet;
 }
@@ -26,7 +26,6 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 export const getStaticProps: GetStaticProps<PetsProps> = async (context) => {
   const { id } = context.params as Params;
-  // console.log(context.params);
   const pet = await getPetOne(Number(id));
   return {
     props: {
@@ -35,13 +34,13 @@ export const getStaticProps: GetStaticProps<PetsProps> = async (context) => {
   };
 };
 
-const index: NextPage<PetsProps>  = ({ pet })  => {
+const index: NextPage<PetsProps> = ({ pet }) => {
   console.log(pet);
   return (
     <ClientLayout>
-      <PetDetail />
+      <PetDetail pet={pet} />
     </ClientLayout>
-  )
-}
+  );
+};
 
-export default index
+export default index;

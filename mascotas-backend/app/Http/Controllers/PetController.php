@@ -31,7 +31,7 @@ class PetController extends Controller
     }
     public function indexAll()
     {
-        $data = Pet::all();
+        $data = Pet::with(['histories', 'race', 'specie', 'imgenes'])->get();
         return response()->json($data, Response::HTTP_OK);
     }
 
@@ -98,7 +98,7 @@ class PetController extends Controller
     public function show($id)
     {
         try {
-            $data = Pet::with('race')->findOrFail($id);
+            $data = Pet::with(['histories', 'race', 'specie', 'imgenes'])->findOrFail($id);
             return response()->json($data, Response::HTTP_OK);
         } catch (ModelNotFoundException $e) {
             $modelName = class_basename($e->getModel());

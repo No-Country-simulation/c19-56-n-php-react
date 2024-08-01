@@ -3,18 +3,19 @@ import {
   DropdownMenuTrigger,
   DropdownMenuContent,
   DropdownMenuCheckboxItem,
-} from "@/components/ui/dropdown-menu"
-import { Button } from "@/components/ui/button"
-import { Label } from "@/components/ui/label"
-import { ChevronDownIcon, DogIcon, PawPrintIcon, SmileIcon } from "@/icons"
-import { Slider } from "@/components/ui/slider"
-import { useState } from "react"
+} from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { ChevronDownIcon, DogIcon, PawPrintIcon, SmileIcon } from "@/icons";
+import { Slider } from "@/components/ui/slider";
+import { useState } from "react";
+import { Species } from "./Species";
 
-const species = ["perros", "gatos", "aves", "roedores", "reptiles"]
+const species = ["perros", "gatos", "aves", "roedores", "reptiles"];
 
 export default function FiltersBar() {
-  const [size, setSize] = useState("small")
-  const [ageRange, setAgeRange] = useState([0, 10])
+  const [size, setSize] = useState("small");
+  const [ageRange, setAgeRange] = useState([0, 10]);
 
   return (
     <div className="w-full">
@@ -23,7 +24,10 @@ export default function FiltersBar() {
           {["Especies", "Razas", "Temperamento"].map((category, idx) => (
             <DropdownMenu key={idx}>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="outliner-none flex items-center gap-2 text-gray-800 font-bold text-xl opacity-80">
+                <Button
+                  variant="ghost"
+                  className="outliner-none flex items-center gap-2 text-gray-800 font-bold text-xl opacity-80"
+                >
                   {category === "Especies" ? (
                     <PawPrintIcon className="w-5 h-5" />
                   ) : category === "Razas" ? (
@@ -112,8 +116,9 @@ export default function FiltersBar() {
               </div>
             </DropdownMenuContent>
           </DropdownMenu>
+          <Species />
         </div>
       </div>
     </div>
-  )
+  );
 }
