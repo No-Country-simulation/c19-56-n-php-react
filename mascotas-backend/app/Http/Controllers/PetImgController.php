@@ -19,7 +19,9 @@ class PetImgController extends Controller
     public function index(Request $request)
     {
         $pet_id = $request->query('pet_id');
-        $data = PetImg::withTrashed()->where('pet_id', $pet_id)->get();
+        $data = PetImg::where('pet_id', $pet_id)
+            ->whereNull('deleted_at')
+            ->get();
         return response()->json($data, Response::HTTP_OK);
     }
 
@@ -62,7 +64,8 @@ class PetImgController extends Controller
         }
     }
 
-    public function show($id){
+    public function show($id)
+    {
         $data = Pet::findOrFail($id);
 
         $imagenes = $data->imagenes;
@@ -70,21 +73,20 @@ class PetImgController extends Controller
         return response()->json($data, Response::HTTP_OK);
     }
 
-    /**
-     * Display the specified resource.
-     */
-
-
-    /**
-     * Update the specified resource in storage.
-     */
-
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(PetImg $petImg)
+    public function destroy($id)
     {
-        //
+        try {
+            $data = PetImg::findOrFail($id);
+            $data->delete();
+            return response()->json([
+                'message' => 'Recurso eliminado exitosamente',
+                'data' => $data
+            ], Response::HTTP_OK);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Error interno',
+                'error' => $e->getMessage()
+            ], Response::HTTP_BAD_REQUEST);
+        }
     }
 }

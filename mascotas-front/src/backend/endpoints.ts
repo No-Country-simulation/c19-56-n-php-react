@@ -56,6 +56,27 @@ export const createPets = async (pet: FormData, token: string) => {
     throw new Error(errorMessage);
   }
 };
+
+export const deletedImagePets = async (id: number, token: string) => {
+  try {
+    const response = await urlBase.delete(`/api/pets-images/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response;
+  } catch (error: any) {
+    if (error.response && error.response.data && error.response.data.error) {
+      console.error("Error del backend:", error.response.data.error);
+      throw new Error(error.response.data.error);
+    } else {
+      console.error("Error de red o desconocido", error);
+      throw new Error(
+        "Ocurrió un error al intentar realizar la operación. Por favor, inténtalo de nuevo."
+      );
+    }
+  }
+};
 export const register = async (
   name: string,
   email: string,
@@ -110,7 +131,7 @@ export const createImgPets = async (pet: any, token: string) => {
     // toast.error(errorMessage);
     throw new Error(errorMessage);
   }
-}
+};
 
 export const getPetOne = async (id: number) => {
   try {

@@ -76,6 +76,7 @@ Route::middleware('auth:api')->group(function () {
     Route::get('/pets-sponsorships/{id}', [SponsorshipController::class, 'show'])->name('sponsorships.show');
     // PET IMG
     Route::post('/pets-images', [PetImgController::class, 'store'])->name('pets.images.store');
+    Route::delete('/pets-images/{id}', [PetImgController::class, 'destroy'])->name('pets.images.destroy');
    
 });
 Route::get('/pets-images', [PetImgController::class, 'index'])->name('pets.images.index');
