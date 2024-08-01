@@ -34,7 +34,7 @@ const CardBackOffice = ({ id, image, name, age, description }: Props) => {
           <Button variant="secondary">Editar</Button>
         </Link>
 
-        <Button variant="destructive" onClick={() => handleDelete(id)}>
+        <Button variant="destructive" onClick={() => console.log(id)}>
           Eliminar
         </Button>
       </div>
@@ -43,7 +43,3 @@ const CardBackOffice = ({ id, image, name, age, description }: Props) => {
 };
 
 export default CardBackOffice;
-
-const handleDelete = (id: string) => {
-  // Lógica para eliminar
-};

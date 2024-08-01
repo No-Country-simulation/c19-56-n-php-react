@@ -31,7 +31,7 @@ const Card = ({ id, image, name, age, description }: Props) => (
         </div>
         <div className="mt-4">
           <Button className="bg-[#6cc4a1] text-white px-6 py-2 rounded-full w-full hover:bg-[#5aa38b] transition-colors duration-300 ease-in-out">
-            Adoptame
+            Ver más
           </Button>
         </div>
       </div>
