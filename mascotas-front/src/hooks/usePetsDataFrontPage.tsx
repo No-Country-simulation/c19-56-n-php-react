@@ -7,6 +7,7 @@ import { useRaceStore } from "@/store/filter/filterForRace.store";
 import { useSizeStore } from "@/store/filter/filterForSize.store";
 import { useFilterRange } from "@/store/filter/filterForAge.store";
 import { useDebounce } from "./useDebounce";
+import { useSearchMascotasStore } from "@/store/filter/SearchMascotas.store";
 
 export const usePetsFrontPageData = () => {
   const token = useAuthStore((state) => state.token);
@@ -15,6 +16,7 @@ export const usePetsFrontPageData = () => {
   const race = useRaceStore((state) => state.selectedRace);
   const size = useSizeStore((state) => state.size);
   const age = useFilterRange((state) => state.maxValue);
+  const searchTerm = useSearchMascotasStore((state) => state.inputValue);
   console.log(size, "size desde filter");
   const [debouncedAge, setDebouncedAge] = useState<number>(age || 0);
   useEffect(() => {
@@ -36,6 +38,9 @@ export const usePetsFrontPageData = () => {
   }
   if (size) {
     queryString += queryString ? `&size=${size}` : `size=${size}`;
+  }
+  if (searchTerm) {
+    queryString += queryString ? `&searchTerm=${searchTerm}` : `searchTerm=${searchTerm}`;
   }
   if (debouncedAge !== undefined) {
     queryString += queryString ? `&age=${debouncedAge}` : `age=${debouncedAge}`;

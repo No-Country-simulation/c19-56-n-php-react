@@ -39,6 +39,15 @@ class PetController extends Controller
             $query->where('size', $request->input('size'));
         }
 
+        if ($request->has('searchTerm')) {
+            $searchTerm = $request->input('searchTerm');
+            $query->where(function ($q) use ($searchTerm) {
+                $q->where('name', 'LIKE', "%{$searchTerm}%")
+                    ->orWhere('weight', 'LIKE', "%{$searchTerm}%")
+                    ->orWhere('personality', 'LIKE', "%{$searchTerm}%");
+            });
+        }
+
         // Paginar los resultados
         $data = $query->paginate(10);
 

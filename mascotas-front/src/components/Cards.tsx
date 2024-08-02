@@ -8,12 +8,14 @@ import { useSpecieStore } from "@/store/filter/filterForSpecie.store";
 import { useRaceStore } from "@/store/filter/filterForRace.store";
 import { useSizeStore } from "@/store/filter/filterForSize.store";
 import { useFilterRange } from "@/store/filter/filterForAge.store";
+import { useSearchMascotasStore } from "@/store/filter/SearchMascotas.store";
 
 export default function Cards() {
   const species = useSpecieStore((state) => state.selectedSpecies);
   const race = useRaceStore((state) => state.selectedRace);
   const size = useSizeStore((state) => state.size);
   const age = useFilterRange((state) => state.maxValue);
+  const searchTerm  = useSearchMascotasStore(state => state.inputValue);
   const totalPageState = usePetsPaginateFrontPageStore(
     (state) => state.totalPageState
   );
@@ -36,6 +38,11 @@ export default function Cards() {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="flex flex-wrap space-x-4 py-3 px-3">
+        {
+          searchTerm && (
+            <h3 className="text-sm font-semibold">Buscando mascotas con: {searchTerm}</h3>
+          )
+        }
         {species && (
           <h3 className="text-sm font-semibold">Especies: {species.name}</h3>
         )}
