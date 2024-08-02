@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Formik, Form, ErrorMessage } from "formik";
+import { Formik, Form, ErrorMessage,FormikHelpers } from "formik";
 import * as Yup from "yup";
 import { TextInput, TextAreaInput } from "./InputElements";
 import { contact } from "@/backend";
@@ -18,8 +18,7 @@ const validationSchema = Yup.object({
 
 const ContactForm = () => {
   const [loading, setLoading] = useState<boolean>(false);
-
-  const handleSubmit = async (values: any) => {
+  const handleSubmit = async (values: any, { resetForm }: FormikHelpers<any>)  => {
     setLoading(true);
     try {
       const response = await contact(
@@ -31,6 +30,7 @@ const ContactForm = () => {
       );
       if (response.status === 201) {
         toast.success(response.data.message);
+        resetForm();
       }
     } catch (error) {
       toast.error(
