@@ -5,6 +5,7 @@ import { TextInput } from "./InputElements"
 import { useState } from "react"
 import { toast } from "sonner"
 import { register } from "@/backend"
+import { useRouter } from "next/router"
 
 const validationSchema = Yup.object({
   name: Yup.string().required("Name is required"),
@@ -18,6 +19,7 @@ const validationSchema = Yup.object({
 })
 
 const RegisterForm = () => {
+  const router = useRouter()
   const [loading, setLoading] = useState<boolean>(false)
 
   const handleSubmit = async (values: any) => {
@@ -27,11 +29,11 @@ const RegisterForm = () => {
         values.name,
         values.email,
         values.password,
-        values.role,
         values.password_confirmation
       )
-      if (response.status === 200) {
-        toast.success("¡Bienvenido!")
+      if (response.status === 201) {
+        toast.success(response.data.message)
+        router.push("/login")
       }
     } catch (error) {
       toast.error(
@@ -49,7 +51,6 @@ const RegisterForm = () => {
         email: "",
         password: "",
         password_confirmation: "",
-        role: "user",
       }}
       validationSchema={validationSchema}
       onSubmit={handleSubmit}

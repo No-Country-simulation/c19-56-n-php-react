@@ -24,7 +24,7 @@ const LoginForm = () => {
 
   useEffect(() => {
     if (user && token) {
-      router.push(pageContext || "/dashboard")
+      router.push(pageContext || "/")
     }
   }, [user, token, pageContext, router])
 

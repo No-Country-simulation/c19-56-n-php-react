@@ -48,25 +48,21 @@ class ContactController extends Controller
     public function store(Request $request)
     {
         try{
-            // Definición de reglas de validación para los datos recibidos
             $rules = [
                 'name' => 'required|string',
                 'email' => 'required|string',
                 'phone' => 'required|string',
                 'message' => 'required|string',
-                'direccion' => 'required|string',
-                'status' => 'required|string|in:nuevo,enproceso,inactivo'
+                'direccion' => 'required|string'
             ];
-            // Crear un validador con los datos de la solicitud y las reglas
             $validator = Validator::make($request->all(), $rules);
-            // Verificar si la validación ha fallado
             if ($validator->fails()){
                 return response()->json([
                     'message' => 'Validación fallida',
                     'errors' => $validator->errors()
                 ], Response::HTTP_BAD_REQUEST);
             }
-            // Crear un nuevo contacto en la base de datos con los datos recibidos
+            $request->merge(['status' => 'nuevo']);
             $data = Contact::create($request->all());
 
             $admin = User::where('role', 'admin')->get();
