@@ -24,7 +24,7 @@ export default function ImageHeader({ image }: Props) {
           Dale a un amigo peludo una segunda oportunidad y recibe amor
           incondicional.
         </p>
-        <SearchClient />
+        {/* <SearchClient /> */}
 
       </div>
     </section>

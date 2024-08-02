@@ -1,18 +1,28 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 
-export default function useDebounce(value: string, delay: number){
-  const [debouncedValue, setDebouncedValue] = useState(value)
+interface Props {
+  inputValue: string | undefined;
+  delay?: number;
+}
 
-  useEffect(()=>{
-    const handler = setTimeout(()=>{
-      setDebouncedValue(value)
-    }, delay)
+export const useDebounce = ({ inputValue, delay = 1500 }: Props) => {
+  const [debouncedValue, setDebouncedValue] = useState(inputValue ?? '');
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
 
-    return ()=>{
-      clearTimeout(handler)
+  useEffect(() => {
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
     }
 
-  },[value, delay])
+    timerRef.current = setTimeout(() => {
+      setDebouncedValue(inputValue ?? '');
+    }, delay);
+    return () => {
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+      }
+    };
+  }, [inputValue, delay]);
 
-  return debouncedValue
-}
+  return debouncedValue;
+};
