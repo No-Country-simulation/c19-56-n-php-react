@@ -18,15 +18,38 @@ class PetController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $data = Pet::paginate(10);
+        $query = Pet::query();
+
+        // Validar y aplicar filtros
+        if ($request->has('race_id')) {
+            $query->where('race_id', $request->input('race_id'));
+        }
+
+        if ($request->has('specie_id')) {
+            $query->where('specie_id', $request->input('specie_id'));
+        }
+
+        if ($request->has('age')) {
+            $query->where('age', '<=', $request->input('age'));
+        }
+
+        if ($request->has('size')) {
+            $query->where('size', $request->input('size'));
+        }
+
+        // Paginar los resultados
+        $data = $query->paginate(10);
+
+        // Formatear la respuesta
         $response = [
             'lastPage' => $data->lastPage(),
             'currentPage' => $data->currentPage(),
             'total' => $data->total(),
             'data' => $data->items()
         ];
+
         return response()->json($response, Response::HTTP_OK);
     }
     public function indexAll()

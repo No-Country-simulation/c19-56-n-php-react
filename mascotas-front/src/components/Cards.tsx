@@ -17,7 +17,6 @@ export default function Cards() {
     (state) => state.lastPageState
   );
   const { listPets, isLoading } = usePetsFrontPageData();
-  console.log(listPets);
   const { pageNumbers, nextPage, prevPage } = usePagination(
     totalPageState,
     currentPageState,

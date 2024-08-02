@@ -2,19 +2,23 @@ import { useAuthStore } from "@/store";
 import { useEffect } from "react";
 import { useFetch } from "./useFetch";
 import { usePetsPaginateFrontPageStore } from "@/store/frontPage/Paginations/petsPaginationsFrontPage.store";
+import { useSpecieStore } from "@/store/filter/filterForSpecie.store";
+import { useRaceStore } from "@/store/filter/filterForRace.store";
+import { useSizeStore } from "@/store/filter/filterForSize.store";
+import { useFilterRange } from "@/store/filter/filterForAge.store";
 
 export const usePetsFrontPageData = () => {
   const token = useAuthStore((state) => state.token);
   const page = usePetsPaginateFrontPageStore((state) => state.pageState);
-  const currentPageState = usePetsPaginateFrontPageStore(
-    (state) => state.currentPageState
-  );
-  const totalPageState = usePetsPaginateFrontPageStore(
-    (state) => state.totalPageState
-  );
-  const lastPageState = usePetsPaginateFrontPageStore(
-    (state) => state.lastPageState
-  );
+  const species = useSpecieStore((state) => state.selectedSpecies);
+  const race = useRaceStore((state) => state.selectedRace);
+  const size = useSizeStore((state) => state.size);
+  const age = useFilterRange((state) => state.maxValue);
+
+  console.log("species", species);
+  console.log(race, 'race');
+  console.log(size, 'size');
+  console.log(age, 'age');
   const setCurrentPageState = usePetsPaginateFrontPageStore(
     (state) => state.setCurrentPageState
   );
