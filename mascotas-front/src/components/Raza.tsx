@@ -9,14 +9,16 @@ import { ChevronDownIcon } from "@/icons";
 import { Label } from "./ui/label";
 import { useFetchWithOutPaginate } from "@/hooks/useFetchWithOutPaginate";
 import { useSpecieStore } from "@/store/filter/filterForSpecie.store";
-import { ISpecie } from "@/interfaces";
+import { IRace, ISpecie } from "@/interfaces";
+import { useRaceStore } from "@/store/filter/filterForRace.store";
 
 export const Raza = () => {
-    const especies = useSpecieStore((state) => state.selectedSpecies);
-    const { data, isLoading } = useFetchWithOutPaginate(`/api/races?specie_id=${especies?.id}`);
-  
-  console.log(data, "razas");
-  console.log(especies?.id, "especies");
+  const especies = useSpecieStore((state) => state.selectedSpecies);
+  const specieIdParam = especies?.id ? `?specie_id=${especies.id}` : "";
+  const toggleRace = useRaceStore((state) => state.toggleRace);
+  const { data, isLoading } = useFetchWithOutPaginate(
+    `/api/races${specieIdParam}`
+  );
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -29,18 +31,18 @@ export const Raza = () => {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-72">
-        {/* <div className="flex flex-col">
-          {data?.map((specie: ISpecie) => (
+        <div className="flex flex-col">
+          {data?.map((race: IRace) => (
             <Button
-              key={specie.id}
-              onClick={() => toggleSpecie(specie)}
+              key={race.id}
+              onClick={() => toggleRace(race)}
               variant="ghost"
               className="outline-none flex items-center gap-2 text-gray-800 font-bold text-xl opacity-80"
             >
-              {specie.name}
+              {race.name}
             </Button>
           ))}
-        </div> */}
+        </div>
       </DropdownMenuContent>
     </DropdownMenu>
   );
