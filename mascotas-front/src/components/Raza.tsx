@@ -16,6 +16,7 @@ export const Raza = () => {
   const especies = useSpecieStore((state) => state.selectedSpecies);
   const specieIdParam = especies?.id ? `?specie_id=${especies.id}` : "";
   const toggleRace = useRaceStore((state) => state.toggleRace);
+  const selectedRace = useRaceStore((state) => state.selectedRace);
   const { data, isLoading } = useFetchWithOutPaginate(
     `/api/races${specieIdParam}`
   );
@@ -37,7 +38,9 @@ export const Raza = () => {
               key={race.id}
               onClick={() => toggleRace(race)}
               variant="ghost"
-              className="outline-none flex items-center gap-2 text-gray-800 font-bold text-xl opacity-80"
+              className={`outline-none flex items-center gap-2 text-gray-800 font-bold text-xl opacity-80 ${
+                selectedRace?.id === race.id ? "bg-blue-500 text-white" : ""
+              }`}
             >
               {race.name}
             </Button>

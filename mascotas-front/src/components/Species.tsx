@@ -33,7 +33,11 @@ export const Species = () => {
               key={specie.id}
               onClick={() => toggleSpecie(specie)}
               variant="ghost"
-              className="outline-none flex items-center gap-2 text-gray-800 font-bold text-xl opacity-80"
+              className={`outline-none flex items-center gap-2 text-gray-800 font-bold text-xl opacity-80 ${
+                selectedSpecies?.id === specie.id
+                  ? "bg-blue-500 text-white"
+                  : ""
+              }`}
             >
               {specie.name}
             </Button>

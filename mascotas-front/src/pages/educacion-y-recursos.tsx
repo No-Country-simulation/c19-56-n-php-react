@@ -39,7 +39,7 @@ const EducationAndResource: NextPage = () => {
                 href={item.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-block px-4 py-2 text-white bg-blue-500 rounded hover:bg-blue-700 transition duration-300"
+                className="bg-[#6cc4a1] text-white px-6 py-2 rounded-full w-full hover:bg-[#5aa38b] transition-colors duration-300 ease-in-out"
               >
                 Ver más
               </Link>
