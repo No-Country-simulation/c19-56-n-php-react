@@ -3,49 +3,47 @@ import {
   DropdownMenuTrigger,
   DropdownMenuContent,
   DropdownMenuCheckboxItem,
-} from "@/components/ui/dropdown-menu"
-import { Button } from "@/components/ui/button"
-import { Label } from "@/components/ui/label"
-import { ChevronDownIcon, DogIcon, PawPrintIcon, SmileIcon } from "@/icons"
-import { Slider } from "@/components/ui/slider"
-import { useState } from "react"
+} from "@/components/ui/dropdown-menu";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { ChevronDownIcon, DogIcon, PawPrintIcon, SmileIcon } from "@/icons";
+import { Slider } from "@/components/ui/slider";
+import { useEffect, useState } from "react";
+import { Species } from "./Species";
+import { Raza } from "./Raza";
+import { useFetchWithOutPaginate } from "@/hooks/useFetchWithOutPaginate";
+import { useFilterRange } from "@/store/filter/filterForAge.store";
+import { set } from "react-hook-form";
 
-const species = ["perros", "gatos", "aves", "roedores", "reptiles"]
+const species = ["perros", "gatos", "aves", "roedores", "reptiles"];
 
 export default function FiltersBar() {
-  const [size, setSize] = useState("small")
-  const [ageRange, setAgeRange] = useState([0, 10])
+  const [size, setSize] = useState("small");
+  const { isLoading, data } = useFetchWithOutPaginate("/api/pets-max-age");
+  const minValue = useFilterRange((state) => state.minValue) ?? 0;
+  const maxValue = useFilterRange((state) => state.maxValue) ?? 25;
 
+  const setMaxValue = useFilterRange((state) => state.setMaxValue);
+  const setMinValue = useFilterRange((state) => state.setMinValue);
+  const [ageRange, setAgeRange] = useState<number[]>([minValue, data]);
+
+  useEffect(() => {
+    if (data) {
+      setAgeRange([minValue, data]);
+    }
+  }, [data, minValue]);
+  useEffect(() => {
+    setMaxValue(ageRange[1]);
+  }, [ageRange]);
+
+  
   return (
     <div className="w-full">
       <div className="container px-4 md:px-6 py-6 md:py-10">
         <div className="flex flex-wrap md:flex-row md:justify-center md:items-start gap-4 md:gap-8">
-          {["Especies", "Razas", "Temperamento"].map((category, idx) => (
-            <DropdownMenu key={idx}>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="outliner-none flex items-center gap-2 text-gray-800 font-bold text-xl opacity-80">
-                  {category === "Especies" ? (
-                    <PawPrintIcon className="w-5 h-5" />
-                  ) : category === "Razas" ? (
-                    <DogIcon className="w-5 h-5" />
-                  ) : (
-                    <SmileIcon className="w-5 h-5" />
-                  )}
-                  {category}
-                  <ChevronDownIcon className="w-4 h-4 ml-2" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="start" className="w-56">
-                {species.map((specie) => (
-                  <DropdownMenuCheckboxItem key={specie}>
-                    <div className="flex items-center justify-between  text-gray-800 font-bold text-xl opacity-80">
-                      <span>{specie}</span>
-                    </div>
-                  </DropdownMenuCheckboxItem>
-                ))}
-              </DropdownMenuContent>
-            </DropdownMenu>
-          ))}
+          <Species />
+          <Raza />
+
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button
@@ -99,13 +97,13 @@ export default function FiltersBar() {
                   <div className="flex items-center gap-2">
                     <Slider
                       min={0}
-                      max={20}
+                      max={data}
                       value={ageRange}
                       onValueChange={setAgeRange}
                       className="flex-1"
                     />
                     <span>
-                      {ageRange[0]} - {ageRange[1]} años
+                      {minValue} - {ageRange[1]} años
                     </span>
                   </div>
                 </div>
@@ -115,5 +113,5 @@ export default function FiltersBar() {
         </div>
       </div>
     </div>
-  )
+  );
 }

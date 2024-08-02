@@ -13,6 +13,11 @@ class Race extends Model
         'name',
         'description',
         'specie_id'
-        ];
+    ];
 
+
+    public function specie()
+    {
+        return $this->belongsTo(Specie::class);
+    }
 }
