@@ -15,46 +15,31 @@ export const usePetsFrontPageData = () => {
   const race = useRaceStore((state) => state.selectedRace);
   const size = useSizeStore((state) => state.size);
   const age = useFilterRange((state) => state.maxValue);
-
   console.log(size, "size desde filter");
   const [debouncedAge, setDebouncedAge] = useState<number>(age || 0);
-
-  // const debouncedSpecies = useDebounce({ inputValue: species?.id , delay: 500 });
-  // const debouncedRace = useDebounce({ inputValue: race?.id, delay: 500 });
-  const debouncedSize = useDebounce({ inputValue: size, delay: 500 });
-
   useEffect(() => {
     const timerId = setTimeout(() => {
       if (age) {
         setDebouncedAge(age);
       }
     }, 500);
-
     return () => {
       clearTimeout(timerId);
     };
   }, [age]);
-
   let queryString = "";
-
   if (species) {
     queryString += `specie_id=${species.id}`;
   }
-
   if (race) {
     queryString += queryString ? `&race_id=${race.id}` : `race_id=${race.id}`;
   }
-
   if (size) {
-    console.log("call to size", size);
     queryString += queryString ? `&size=${size}` : `size=${size}`;
   }
-
   if (debouncedAge !== undefined) {
     queryString += queryString ? `&age=${debouncedAge}` : `age=${debouncedAge}`;
   }
-
-  console.log(queryString, "query string");
   let url = `/api/pets?page=${page}${queryString ? `&${queryString}` : ""}`;
   console.log(url, "url");
   const { data, isLoading } = useFetch(url, {}, token);
