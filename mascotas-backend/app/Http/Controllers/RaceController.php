@@ -17,14 +17,13 @@ class RaceController extends Controller
      */
     public function index(Request $request)
     {
-        $data = Race::paginate(10);
-        $response = [
-            'lastPage' => $data->lastPage(),
-            'currentPage' => $data->currentPage(),
-            'total' => $data->total(),
-            'data' => $data->items()
-        ];
-        return response()->json($response, Response::HTTP_OK);
+        $specie_id = $request->input('specie_id');
+        $query = Race::whereNull('deleted_at');
+        if ($specie_id) {
+            $query->where('specie_id', $specie_id);
+        }
+        $data = $query->get();
+        return response()->json($data, Response::HTTP_OK);
     }
 
     /**

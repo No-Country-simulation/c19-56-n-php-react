@@ -11,10 +11,12 @@ import { useFetchWithOutPaginate } from "@/hooks/useFetchWithOutPaginate";
 import { useSpecieStore } from "@/store/filter/filterForSpecie.store";
 import { ISpecie } from "@/interfaces";
 
-export const Species = () => {
-  const { data, isLoading } = useFetchWithOutPaginate(`/api/specie`);
-  const selectedSpecies = useSpecieStore((state) => state.selectedSpecies);
-  const toggleSpecie = useSpecieStore((state) => state.toggleSpecie);
+export const Raza = () => {
+    const especies = useSpecieStore((state) => state.selectedSpecies);
+    const { data, isLoading } = useFetchWithOutPaginate(`/api/races?specie_id=${especies?.id}`);
+  
+  console.log(data, "razas");
+  console.log(especies?.id, "especies");
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -22,12 +24,12 @@ export const Species = () => {
           variant="ghost"
           className="flex items-center w-full md:w-auto text-gray-800 font-bold text-xl opacity-80"
         >
-          Especies
+          Razas
           <ChevronDownIcon className="w-4 h-4 ml-2" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-72">
-        <div className="flex flex-col">
+        {/* <div className="flex flex-col">
           {data?.map((specie: ISpecie) => (
             <Button
               key={specie.id}
@@ -38,7 +40,7 @@ export const Species = () => {
               {specie.name}
             </Button>
           ))}
-        </div>
+        </div> */}
       </DropdownMenuContent>
     </DropdownMenu>
   );

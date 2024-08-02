@@ -10,6 +10,7 @@ import { ChevronDownIcon, DogIcon, PawPrintIcon, SmileIcon } from "@/icons";
 import { Slider } from "@/components/ui/slider";
 import { useState } from "react";
 import { Species } from "./Species";
+import { Raza } from "./Raza";
 
 const species = ["perros", "gatos", "aves", "roedores", "reptiles"];
 
@@ -21,6 +22,8 @@ export default function FiltersBar() {
     <div className="w-full">
       <div className="container px-4 md:px-6 py-6 md:py-10">
         <div className="flex flex-wrap md:flex-row md:justify-center md:items-start gap-4 md:gap-8">
+          <Species />
+          <Raza />
           {["Especies", "Razas", "Temperamento"].map((category, idx) => (
             <DropdownMenu key={idx}>
               <DropdownMenuTrigger asChild>
@@ -116,7 +119,6 @@ export default function FiltersBar() {
               </div>
             </DropdownMenuContent>
           </DropdownMenu>
-          <Species />
         </div>
       </div>
     </div>
