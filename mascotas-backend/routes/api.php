@@ -82,6 +82,7 @@ Route::middleware('auth:api')->group(function () {
 Route::get('/pets-images', [PetImgController::class, 'index'])->name('pets.images.index');
 // pets routes
 Route::get('/pets', [PetController::class, 'index'])->name('pets.index');
+Route::get('/pets-max-age', [PetController::class, 'maxAge'])->name('pets.maxAge');
 Route::get('/pets-all', [PetController::class, 'indexAll'])->name('pets.indexAll');
 Route::get('/pets/{id}', [PetController::class, 'show'])->name('pets.show');
 // Needs of pets

@@ -35,6 +35,12 @@ class PetController extends Controller
         return response()->json($data, Response::HTTP_OK);
     }
 
+    public function maxAge()
+    {
+        $data = Pet::max('age');
+        return response()->json($data, Response::HTTP_OK);
+    }
+
     /**
      * Store a newly created resource in storage.
      */
