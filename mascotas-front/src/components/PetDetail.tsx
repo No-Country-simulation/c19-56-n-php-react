@@ -48,7 +48,7 @@ interface Specie {
   deleted_at: string | null;
 }
 
-interface Pet {
+export interface Pet {
   id: number;
   name: string;
   race_id: number;
@@ -136,26 +136,6 @@ const PetDetail: React.FC<PetDetailProps> = ({ pet }) => {
           </div>
 
           <div className="flex flex-col gap-2 min-[400px]:flex-row">
-            <Link href="#" className="flex-1.1" prefetch={false}>
-              <Button
-                className="hover:bg-[#1f9063] hover:text-[#fff] text-[#1f9063] bg-white"
-                size="lg"
-                variant="outline"
-              >
-                Atrás
-              </Button>
-            </Link>
-
-            <Link href="#" className="flex-1" prefetch={false}>
-              <Button
-                className="hover:bg-[#1f9063] hover:text-[#fff] text-[#1f9063] bg-white"
-                size="lg"
-                variant="outline"
-              >
-                Siguiente
-              </Button>
-            </Link>
-
             <Link href="#" className="flex-1" prefetch={false}>
               <Button
                 className="bg-[#1f9063] text-[#fff] hover:text-[#1f9063] hover:bg-white"

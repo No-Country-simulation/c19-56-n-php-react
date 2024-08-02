@@ -14,11 +14,13 @@ import { Raza } from "./Raza";
 import { useFetchWithOutPaginate } from "@/hooks/useFetchWithOutPaginate";
 import { useFilterRange } from "@/store/filter/filterForAge.store";
 import { set } from "react-hook-form";
+import { useSizeStore } from "@/store/filter/filterForSize.store";
 
 const species = ["perros", "gatos", "aves", "roedores", "reptiles"];
 
 export default function FiltersBar() {
-  const [size, setSize] = useState("small");
+  const size = useSizeStore(state => state.size);
+  const setSize = useSizeStore(state => state.toggleRace);
   const { isLoading, data } = useFetchWithOutPaginate("/api/pets-max-age");
   const minValue = useFilterRange((state) => state.minValue) ?? 0;
   const maxValue = useFilterRange((state) => state.maxValue) ?? 25;
@@ -36,7 +38,7 @@ export default function FiltersBar() {
     setMaxValue(ageRange[1]);
   }, [ageRange]);
 
-  
+  console.log(size, "size");
   return (
     <div className="w-full">
       <div className="container px-4 md:px-6 py-6 md:py-10">
@@ -59,7 +61,7 @@ export default function FiltersBar() {
                 <div className="flex flex-col gap-2">
                   <div className="text-sm font-semibold">Tamaño:</div>
                   <div className="flex flex-row gap-2">
-                    {["small", "medium", "large"].map((sizeValue) => (
+                    {["pequeño", "mediano", "grande"].map((sizeValue) => (
                       <Label
                         key={sizeValue}
                         className={`flex items-center gap-2 font-normal cursor-pointer ${

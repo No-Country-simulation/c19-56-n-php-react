@@ -1,6 +1,6 @@
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { Sheet, SheetTrigger, SheetContent } from "@/components/ui/sheet"
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { Sheet, SheetTrigger, SheetContent } from "@/components/ui/sheet";
 import {
   ActivityIcon,
   ContactIcon,
@@ -9,9 +9,43 @@ import {
   MenuClosedIcon,
   MountainIcon,
   TagsIcon,
-} from "@/icons"
+} from "@/icons";
+import { useAuthStore } from "@/store";
+import { urlBase } from "@/backend";
+import { useRouter } from "next/router";
+import { toast } from "sonner";
 
 export default function HeaderClient() {
+  const user = useAuthStore((state) => state.user);
+  const router = useRouter();
+  const setUser = useAuthStore((state) => state.setUser);
+  const setToken = useAuthStore((state) => state.setToken);
+  const token = useAuthStore((state) => state.token);
+  const handleSubmit = async () => {
+    try {
+      const response = await urlBase.post(
+        `/api/logout`,
+        {},
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      if (response.status === 200) {
+        const data = response.data;
+        console.log(data);
+        setUser(null);
+        setToken("");
+        router.push("/");
+        toast.success("Sesión cerrada");
+      }
+    } catch (error: any) {
+      console.error("Error de red", error.request.response);
+      toast.error(error.request.response);
+    }
+  };
   return (
     <header className="w-full bg-[#6cc4a1] px-6 py-0 sm:px-6 md:py-0 fixed top-0 shadow-md z-[99999999]">
       <div className="w-full m-0 py-0 flex items-center justify-center md:justify-between">
@@ -64,23 +98,45 @@ export default function HeaderClient() {
           </Link>
         </div>
         <div className="hidden items-center gap-2 md:flex">
-          <Link href="/register">
-            <Button
-              variant="outline"
-              size="sm"
-              className="hover:text-white rounded-xl py-6 px-4 text-[#1f9063] border-solid border-[#1f9063] hover:border-[#fff] hover:bg-white/20 text-base"
-            >
-              Registro
-            </Button>
-          </Link>
-          <Link href="/login">
-            <Button
-              size="sm"
-              className="bg-[#1f9063] rounded-xl py-6 px-4 text-white hover:bg-[#1a7a54] text-base"
-            >
-              Iniciar sesión
-            </Button>
-          </Link>
+          {user ? (
+            <>
+              {" "}
+              <Button
+                variant="outline"
+                size="sm"
+                className="hover:text-white rounded-xl py-6 px-4 text-[#1f9063] border-solid border-[#1f9063] hover:border-[#fff] hover:bg-white/20 text-base"
+              >
+                {user.name}
+              </Button>
+              <Button
+                size="sm"
+                onClick={handleSubmit}
+                className="bg-[#1f9063] rounded-xl py-6 px-4 text-white hover:bg-[#1a7a54] text-base"
+              >
+                Logout
+              </Button>
+            </>
+          ) : (
+            <>
+              <Link href="/register">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="hover:text-white rounded-xl py-6 px-4 text-[#1f9063] border-solid border-[#1f9063] hover:border-[#fff] hover:bg-white/20 text-base"
+                >
+                  Registro
+                </Button>
+              </Link>
+              <Link href="/login">
+                <Button
+                  size="sm"
+                  className="bg-[#1f9063] rounded-xl py-6 px-4 text-white hover:bg-[#1a7a54] text-base"
+                >
+                  Iniciar sesión
+                </Button>
+              </Link>
+            </>
+          )}
         </div>
         <Sheet>
           <SheetTrigger asChild>
@@ -154,5 +210,5 @@ export default function HeaderClient() {
         </Sheet>
       </div>
     </header>
-  )
+  );
 }

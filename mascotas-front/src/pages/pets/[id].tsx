@@ -35,7 +35,6 @@ export const getStaticProps: GetStaticProps<PetsProps> = async (context) => {
 };
 
 const index: NextPage<PetsProps> = ({ pet }) => {
-  console.log(pet);
   return (
     <ClientLayout>
       <PetDetail pet={pet} />

@@ -1,3 +1,4 @@
+import { useSearchMascotasStore } from "@/store/filter/SearchMascotas.store"
 import SearchClient from "./SearchClient"
 
 interface Props {
@@ -5,7 +6,11 @@ interface Props {
 }
 
 export default function ImageHeader({ image }: Props) {
-
+  const setSearchTerm = useSearchMascotasStore(state => state.setInputValue)
+  const searchTerm = useSearchMascotasStore(state => state.inputValue)
+  const headlesSearch = (search: string) => {
+    setSearchTerm(search)
+  }
   return (
     <section className="relative w-full h-[400px] overflow-hidden md:h-[500px]">
       <div className="absolute inset-0 bg-black/50 z-10" />
@@ -24,7 +29,7 @@ export default function ImageHeader({ image }: Props) {
           Dale a un amigo peludo una segunda oportunidad y recibe amor
           incondicional.
         </p>
-        <SearchClient />
+        <SearchClient placeholder="Buscar mascota por Nombre, Peso y Personalidad" onSearch={headlesSearch}/>
 
       </div>
     </section>

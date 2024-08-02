@@ -17,14 +17,8 @@ class EducationAndResourceController extends Controller
      */
     public function index(Request $request)
     {
-        $data = EducationAndResource::paginate(10);
-        $response = [
-            'lastPage' => $data->lastPage(),
-            'currentPage' => $data->currentPage(),
-            'total' => $data->total(),
-            'data' => $data->items()
-        ];
-        return response()->json($response, Response::HTTP_OK);
+        $data = EducationAndResource::all();
+        return response()->json($data, Response::HTTP_OK);
     }
     /**
      * Store a newly created resource in storage.
@@ -131,7 +125,7 @@ class EducationAndResourceController extends Controller
         $file = $request->file('url');
         $path = Storage::disk('s3')->putFile('uploads', $file, 'public');
         $url = Storage::disk('s3')->url($path);
-        $data->url = $url; 
+        $data->url = $url;
     }
     /**
      * Remove the specified resource from storage.

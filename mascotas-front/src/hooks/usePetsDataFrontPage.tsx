@@ -1,20 +1,54 @@
 import { useAuthStore } from "@/store";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useFetch } from "./useFetch";
 import { usePetsPaginateFrontPageStore } from "@/store/frontPage/Paginations/petsPaginationsFrontPage.store";
+import { useSpecieStore } from "@/store/filter/filterForSpecie.store";
+import { useRaceStore } from "@/store/filter/filterForRace.store";
+import { useSizeStore } from "@/store/filter/filterForSize.store";
+import { useFilterRange } from "@/store/filter/filterForAge.store";
+import { useDebounce } from "./useDebounce";
+import { useSearchMascotasStore } from "@/store/filter/SearchMascotas.store";
 
 export const usePetsFrontPageData = () => {
   const token = useAuthStore((state) => state.token);
   const page = usePetsPaginateFrontPageStore((state) => state.pageState);
-  const currentPageState = usePetsPaginateFrontPageStore(
-    (state) => state.currentPageState
-  );
-  const totalPageState = usePetsPaginateFrontPageStore(
-    (state) => state.totalPageState
-  );
-  const lastPageState = usePetsPaginateFrontPageStore(
-    (state) => state.lastPageState
-  );
+  const species = useSpecieStore((state) => state.selectedSpecies);
+  const race = useRaceStore((state) => state.selectedRace);
+  const size = useSizeStore((state) => state.size);
+  const age = useFilterRange((state) => state.maxValue);
+  const searchTerm = useSearchMascotasStore((state) => state.inputValue);
+  console.log(size, "size desde filter");
+  const [debouncedAge, setDebouncedAge] = useState<number>(age || 0);
+  useEffect(() => {
+    const timerId = setTimeout(() => {
+      if (age) {
+        setDebouncedAge(age);
+      }
+    }, 500);
+    return () => {
+      clearTimeout(timerId);
+    };
+  }, [age]);
+  let queryString = "";
+  if (species) {
+    queryString += `specie_id=${species.id}`;
+  }
+  if (race) {
+    queryString += queryString ? `&race_id=${race.id}` : `race_id=${race.id}`;
+  }
+  if (size) {
+    queryString += queryString ? `&size=${size}` : `size=${size}`;
+  }
+  if (searchTerm) {
+    queryString += queryString ? `&searchTerm=${searchTerm}` : `searchTerm=${searchTerm}`;
+  }
+  if (debouncedAge !== undefined) {
+    queryString += queryString ? `&age=${debouncedAge}` : `age=${debouncedAge}`;
+  }
+  let url = `/api/pets?page=${page}${queryString ? `&${queryString}` : ""}`;
+  console.log(url, "url");
+  const { data, isLoading } = useFetch(url, {}, token);
+
   const setCurrentPageState = usePetsPaginateFrontPageStore(
     (state) => state.setCurrentPageState
   );
@@ -24,7 +58,7 @@ export const usePetsFrontPageData = () => {
   const setLastPageState = usePetsPaginateFrontPageStore(
     (state) => state.setLastPageState
   );
-  const { data, isLoading } = useFetch(`/api/pets?page=${page}`, {}, token);
+
   const { total, currentPage, lastPage, data: listPets } = data || {};
   useEffect(() => {
     if (total !== undefined && currentPage !== undefined) {
